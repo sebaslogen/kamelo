@@ -1,0 +1,61 @@
+{
+    "frames": {
+        "chaingun.png": {
+            "frame": {
+                "x": 1766,
+                "y": 202,
+                "w": 42,
+                "h": 34
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 38,
+                "y": 32,
+                "w": 42,
+                "h": 34
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 128
+            }
+        },
+        "chaingun_impact.png": {
+            "frame": {
+                "x":1162,
+                "y":322,
+                "w":38,
+                "h":34},
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x":110,
+                "y":111,
+                "w":38,
+                "h":34},
+            "sourceSize": {
+                "w":256,
+                "h":256}
+        },
+        "chaingun_impact_0000.png": {
+            "frame": {
+                "x": 494,
+                "y": 260,
+                "w": 22,
+                "h": 22
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 113,
+                "y": 108,
+                "w": 22,
+                "h": 22
+            },
+            "sourceSize": {
+                "w": 256,
+                "h": 256
+            }
+        }
+    }
+}

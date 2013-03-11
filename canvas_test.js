@@ -10,8 +10,8 @@ var canvas = null;
 var context = null;
 var assets = ['resources/images/kami-001.png',
     'resources/images/kami-002.png',
-    'resources/images/kami-003.png',
-    'resources/images/kami-004.png'/*,
+    'resources/images/kami-003.png'/*,
+    'resources/images/kami-004.png',
     'resources/images/kami-005.png',
     'resources/images/kami-006.png',
     'resources/images/kami-007.png',
@@ -32,8 +32,8 @@ var setup = function() {
     canvas = document.createElement('canvas');
 
     canvas.id = "Playground";
-    canvas.width = 1606;
-    canvas.height = 746;
+    canvas.width = 1024;
+    canvas.height = 768;
     canvas.style.zIndex = 8;
     canvas.style.position = "absolute";
     canvas.style.border = "1px solid";
@@ -44,8 +44,6 @@ var setup = function() {
 
     var playground = document.getElementById("Playground");
 
-    console.log(playground);
-    console.log(body);
 
     context = canvas.getContext('2d');
 
