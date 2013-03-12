@@ -1,7 +1,6 @@
 // We keep a global dictionary of loaded sprite-sheets,
 // This dictionary is indexed by the URL path that the
 var gSpriteSheets = {};
-var spriteSheet = null;
 var canvas = null;
 var context = null;
 var frame = 0;
@@ -62,7 +61,7 @@ SpriteSheetClass = Class.extend({
 
 	//-----------------------------------------
     // Parse the JSON file passed in as 'atlasJSON' that is associated to this atlas.
-	parseAtlasDefinition: function (atlasJSON) {
+	parseAtlasDefinition: function (atlasJSON, self) {
         // Parse the input 'atlasJSON' using the JSON.parse method and store it in a variable.
         var parsed = JSON.parse(atlasJSON.responseText);
 
@@ -83,7 +82,7 @@ SpriteSheetClass = Class.extend({
             }
             
 			// Define the sprite for this sheet by calling defSprite to store it into the 'sprites' Array.
-            spriteSheet.defSprite(key, sprite.frame.x, sprite.frame.y, sprite.frame.w, sprite.frame.h, cx, cy);
+            self.defSprite(key, sprite.frame.x, sprite.frame.y, sprite.frame.w, sprite.frame.h, cx, cy);
 		}
 	},
 
@@ -151,7 +150,7 @@ var __drawSpriteInternal = function(spt, sheet, posX, posY) {
 
 
 
-var xhrGet = function(reqUri, callback, type) {
+var xhrGet = function(reqUri, callback, object, type) {
     var caller = xhrGet.caller;
     var myRequest = new XMLHttpRequest();
     myRequest.open("GET", reqUri, true);
@@ -161,7 +160,7 @@ var xhrGet = function(reqUri, callback, type) {
     myRequest.onload = function () {
         if (callback) {
             try {
-                callback(myRequest);
+                callback(myRequest, object);
             } catch (e) {
                 throw 'xhrGet failed:\n' + reqUri + '\nException: ' + e + '\nresponseText: ' + myRequest.responseText + '\ncaller: ' + caller;
             }
@@ -187,13 +186,12 @@ var setup = function() {
     context = canvas.getContext('2d');
 
     // Load each image URL from the assets array into the frames array in the correct order.
-    spriteSheet = new SpriteSheetClass();
+    var spriteSheet = new SpriteSheetClass();
     spriteSheet.load('sprites.png');
-    xhrGet('sprites.json', spriteSheet.parseAtlasDefinition, null);
+    xhrGet('sprites.json', spriteSheet.parseAtlasDefinition, spriteSheet, null);
 
     // Afterwards, call setInterval to run at a framerate of 30 frames per second, calling the animate function each time.
     window.setInterval(animate, 1000/10);
-    //animate();
 };
 
 var animate = function(){
