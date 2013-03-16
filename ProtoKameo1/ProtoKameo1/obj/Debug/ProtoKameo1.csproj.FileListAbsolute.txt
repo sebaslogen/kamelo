@@ -1,0 +1,5 @@
+D:\neoranga\Mis documentos\GitHub\kamelo\ProtoKameo1\ProtoKameo1\bin\ProtoKameo1.dll
+D:\neoranga\Mis documentos\GitHub\kamelo\ProtoKameo1\ProtoKameo1\bin\ProtoKameo1.pdb
+D:\neoranga\Mis documentos\GitHub\kamelo\ProtoKameo1\ProtoKameo1\obj\Debug\ProtoKameo1.dll
+D:\neoranga\Mis documentos\GitHub\kamelo\ProtoKameo1\ProtoKameo1\obj\Debug\ProtoKameo1.pdb
+D:\neoranga\Mis documentos\GitHub\kamelo\ProtoKameo1\ProtoKameo1\obj\Debug\ProtoKameo1.csprojResolveAssemblyReference.cache
