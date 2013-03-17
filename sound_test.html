@@ -4,16 +4,86 @@
     <script language="JavaScript" type="text/javascript" src="howler.js"></script>
     <script language="JavaScript" type="text/javascript" src="js_inheritance.js"></script>
     <script language="JavaScript" type="text/javascript" src="input_engine.js"></script>
+    <script language="JavaScript" type="text/javascript">
+
+        //var sound = new Howl({
+        //  urls: ['http://www.igolgol.com/test/resources/sounds/krakowclip.mp3']
+        //})
+        //sound.play();
+
+        var sound_sprites = new Howl({
+        urls: ['http://www.igolgol.com/test/resources/sounds/kame_hi.mp3',
+               'http://www.igolgol.com/test/resources/sounds/kame_hi.ogg'],
+        sprite: {
+                    atmos: [0, 24393],
+                    tong1: [24393, 215],
+                    tong2: [24608, 200],
+                    tong3: [24808, 158],
+                    tong4: [24966, 162],
+                    tong5: [25128, 156],
+                    tong6: [25284, 147],
+                    bubble1: [25431, 157],
+                    bubble2: [25590, 168],
+                    click: [25758, 107],
+                    twist: [25865, 838],
+                    check: [26704, 104],
+                    check2: [26808, 99],
+                    check3: [26907, 133],
+                    crackle: [27040, 322],
+                    hit: [27363, 58],
+                    wow: [27421, 266],
+                    bubble3: [27686, 172],
+                    oops: [27858, 796],
+                    burp1: [28654, 642],
+                    burp2: [29296, 666],
+                    burp3: [29962, 673],
+                    burp4: [30636, 890],
+                    burp5: [31525, 116]
+
+                }
+        });
+
+        function launchclip(clip)
+        {
+            sound_sprites.play(clip);
+        }
+
+
+    </script>
     <title></title>
 </head>
 <body>
-  <script language="JavaScript" type="text/javascript">
 
-        var sound = new Howl({
-          urls: ['http://www.igolgol.com/test/resources/sounds/krakowclip.mp3']
-        })
-        sound.play();
 
-    </script>
+        <button onclick='javascript:launchclip("tong1");'>1</button>
+        <button onclick='javascript:launchclip("tong2");'>2</button>
+        <button onclick='javascript:launchclip("tong3");'>3</button>
+        <button onclick='javascript:launchclip("tong4");'>4</button>
+        <br>
+        <button onclick='javascript:launchclip("tong5");'>5</button>
+        <button onclick='javascript:launchclip("tong6");'>6</button>
+        <button onclick='javascript:launchclip("bubble1");'>7</button>
+        <button onclick='javascript:launchclip("bubble2");'>8</button>
+        <br>
+        <button onclick='javascript:launchclip("click");'>9</button>
+        <button onclick='javascript:launchclip("twist");'>10</button>
+        <button onclick='javascript:launchclip("check");'>11</button>
+        <button onclick='javascript:launchclip("check2");'>12</button>
+        <br>
+        <button onclick='javascript:launchclip("check3");'>13</button>
+        <button onclick='javascript:launchclip("crackle");'>14</button>
+        <button onclick='javascript:launchclip("hit");'>15</button>
+        <button onclick='javascript:launchclip("wow");'>16</button>
+        <br>
+        <button onclick='javascript:launchclip("bubble3");'>17</button>
+        <button onclick='javascript:launchclip("oops");'>18</button>
+        <button onclick='javascript:launchclip("burp1");'>19</button>
+        <button onclick='javascript:launchclip("burp2");'>20</button>
+        <br>
+        <button onclick='javascript:launchclip("burp3");'>21</button>
+        <button onclick='javascript:launchclip("burp4");'>22</button>
+        <button onclick='javascript:launchclip("burp5");'>23</button>
+        <button onclick='javascript:launchclip("atmos");'>24</button>
+
 </body>
 </html>
