@@ -4,13 +4,15 @@
 <head>
     <meta charset="utf-8" />
     <title>Kamelo Game</title>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         function stopDefAction(evt) { // Prevent undesired actions on key presses
             evt.preventDefault();
         }
     </script>
     <script type="text/javascript" src="box2D.js"></script>
     <script type="text/javascript" src="core.js"></script>
+    <script type="text/javascript" src="howler.js"></script>
+    <script type="text/javascript" src="sound_engine.js"></script>
     <script type="text/javascript" src="engine.js"></script>
     <script type="text/javascript" src="entity.js"></script>
     <script type="text/javascript" src="player.js"></script>
@@ -20,6 +22,7 @@
     <!-- <script src="app.js"></script> -->
     <script type="text/javascript">
         window.onload = setup;
+
     </script>
 </head>
 <body onkeypress="stopDefAction(event);">

@@ -101,7 +101,7 @@ EngineClass = Class.extend({
         //     x: 0,
         //     y: 0
         // }
-        // 
+        //
         // We'll be going more into Box2D later in the course. The Vec2 constructor takes an initial x and y value to set the vector to.
 
         if (gInput.actions['move-left']) {
@@ -113,6 +113,20 @@ EngineClass = Class.extend({
             // adjust the move_dir by 1 in the x direction.
             gEngine.move_dir.x += 1;
             console.log("Muevo Derch");
+        }
+
+        // Added by Tapi March 19 2013 => triggering the sound when firing
+        if (gInput.actions['fire-tongue']) {
+            // launch the sound for the tongue
+            console.log("Pulso Espacio");
+            launchtongue();
+        }
+
+        if (gInput.actions['stop-background']) {
+            // launch the sound for the tongue
+            playing = false;
+            sound_atmos.fadeOut(0.0,2500,null);
+            console.log("Pulso 'S'");
         }
 
         // After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
@@ -149,6 +163,11 @@ EngineClass = Class.extend({
 
 });
 
+// Added by Tapi March 19 2013 => while playing equals true, I will trigger the atmosphere background sound
+// Start atmosphere sound
+launchclip(sound_atmos,'atmos')
+// Added by Tapi March 19 2013 => while playing equals true, I will trigger the atmosphere background sound
+
+
 gEngine = new EngineClass();
 console.log("Engine loaded!");
-

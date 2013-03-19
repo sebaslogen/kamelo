@@ -20,6 +20,8 @@ InputClass = Class.extend({
         gInput.bind(gInput.KEY.RIGHT_ARROW, 'move-right');
         gInput.bind(gInput.KEY.MOUSE1, 'fire-mouse');
         gInput.bind(gInput.KEY.MOUSE2, 'fire-mouse');
+        gInput.bind(gInput.KEY.SPACE, 'fire-tongue');
+        gInput.bind(gInput.KEY.S, 'stop-background');
 
         // Adding the event listeners for the appropriate DOM events.
         console.log(canvas);
@@ -37,7 +39,7 @@ InputClass = Class.extend({
     //-----------------------------
     onKeyDown: function (event) {
         // Grab the keyID property of the event object parameter, then set the equivalent element in the 'actions' object to true.
-        // 
+        //
         // You'll need to use the bindings object you set in 'bind' in order to do this.
         var action = gInput.bindings[event.keyCode];
 
@@ -49,7 +51,7 @@ InputClass = Class.extend({
     //-----------------------------
     onKeyUp: function (event) {
         // Grab the keyID property of the event object parameter, then set the equivalent element in the 'actions' object to false.
-        // 
+        //
         // You'll need to use the bindings object you set in 'bind' in order to do this.
         var action = gInput.bindings[event.keyCode];
 
