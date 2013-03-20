@@ -57,6 +57,23 @@ EngineClass = Class.extend({
             gEngine.entities.erase(gEngine._deferredKill[j]);
         }
         gEngine._deferredKill = []; // Once you're done looping through '_deferredKill', set it back to the empty array, indicating all entities in it have been removed from the 'entities' list.
+
+        // Update sound world
+        // Atmos loop
+        console.log(sound_atmos.pos());
+        if (sound_atmos.pos() >= 20.0)
+        {
+            if (!sound_atmos_retriggered)
+            {
+                sound_atmos_retriggered = true;
+                // Trigger atmos sound again
+                launchclip(sound_atmos,'atmos');
+            }
+        }
+        else
+        {
+            sound_atmos_retriggered = false;
+        }
     },
 
     //-----------------------------
@@ -165,7 +182,7 @@ EngineClass = Class.extend({
 
 // Added by Tapi March 19 2013 => while playing equals true, I will trigger the atmosphere background sound
 // Start atmosphere sound
-launchclip(sound_atmos,'atmos')
+launchclip(sound_atmos,'atmos');
 // Added by Tapi March 19 2013 => while playing equals true, I will trigger the atmosphere background sound
 
 

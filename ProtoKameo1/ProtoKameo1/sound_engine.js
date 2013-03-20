@@ -6,9 +6,11 @@ var sound_atmos = new Howl({
             atmos: [0, 24393]
             },
     autoplay: false,
-    loop: true,
+    loop: false,
     volume: 0.5,
 });
+
+var sound_atmos_retriggered = false;
 
 
 //sound_sprites contains all the sounds
