@@ -7,7 +7,7 @@ var sound_atmos = new Howl({
             },
     autoplay: false,
     loop: false,
-    volume: 0.3,
+    volume: 0.1,
 });
 
 var sound_atmos_retriggered = false;
