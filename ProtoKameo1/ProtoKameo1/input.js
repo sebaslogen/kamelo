@@ -18,13 +18,15 @@ InputClass = Class.extend({
         // Setting up left, right key presses and mouse clicks as actions
         gInput.bind(gInput.KEY.LEFT_ARROW, 'move-left');
         gInput.bind(gInput.KEY.RIGHT_ARROW, 'move-right');
-        gInput.bind(gInput.KEY.MOUSE1, 'fire-mouse');
-        gInput.bind(gInput.KEY.MOUSE2, 'fire-mouse');
+        gInput.bind(gInput.KEY.MOUSE1, 'fire-mouse'); // Right mouse click
+        //gInput.bind(gInput.KEY.MOUSE2, 'fire-mouse'); // Left mouse click
         gInput.bind(gInput.KEY.SPACE, 'fire-tongue');
         gInput.bind(gInput.KEY.S, 'stop-background');
 
         // Adding the event listeners for the appropriate DOM events.
         console.log(canvas);
+        canvas.addEventListener('click', gInput.onClick);
+        //canvas.addEventListener('mouseup', gInput.onClick);
         canvas.addEventListener('mousemove', gInput.onMouseMove);
         canvas.addEventListener('keydown', gInput.onKeyDown);
         canvas.addEventListener('keyup', gInput.onKeyUp);
@@ -36,6 +38,16 @@ InputClass = Class.extend({
         gInput.mouse.y = event.clientY;
     },
 
+    //-----------------------------
+    onClick: function (event) {
+        var action = gInput.bindings[event.keyCode];
+        console.log("fire mouse0: " + event.keyCode);
+        if (action) {
+            gInput.actions[action] = true;
+        }
+    },
+    
+    
     //-----------------------------
     onKeyDown: function (event) {
         // Grab the keyID property of the event object parameter, then set the equivalent element in the 'actions' object to true.
@@ -68,7 +80,7 @@ InputClass = Class.extend({
 });
 
 KEY = {
-    'MOUSE1': -1,
+    'MOUSE1': 0,
     'MOUSE2': -3,
     'MWHEEL_UP': -4,
     'MWHEEL_DOWN': -5,

@@ -58,12 +58,12 @@ var sound_sprites = new Howl({
 });
 
 // launch a sound (one-shot)
-function launchclip(sound_object,clip)
+function launchClip(sound_object,clip)
 {
     sound_object.play(clip);
 }
 
-function launchtongue()
+function launchTongue()
 {
     launch_sprite = "tong" + String(Math.floor(Math.random()*6) + 1);
     sound_sprites.play(launch_sprite);

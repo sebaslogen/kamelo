@@ -58,21 +58,27 @@ EngineClass = Class.extend({
         }
         gEngine._deferredKill = []; // Once you're done looping through '_deferredKill', set it back to the empty array, indicating all entities in it have been removed from the 'entities' list.
 
-        // Update sound world
+        /// Update sound world ///
         // Atmos loop
-        console.log(sound_atmos.pos());
+        ///////////console.log(sound_atmos.pos());
         if (sound_atmos.pos() >= 20.0)
         {
             if (!sound_atmos_retriggered)
             {
                 sound_atmos_retriggered = true;
                 // Trigger atmos sound again
-                launchclip(sound_atmos,'atmos');
+                launchClip(sound_atmos,'atmos');
             }
         }
         else
         {
             sound_atmos_retriggered = false;
+        }
+        if (gInput.actions['fire-mouse'] && !gamer_active) {
+            gInput.actions['fire-mouse'] = false;
+            launchClip(game_music, 'music');
+            gamer_active = true;
+            sound_atmos.fadeOut(0.0, 5000, null);
         }
     },
 
@@ -136,12 +142,11 @@ EngineClass = Class.extend({
         if (gInput.actions['fire-tongue']) {
             // launch the sound for the tongue
             console.log("Pulso Espacio");
-            launchtongue();
+            launchTongue();
         }
 
         if (gInput.actions['stop-background']) {
-            // launch the sound for the tongue
-            playing = false;
+            /////////////////// USED???     playing = false;
             sound_atmos.fadeOut(0.0,2500,null);
             console.log("Pulso 'S'");
         }
@@ -182,10 +187,9 @@ EngineClass = Class.extend({
 
 // Added by Tapi March 19 2013 => while playing equals true, I will trigger the atmosphere background sound
 // Start atmosphere sound
-launchclip(sound_atmos,'atmos');
-// Added by Tapi March 19 2013 => while playing equals true, I will trigger the atmosphere background sound
+launchClip(sound_atmos, 'atmos');
+gamer_active = false; // Used to enable and disable active music
 
-launchclip(game_music,'music');
 
 gEngine = new EngineClass();
 console.log("Engine loaded!");

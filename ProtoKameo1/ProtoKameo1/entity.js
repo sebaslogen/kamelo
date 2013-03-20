@@ -60,7 +60,7 @@ EntityClass = Class.extend({
                 this.move = false;
             }
             var real_spritename = this.spritename + this.frame + '.png';
-            console.log("Move is " + this.move + " " + real_spritename);
+            //////console.log("Move is " + this.move + " " + real_spritename);
             context.clearRect(0, 0, canvas.width, canvas.height); // Clean up screen
             drawSprite(real_spritename, this.pos.x, this.pos.y);
         }

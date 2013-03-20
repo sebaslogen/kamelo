@@ -24,9 +24,11 @@
       <DependentUpon>app.ts</DependentUpon>
     </Content>
     <Content Include="engine.js" />
+    <Content Include="howler.js" />
     <Content Include="input.js" />
     <Content Include="entity.js" />
     <Content Include="player.js" />
+    <Content Include="sound_engine.js" />
     <Content Include="sprites.png" />
     <Content Include="spriteSheet.js" />
   </ItemGroup>
