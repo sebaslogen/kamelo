@@ -185,6 +185,7 @@ EngineClass = Class.extend({
 launchclip(sound_atmos,'atmos');
 // Added by Tapi March 19 2013 => while playing equals true, I will trigger the atmosphere background sound
 
+launchclip(game_music,'music');
 
 gEngine = new EngineClass();
 console.log("Engine loaded!");

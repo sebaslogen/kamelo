@@ -7,10 +7,22 @@ var sound_atmos = new Howl({
             },
     autoplay: false,
     loop: false,
-    volume: 0.5,
+    volume: 0.3,
 });
 
 var sound_atmos_retriggered = false;
+
+//sound_atmos contains the atmosphere sound
+var game_music = new Howl({
+    urls: ['resources/sounds/kameongame.mp3',
+           'resources/sounds/kameongame.ogg'],
+    sprite: {
+            music: [23, 59084]
+            },
+    autoplay: false,
+    loop: true,
+    volume: 0.7,
+});
 
 
 //sound_sprites contains all the sounds
