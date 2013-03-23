@@ -63,7 +63,7 @@ function launchClip(sound_object,clip)
     sound_object.play(clip);
 }
 
-function launchTongue()
+function launchTongueSound()
 {
     launch_sprite = "tong" + String(Math.floor(Math.random()*6) + 1);
     sound_sprites.play(launch_sprite);

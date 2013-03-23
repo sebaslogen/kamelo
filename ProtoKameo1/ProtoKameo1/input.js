@@ -26,7 +26,6 @@ InputClass = Class.extend({
         // Adding the event listeners for the appropriate DOM events.
         console.log(canvas);
         canvas.addEventListener('click', gInput.onClick);
-        //canvas.addEventListener('mouseup', gInput.onClick);
         canvas.addEventListener('mousemove', gInput.onMouseMove);
         canvas.addEventListener('keydown', gInput.onKeyDown);
         canvas.addEventListener('keyup', gInput.onKeyUp);
@@ -41,7 +40,7 @@ InputClass = Class.extend({
     //-----------------------------
     onClick: function (event) {
         var action = gInput.bindings[event.keyCode];
-        console.log("fire mouse0: " + event.keyCode);
+        console.log("fire mouse on coordinates: " + gInput.mouse.x + "," + gInput.mouse.y);
         if (action) {
             gInput.actions[action] = true;
         }

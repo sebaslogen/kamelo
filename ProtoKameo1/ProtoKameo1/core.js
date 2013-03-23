@@ -185,17 +185,45 @@ var xhrGet = function (reqUri, callback, object, type) {
     myRequest.send();
 };
 
-Vec2 = Box2D.Common.Math.b2Vec2;
-BodyDef = Box2D.Dynamics.b2BodyDef;
-Body = Box2D.Dynamics.b2Body;
-FixtureDef = Box2D.Dynamics.b2FixtureDef;
-Fixture = Box2D.Dynamics.b2Fixture;
-World = Box2D.Dynamics.b2World;
-MassData = Box2D.Collision.Shapes.b2MassData;
-PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
-CircleShape = Box2D.Collision.Shapes.b2CircleShape;
-DebugDraw = Box2D.Dynamics.b2DebugDraw;
-RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef;
+
+var setup = function () {
+
+    // Canvas setup
+    canvas = document.getElementById('CanvasPlayground');
+    canvas.focus();
+    context = canvas.getContext('2d');
+
+    // Load each image URL from the assets array into the frames array in the correct order.
+    var spriteSheet = new SpriteSheetClass();
+    spriteSheet.load('resources/images/sprites.png');
+    xhrGet('resources/images/sprites.json', spriteSheet.parseAtlasDefinition, spriteSheet, null);
+
+    // Game setup
+    gEngine.setup();
+    var entityPlayer = gEngine.spawnEntity("Player");
+    entityPlayer.spritename = 'kami-walk-00';
+    gEngine.gPlayer0.mpPhysBody.type = Body.b2_dynamicBody;
+
+    // Call setInterval to run at a framerate of 30 frames per second, calling the animate function each time.
+    window.setInterval(animate, 1000 / 10);
+};
+
+var animate = function () {
+    gEngine.update();
+    gEngine.draw();
+};
+
+var Vec2 = Box2D.Common.Math.b2Vec2;
+var BodyDef = Box2D.Dynamics.b2BodyDef;
+var Body = Box2D.Dynamics.b2Body;
+var FixtureDef = Box2D.Dynamics.b2FixtureDef;
+var Fixture = Box2D.Dynamics.b2Fixture;
+var World = Box2D.Dynamics.b2World;
+var MassData = Box2D.Collision.Shapes.b2MassData;
+var PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+var CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+var DebugDraw = Box2D.Dynamics.b2DebugDraw;
+var RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef;
 
 var canvas = null;
 var context = null;
