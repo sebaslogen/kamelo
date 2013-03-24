@@ -182,7 +182,7 @@ EngineClass = Class.extend({
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite name (ie. "kami-001.png", and the position on the canvas to draw to.
-var drawSprite = function (spritename, posX, posY, ctx, cty, angle) {
+var drawSprite = function (spritename, posX, posY, angle) {
     // Walk through all our spritesheets defined in 'gSpriteSheets' and for each sheet...
     for (var sheetName in gSpriteSheets) {
 
@@ -195,7 +195,7 @@ var drawSprite = function (spritename, posX, posY, ctx, cty, angle) {
             continue;
         }
 
-        __drawSpriteInternal(sprite, sheet, posX, posY, ctx, cty, angle);
+        __drawSpriteInternal(sprite, sheet, posX, posY, angle);
 
         // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
         return;
@@ -204,7 +204,7 @@ var drawSprite = function (spritename, posX, posY, ctx, cty, angle) {
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite object stored in the 'sprites Array, the 'SpriteSheetClass' object stored in the 'gSpriteSheets' dictionary, and the position on canvas to draw to.
-var __drawSpriteInternal = function (spt, sheet, posX, posY, ctx, cty, angle) {
+var __drawSpriteInternal = function (spt, sheet, posX, posY, angle) {
     if (spt === null || sheet === null) {
         return;
     }
@@ -224,14 +224,14 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, ctx, cty, angle) {
         x: spt.cx,
         y: spt.cy
     };
-    if (typeof angle !== 'undefined') { // Pain tongue
-        context.translate(posX + ctx, posY + cty);
+    if ((typeof angle !== 'undefined') && angle != null) { // Pain tongue
+        context.translate(posX, posY);
         context.rotate(angle);
-        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, 0 - ctx, 0 - cty, spt.w, spt.h);
+        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, 0 + hlf.x, 0 + hlf.y, spt.w, spt.h);
         context.rotate(-angle);
-        context.translate(-(posX + ctx), -(posY + cty));
+        context.translate(-posX, -posY);
         
-        console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + posX + " " + posY + " " + spt.w + " " + spt.h + " angle:" + angle);
+        /////////////////////////////console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + (0 + hlf.y) + " " + (0 + hlf.y) + " " + spt.w + " " + spt.h + " angle:" + angle);
     } else {
         context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
     }
