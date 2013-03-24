@@ -192,6 +192,9 @@ var setup = function () {
     canvas = document.getElementById('CanvasPlayground');
     canvas.focus();
     context = canvas.getContext('2d');
+    // Background canvas
+    background_canvas = document.getElementById('background');
+    background_context = background_canvas.getContext('2d');
 
     // Load each image URL from the assets array into the frames array in the correct order.
     var spriteSheet = new SpriteSheetClass();
@@ -206,11 +209,35 @@ var setup = function () {
 
     // Call setInterval to run at a framerate of 30 frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
+    /////////////////window.setTimeout(loadBackground, 2000)
 };
+
+var drawBackground = function () {
+    var sprite = 'kami-walk-001.png';
+    var posX = 250;
+    var posY = 400;
+    //background_context.clearRect(0, 0, bcanvas.width, bcanvas.height); // First clean up screen
+    for (var sheetName in gSpriteSheets) {
+
+        // Use the getStats method of the spritesheet to find if a sprite with name 'spritename' exists in that sheet...
+        var sheet = gSpriteSheets[sheetName];
+        var sprite = sheet.getStats(sprite);
+
+        // If we find the appropriate sprite, call '__drawSpriteInternal' with parameters as described below. Otherwise, continue with the loop...
+        if (sprite === null) {
+            continue;
+        }
+
+        background_context.drawImage(sheet.img, sprite.x, sprite.y, sprite.w, sprite.h, posX + 250, posY + 116, sprite.w, sprite.h);
+        // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
+        return;
+    }
+}
 
 var animate = function () {
     gEngine.update();
     gEngine.draw();
+    drawBackground();
 };
 
 var Vec2 = Box2D.Common.Math.b2Vec2;
@@ -227,4 +254,6 @@ var RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef;
 
 var canvas = null;
 var context = null;
+var background_canvas = null;
+var background_context = null;
 var FPS = 10;

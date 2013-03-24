@@ -26,8 +26,11 @@
     </script>
 </head>
 <body onkeypress="stopDefAction(event);">
-    <canvas width="1024" height="768" id="CanvasPlayground" tabindex="1">
+    <canvas id="CanvasPlayground" width="1024" height="768" style="position: absolute; left: 0; top: 0; z-index: 1;" tabindex="1">
         Canvas tag not supported
 	</canvas>
+    <canvas id="background" width="1024" height="768" style="position: absolute; left: 0; top: 0; z-index: 0;">
+        Canvas tag not supported
+    </canvas>
 </body>
 </html>

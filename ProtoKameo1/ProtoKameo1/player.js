@@ -35,33 +35,6 @@ PlayerClass = EntityClass.extend({
             this.move = true;
             console.log("Muevo Derch");
         }
-        //if (gInput.actions['fire-tongue']) { // launch the sound for the tongue
-        if (gInput.actions['fire-mouse']) {
-            gInput.actions['fire-mouse'] = false;
-            ///////////////////////////// console.log("Lengüetazo!!!");
-            this.tong_fire_pos.x = gInput.mouse.x;
-            this.tong_fire_pos.y = gInput.mouse.y;
-            this.tongue_frame = 1; // Activate tongue animation
-            // Tongue fire distance and angle from mouth calculations
-            this.miss_in_da_face = false;
-            this.tong_pos.x = this.pos.x + this.tong_offset.x;
-            this.tong_pos.y = this.pos.y + this.tong_offset.y;
-            var tong_size_x = this.tong_fire_pos.x - this.tong_pos.x;
-            var tong_size_y = this.tong_fire_pos.y - this.tong_pos.y;
-            this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
-            var angle_tip_tongue_offset = Math.atan2(-40, this.tong_distance); // This tilts the tongue to elevate the tip of the tongue 40px to make it overlap the mouse
-            this.angle = -Math.atan2(-tong_size_y, tong_size_x) + angle_tip_tongue_offset;
-            if ((this.angle < -1.9078242687063418) || (this.angle > 0.29715340521870326) || this.tong_distance < 100) { // Behind, below or too close fire will slap in the face
-                this.miss_in_da_face = true;
-            } else {
-                launchTongueSound();
-            }
-            if (!gamer_active) { // Activate music when player gets active and starts hitting
-                launchClip(game_music, 'music');
-                gamer_active = true;
-                sound_atmos.fadeOut(0.0, 5000, null);
-            }
-        }
 
         // After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
         if (gEngine.move_dir.LengthSquared()) {
@@ -76,11 +49,39 @@ PlayerClass = EntityClass.extend({
         this.pos.x += gEngine.move_dir.x;
         this.pos.y += gEngine.move_dir.y;
         ///console.log("Muevo a " + this.pos.x + "," + this.pos.y);
+
+        // Tongue fire distance and angle from mouth calculations
+        if (gInput.actions['fire-mouse']) { // Update tongue target position only after shoot, not during player movement either mouse move
+            this.tong_fire_pos.x = gInput.mouse.x;
+            this.tong_fire_pos.y = gInput.mouse.y;
+        }
+        this.tong_pos.x = this.pos.x + this.tong_offset.x;
+        this.tong_pos.y = this.pos.y + this.tong_offset.y;
+        var tong_size_x = this.tong_fire_pos.x - this.tong_pos.x;
+        var tong_size_y = this.tong_fire_pos.y - this.tong_pos.y;
+        this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
+        var angle_tip_tongue_offset = Math.atan2(-40, this.tong_distance); // This tilts the tongue to elevate the tip of the tongue 40px to make it overlap the mouse
+        this.angle = -Math.atan2(-tong_size_y, tong_size_x) + angle_tip_tongue_offset;
+        if (gInput.actions['fire-mouse']) { // launch the sound for the tongue and the animation
+            gInput.actions['fire-mouse'] = false;
+            this.tongue_frame = 1; // Activate tongue animation
+            if ((this.angle < -1.9078242687063418) || (this.angle > 0.29715340521870326) || this.tong_distance < 100) { // Behind, below or too close fire will slap in the face
+                this.miss_in_da_face = true;
+            } else {
+                this.miss_in_da_face = false;
+                launchTongueSound();
+            }
+            if (!gamer_active) { // Activate music when player gets active and starts hitting
+                launchClip(game_music, 'music');
+                gamer_active = true;
+                sound_atmos.fadeOut(0.0, 5000, null);
+            }
+        }
     },
 
     //-----------------------------------------
     draw: function () {
-        if (this.spritename) {
+        if (this.spritename) { // Draw character
             if (this.move) {
                 if (this.direction) {
                     this.frame++;
@@ -93,14 +94,16 @@ PlayerClass = EntityClass.extend({
                 this.move = false;
             }
             var real_spritename = this.spritename + this.frame + '.png';
-            if (this.miss_in_da_face && (this.tongue_frame != 0)) {
-                /////////////////////////////   real_spritename = '.png';
-                console.log("Painting new face");
-            }
             //////console.log("Move is " + this.move + " " + real_spritename);
             drawSprite(real_spritename, this.pos.x, this.pos.y);
+            if (this.miss_in_da_face && (this.tongue_frame != 0)) { // Draw slap in da face!
+                context.clearRect(this.pos.x + 154, this.pos.y - 32, 100, 78); // Clean up previous screen
+                context.clearRect(this.pos.x + 175, this.pos.y + 30, 100, 26); // Clean up previous screen
+                context.clearRect(this.pos.x + 140, this.pos.y - 120, 60, 60); // Clean up previous screen
+                drawSprite('kami-head-slap.png', this.pos.x + 204, this.pos.y - 32);
+            }
         }
-        if (this.tongue_frame != 0) {
+        if (this.tongue_frame != 0) { // Draw tongue
             if (!this.miss_in_da_face) {
                 drawSprite(this.t_start, this.tong_pos.x, this.tong_pos.y, this.angle);
                 var start_med = 66;
@@ -123,7 +126,7 @@ PlayerClass = EntityClass.extend({
                 drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle);
                 
             }
-            this.tongue_frame = (this.tongue_frame + 1) % ((FPS/2) + 1); // Half second at current FPS (10)
+            this.tongue_frame = (this.tongue_frame + 1) % (4); // Less than half second at current FPS (10)
         }
     }
 });
