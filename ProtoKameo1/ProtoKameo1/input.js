@@ -32,9 +32,9 @@ InputClass = Class.extend({
     },
 
     //-----------------------------
-    onMouseMove: function (event) {
-        gInput.mouse.x = event.clientX;
-        gInput.mouse.y = event.clientY;
+    onMouseMove: function (event) { // Get coordinates avoiding webpage scrolling offsets
+        gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+        gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
     },
 
     //-----------------------------

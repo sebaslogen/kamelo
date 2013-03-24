@@ -182,7 +182,7 @@ EngineClass = Class.extend({
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite name (ie. "kami-001.png", and the position on the canvas to draw to.
-var drawSprite = function (spritename, posX, posY, angle) {
+var drawSprite = function (spritename, posX, posY, ctx, cty, angle) {
     // Walk through all our spritesheets defined in 'gSpriteSheets' and for each sheet...
     for (var sheetName in gSpriteSheets) {
 
@@ -195,42 +195,19 @@ var drawSprite = function (spritename, posX, posY, angle) {
             continue;
         }
 
-        __drawSpriteInternal(sprite, sheet, posX, posY, angle);
+        __drawSpriteInternal(sprite, sheet, posX, posY, ctx, cty, angle);
 
         // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
         return;
     }
 };
-/*
-//-----------------------------------------
-// External-facing function for drawing sprites based on the sprite name (ie. "kami-001.png", and the position on the canvas to draw to.
-var drawSpriteRotated = function (spritename, posX, posY, angle) {
-    // Walk through all our spritesheets defined in 'gSpriteSheets' and for each sheet...
-    for (var sheetName in gSpriteSheets) {
-
-        // Use the getStats method of the spritesheet to find if a sprite with name 'spritename' exists in that sheet...
-        var sheet = gSpriteSheets[sheetName];
-        var sprite = sheet.getStats(spritename);
-
-        // If we find the appropriate sprite, call '__drawSpriteInternal' with parameters as described below. Otherwise, continue with the loop...
-        if (sprite === null) {
-            continue;
-        }
-
-        __drawSpriteInternal(sprite, sheet, posX, posY, angle);
-
-        // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
-        return;
-    }
-};*/
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite object stored in the 'sprites Array, the 'SpriteSheetClass' object stored in the 'gSpriteSheets' dictionary, and the position on canvas to draw to.
-var __drawSpriteInternal = function (spt, sheet, posX, posY, angle) {
+var __drawSpriteInternal = function (spt, sheet, posX, posY, ctx, cty, angle) {
     if (spt === null || sheet === null) {
         return;
     }
-
     // Call the drawImage method of our canvas context using the full drawImage API. drawImage takes, in order:
     //
     // 1) the Image object to draw, this is our entire spritesheet.
@@ -248,21 +225,13 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle) {
         y: spt.cy
     };
     if (typeof angle !== 'undefined') { // Pain tongue
-        //angle = 0;
-        console.log("Drawing tongue with an angle of " + angle);
-        //var x = canvas.width / 2;
-        //var y = canvas.height / 2;
-        //var width = sheet.img.width;
-        //var height = sheet.img.height;
-
-        context.translate(posX, posY);
+        context.translate(posX + ctx, posY + cty);
         context.rotate(angle);
-        //context.drawImage(image, -width / 2, -height / 2, width, height);
-        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, 0, 0, spt.w, spt.h);
+        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, 0 - ctx, 0 - cty, spt.w, spt.h);
         context.rotate(-angle);
-        context.translate(-posX, -posY);
+        context.translate(-(posX + ctx), -(posY + cty));
         
-        console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + posX + " " + posY + " " + spt.w + " " + spt.h);
+        console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + posX + " " + posY + " " + spt.w + " " + spt.h + " angle:" + angle);
     } else {
         context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
     }

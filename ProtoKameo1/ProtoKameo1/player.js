@@ -9,6 +9,11 @@ PlayerClass = EntityClass.extend({
     direction: true,
     move: false,
     tongue_frame: 0,
+    tong_fire_pos: {x: 0, y: 0},
+    tong_offset_x : 475 - 250,
+    tong_offset_y : 116 - 116,
+    tng_ctx: 15,
+    tng_cty: 20,
     angle : 0,
     t_start : "kami-tongue-001.png",
     t_med : "kami-tongue-002.png",
@@ -33,11 +38,13 @@ PlayerClass = EntityClass.extend({
         //if (gInput.actions['fire-tongue']) { // launch the sound for the tongue
         if (gInput.actions['fire-mouse']) {
             gInput.actions['fire-mouse'] = false;
-            console.log("Lengüetazo!!!");
+            ///////////////////////////// console.log("Lengüetazo!!!");
+            this.tong_fire_pos.x = gInput.mouse.x;
+            this.tong_fire_pos.y = gInput.mouse.y;
             this.tongue_frame = 1; // Activate tongue animation
             launchTongueSound();
             if (!gamer_active) {
-                launchClip(game_music, 'music');
+                //////////////////////////////////////  launchClip(game_music, 'music');
                 gamer_active = true;
                 sound_atmos.fadeOut(0.0, 5000, null);
             }
@@ -60,6 +67,16 @@ PlayerClass = EntityClass.extend({
 
     //-----------------------------------------
     draw: function () {
+        // Tongue fire distance and angle from mouth calculations
+        var miss_in_da_face = false;
+        var tong_pos_x = this.pos.x + this.tong_offset_x;
+        var tong_pos_y = this.pos.y + this.tong_offset_y;
+        var tong_size_x = this.tong_fire_pos.x - tong_pos_x; //gInput.mouse.x - tong_pos_x;
+        var tong_size_y = this.tong_fire_pos.y - tong_pos_y; //gInput.mouse.y - tong_pos_y;
+        this.angle = -Math.atan2(-tong_size_y, tong_size_x) - 0.25;
+        if ((this.angle < -1.9078242687063418) || (this.angle > 0.29715340521870326)) {
+            miss_in_da_face = true;
+        }
         if (this.spritename) {
             if (this.move) {
                 if (this.direction) {
@@ -73,22 +90,21 @@ PlayerClass = EntityClass.extend({
                 this.move = false;
             }
             var real_spritename = this.spritename + this.frame + '.png';
+            if (miss_in_da_face && (this.tongue_frame != 0)) {
+                /////////////////////////////   real_spritename = '.png';
+                console.log("Painting new face");
+            }
             //////console.log("Move is " + this.move + " " + real_spritename);
             drawSprite(real_spritename, this.pos.x, this.pos.y);
         }
         if (this.tongue_frame != 0) {
-            var offset_x = 475 - 250;
-            var offset_y = 116 - 116;
-            var tong_pos_x = this.pos.x + offset_x;
-            var tong_pos_y = this.pos.y + offset_y;
-            var dist_x = gInput.mouse.x - tong_pos_x;
-            var dist_y = gInput.mouse.y - tong_pos_y;
-            this.angle = -Math.atan2(-dist_y, dist_x) - 0.25;
-            console.log("Distance of click " + dist_x + "," + dist_y + " and angle:" + this.angle);
-            drawSprite(this.t_med, tong_pos_x, tong_pos_y, this.angle);
-            drawSprite(this.t_start, tong_pos_x, tong_pos_y, this.angle);
-            drawSprite(this.t_end, tong_pos_x, tong_pos_y, this.angle);
-            this.tongue_frame = (this.tongue_frame + 1) % 6; // Half second at 10 FPS
+            /////////////////////////////console.log("Distance of click " + tong_size_x + "," + tong_size_y + " and angle:" + this.angle);
+            if (!miss_in_da_face) {
+                drawSprite(this.t_med, tong_pos_x, tong_pos_y, this.tng_ctx, this.tng_cty, this.angle);
+                drawSprite(this.t_start, tong_pos_x, tong_pos_y, this.tng_ctx, this.tng_cty, this.angle);
+                drawSprite(this.t_end, tong_pos_x, tong_pos_y, this.tng_ctx, this.tng_cty, this.angle);
+            }
+            this.tongue_frame = (this.tongue_frame + 1) % ((FPS/2) + 1); // Half second at current FPS (10)
         }
     }
 });

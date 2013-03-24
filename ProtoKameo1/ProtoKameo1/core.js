@@ -205,7 +205,7 @@ var setup = function () {
     gEngine.gPlayer0.mpPhysBody.type = Body.b2_dynamicBody;
 
     // Call setInterval to run at a framerate of 30 frames per second, calling the animate function each time.
-    window.setInterval(animate, 1000 / 10);
+    window.setInterval(animate, 1000 / FPS);
 };
 
 var animate = function () {
@@ -227,3 +227,4 @@ var RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef;
 
 var canvas = null;
 var context = null;
+var FPS = 10;
