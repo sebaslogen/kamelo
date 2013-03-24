@@ -8,9 +8,12 @@ PlayerClass = EntityClass.extend({
     total_frames: 3,
     direction: true,
     move: false,
-    tongue_frame: 0,
-    tong_fire_pos : {x: 0, y: 0},
-    tong_offset: {x : 475 - 235, y : 116 - 96},
+    tongue_frame: 0, // Number of frame drawn for the tongue
+    miss_in_da_face: false, // When fire position is incorrect, jsut slap the tongue in the head
+    tong_pos: { x: 0, y: 0 }, // Position of tongue start
+    tong_fire_pos: { x: 0, y: 0 }, // Position of tongue end
+    tong_offset: { x: 475 - 235, y: 116 - 96 }, // Tongue start position offset
+    tong_distance : 0,
     angle : 0,
     t_start : "kami-tongue-001.png",
     t_med : "kami-tongue-002.png",
@@ -39,8 +42,21 @@ PlayerClass = EntityClass.extend({
             this.tong_fire_pos.x = gInput.mouse.x;
             this.tong_fire_pos.y = gInput.mouse.y;
             this.tongue_frame = 1; // Activate tongue animation
-            launchTongueSound();
-            if (!gamer_active) {
+            // Tongue fire distance and angle from mouth calculations
+            this.miss_in_da_face = false;
+            this.tong_pos.x = this.pos.x + this.tong_offset.x;
+            this.tong_pos.y = this.pos.y + this.tong_offset.y;
+            var tong_size_x = this.tong_fire_pos.x - this.tong_pos.x;
+            var tong_size_y = this.tong_fire_pos.y - this.tong_pos.y;
+            this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
+            var angle_tip_tongue_offset = Math.atan2(-40, this.tong_distance); // This tilts the tongue to elevate the tip of the tongue 40px to make it overlap the mouse
+            this.angle = -Math.atan2(-tong_size_y, tong_size_x) + angle_tip_tongue_offset;
+            if ((this.angle < -1.9078242687063418) || (this.angle > 0.29715340521870326) || this.tong_distance < 100) { // Behind, below or too close fire will slap in the face
+                this.miss_in_da_face = true;
+            } else {
+                launchTongueSound();
+            }
+            if (!gamer_active) { // Activate music when player gets active and starts hitting
                 launchClip(game_music, 'music');
                 gamer_active = true;
                 sound_atmos.fadeOut(0.0, 5000, null);
@@ -64,18 +80,6 @@ PlayerClass = EntityClass.extend({
 
     //-----------------------------------------
     draw: function () {
-        // Tongue fire distance and angle from mouth calculations
-        var miss_in_da_face = false;
-        var tong_pos_x = this.pos.x + this.tong_offset.x;
-        var tong_pos_y = this.pos.y + this.tong_offset.y;
-        var tong_size_x = this.tong_fire_pos.x - tong_pos_x;
-        var tong_size_y = this.tong_fire_pos.y - tong_pos_y;
-        var distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
-        var angle_tip_tongue_offset = Math.atan2(-40, distance); // This tilts the tongue to elevate the tip of the tongue 40px to make it overlap the mouse
-        this.angle = -Math.atan2(-tong_size_y, tong_size_x) + angle_tip_tongue_offset;
-        if ((this.angle < -1.9078242687063418) || (this.angle > 0.29715340521870326) || distance < 100) { // Behind, below or too close fire will slap in the face
-            miss_in_da_face = true;
-        }
         if (this.spritename) {
             if (this.move) {
                 if (this.direction) {
@@ -89,7 +93,7 @@ PlayerClass = EntityClass.extend({
                 this.move = false;
             }
             var real_spritename = this.spritename + this.frame + '.png';
-            if (miss_in_da_face && (this.tongue_frame != 0)) {
+            if (this.miss_in_da_face && (this.tongue_frame != 0)) {
                 /////////////////////////////   real_spritename = '.png';
                 console.log("Painting new face");
             }
@@ -97,13 +101,13 @@ PlayerClass = EntityClass.extend({
             drawSprite(real_spritename, this.pos.x, this.pos.y);
         }
         if (this.tongue_frame != 0) {
-            /////////////////////////////console.log("Distance of click " + tong_size_x + "," + tong_size_y + " and angle:" + this.angle);
-            if (!miss_in_da_face) {
-                drawSprite(this.t_start, tong_pos_x, tong_pos_y, this.angle);
+            if (!this.miss_in_da_face) {
+                drawSprite(this.t_start, this.tong_pos.x, this.tong_pos.y, this.angle);
                 var start_med = 66;
                 var tong_med_size = 45;
-                var current_tong_pos_x = tong_pos_x;
-                var current_tong_pos_y = tong_pos_y;
+                var current_tong_pos_x = this.tong_pos.x;
+                var current_tong_pos_y = this.tong_pos.y;
+                var distance = this.tong_distance;
                 /////////////////////////////console.log("Distance " + distance);
                 while (distance - start_med > tong_med_size) { // Continue adding "middle tongue chunks" after tongue start until the tongue-end covers the rest of the distance until the mouse pos.
                     drawSprite(this.t_med, current_tong_pos_x, current_tong_pos_y, this.angle);
@@ -111,9 +115,9 @@ PlayerClass = EntityClass.extend({
                     current_tong_pos_x += Math.cos(this.angle) * tong_med_size;
                     current_tong_pos_y += Math.sin(this.angle) * tong_med_size;
                 }
-                current_tong_pos_x -= Math.cos(this.angle) * (tong_med_size * 2);
+                current_tong_pos_x -= Math.cos(this.angle) * (tong_med_size * 2);// Put tip of the tongue over medium part
                 current_tong_pos_y -= Math.sin(this.angle) * (tong_med_size * 2);
-                current_tong_pos_x += Math.cos(this.angle) * (distance - start_med);
+                current_tong_pos_x += Math.cos(this.angle) * (distance - start_med);// Extend tip of tongue progressively with mouse movement
                 current_tong_pos_y += Math.sin(this.angle) * (distance - start_med);
                 /////////////////////////////console.log("Distance leftover " + distance);
                 drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle);
