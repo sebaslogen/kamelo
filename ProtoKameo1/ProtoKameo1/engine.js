@@ -231,7 +231,7 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, ctx, cty, angle) {
         context.rotate(-angle);
         context.translate(-(posX + ctx), -(posY + cty));
         
-        console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + posX + " " + posY + " " + spt.w + " " + spt.h + " angle:" + angle);
+        //////////////////console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + posX + " " + posY + " " + spt.w + " " + spt.h + " angle:" + angle);
     } else {
         context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
     }

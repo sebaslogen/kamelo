@@ -9,11 +9,9 @@ PlayerClass = EntityClass.extend({
     direction: true,
     move: false,
     tongue_frame: 0,
-    tong_fire_pos: {x: 0, y: 0},
-    tong_offset_x : 475 - 250,
-    tong_offset_y : 116 - 116,
-    tng_ctx: 15,
-    tng_cty: 20,
+    tong_fire_pos : {x: 0, y: 0},
+    tong_offset : {x : 475 - 250, y : 116 - 116},
+    tong_center: { x: 15, y: 20 },
     angle : 0,
     t_start : "kami-tongue-001.png",
     t_med : "kami-tongue-002.png",
@@ -44,7 +42,7 @@ PlayerClass = EntityClass.extend({
             this.tongue_frame = 1; // Activate tongue animation
             launchTongueSound();
             if (!gamer_active) {
-                //////////////////////////////////////  launchClip(game_music, 'music');
+                launchClip(game_music, 'music');
                 gamer_active = true;
                 sound_atmos.fadeOut(0.0, 5000, null);
             }
@@ -69,11 +67,11 @@ PlayerClass = EntityClass.extend({
     draw: function () {
         // Tongue fire distance and angle from mouth calculations
         var miss_in_da_face = false;
-        var tong_pos_x = this.pos.x + this.tong_offset_x;
-        var tong_pos_y = this.pos.y + this.tong_offset_y;
-        var tong_size_x = this.tong_fire_pos.x - tong_pos_x; //gInput.mouse.x - tong_pos_x;
-        var tong_size_y = this.tong_fire_pos.y - tong_pos_y; //gInput.mouse.y - tong_pos_y;
-        this.angle = -Math.atan2(-tong_size_y, tong_size_x) - 0.25;
+        var tong_pos_x = this.pos.x + this.tong_offset.x;
+        var tong_pos_y = this.pos.y + this.tong_offset.y;
+        var tong_size_x = this.tong_fire_pos.x - tong_pos_x;
+        var tong_size_y = this.tong_fire_pos.y - tong_pos_y;
+        this.angle = -Math.atan2(-tong_size_y, tong_size_x);
         if ((this.angle < -1.9078242687063418) || (this.angle > 0.29715340521870326)) {
             miss_in_da_face = true;
         }
@@ -100,9 +98,23 @@ PlayerClass = EntityClass.extend({
         if (this.tongue_frame != 0) {
             /////////////////////////////console.log("Distance of click " + tong_size_x + "," + tong_size_y + " and angle:" + this.angle);
             if (!miss_in_da_face) {
-                drawSprite(this.t_med, tong_pos_x, tong_pos_y, this.tng_ctx, this.tng_cty, this.angle);
-                drawSprite(this.t_start, tong_pos_x, tong_pos_y, this.tng_ctx, this.tng_cty, this.angle);
-                drawSprite(this.t_end, tong_pos_x, tong_pos_y, this.tng_ctx, this.tng_cty, this.angle);
+                var distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
+                var start_med = 66;
+                var tong_med_size = 45;
+                var current_tong_pos_x = tong_pos_x;// - start_med;
+                var current_tong_pos_y = tong_pos_y;
+                console.log("Distance " + distance);
+                while (distance - start_med > tong_med_size) { // Continue adding "middle tongue chunks" after tongue start until the tongue-end covers the rest of the distance until the mouse pos.
+                    drawSprite(this.t_med, current_tong_pos_x, current_tong_pos_y, this.tong_center.x, this.tong_center.y, this.angle);
+                    distance -= tong_med_size;
+                    current_tong_pos_x += Math.cos(this.angle) * tong_med_size;
+                    current_tong_pos_y += Math.sin(this.angle) * tong_med_size;
+                }
+                current_tong_pos_x -= Math.cos(this.angle) * tong_med_size;
+                current_tong_pos_y -= Math.sin(this.angle) * tong_med_size;
+                console.log("Distance leftover " + distance);
+                drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.tong_center.x, this.tong_center.y, this.angle);
+                drawSprite(this.t_start, tong_pos_x, tong_pos_y, this.tong_center.x, this.tong_center.y, this.angle);
             }
             this.tongue_frame = (this.tongue_frame + 1) % ((FPS/2) + 1); // Half second at current FPS (10)
         }
