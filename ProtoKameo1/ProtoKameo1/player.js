@@ -67,6 +67,7 @@ PlayerClass = EntityClass.extend({
             this.tongue_frame = 1; // Activate tongue animation
             if ((this.angle < -1.9078242687063418) || (this.angle > 0.29715340521870326) || this.tong_distance < 100) { // Behind, below or too close fire will slap in the face
                 this.miss_in_da_face = true;
+                launchSlapSound();
             } else {
                 this.miss_in_da_face = false;
                 launchTongueSound();
@@ -124,7 +125,7 @@ PlayerClass = EntityClass.extend({
                 current_tong_pos_y += Math.sin(this.angle) * (distance - start_med);
                 /////////////////////////////console.log("Distance leftover " + distance);
                 drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle);
-                
+
             }
             this.tongue_frame = (this.tongue_frame + 1) % (4); // Less than half second at current FPS (10)
         }

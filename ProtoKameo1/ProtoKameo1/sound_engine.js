@@ -53,7 +53,13 @@ var sound_sprites = new Howl({
             burp2: [29296, 666],
             burp3: [29962, 673],
             burp4: [30636, 890],
-            burp5: [31525, 116]
+            burp5: [31525, 116],
+            cheer: [31674, 2929],
+            fly1: [34604, 1886],
+            fly2: [36491, 1886],
+            fly3: [38376, 1868],
+            fly4: [40245, 1852],
+            slap: [42100, 383]
             }
 });
 
@@ -67,4 +73,9 @@ function launchTongueSound()
 {
     launch_sprite = "tong" + String(Math.floor(Math.random()*6) + 1);
     sound_sprites.play(launch_sprite);
+}
+
+function launchSlapSound()
+{
+    sound_sprites.play('slap');
 }
