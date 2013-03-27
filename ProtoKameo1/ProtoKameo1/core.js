@@ -185,6 +185,18 @@ var xhrGet = function (reqUri, callback, object, type) {
     myRequest.send();
 };
 
+var findPos = function (obj) {
+    var curleft = 0, curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return { x: curleft, y: curtop };
+    }
+    return undefined;
+};
+
 
 var setup = function () {
 
@@ -207,44 +219,38 @@ var setup = function () {
     entityPlayer.spritename = 'kami-walk-00';
     gEngine.gPlayer0.mpPhysBody.type = Body.b2_dynamicBody;
 
-    // Call setInterval to run at a framerate of 30 frames per second, calling the animate function each time.
+    // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
-    /////////////////window.setTimeout(loadBackground, 2000)
+
+    background_image = new Image();
+    background_image.src = 'mountains.png';
+    background_image.onload = function () {
+        drawBackground(); // Static background painted only once
+        //window.setInterval(drawBackground, 1000 / FPS); // Dynamic background
+    }
 };
 
 var drawBackground = function () {
-    /*var sprite = 'kami-walk-001.png';
-    var posX = 250;
-    var posY = 400;
-    //background_context.clearRect(0, 0, bcanvas.width, bcanvas.height); // First clean up screen
-    for (var sheetName in gSpriteSheets) {
-
-        // Use the getStats method of the spritesheet to find if a sprite with name 'spritename' exists in that sheet...
-        var sheet = gSpriteSheets[sheetName];
-        var sprite = sheet.getStats(sprite);
-
-        // If we find the appropriate sprite, call '__drawSpriteInternal' with parameters as described below. Otherwise, continue with the loop...
-        if (sprite === null) {
-            continue;
-        }
-
-        background_context.drawImage(sheet.img, sprite.x, sprite.y, sprite.w, sprite.h, posX + 250, posY + 116, sprite.w, sprite.h);
-        // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
-        return;
-    }*/
-
-    //background_context.clearRect(0, 0, background_canvas.width, background_canvas.height);
-    var img = new Image();
-    img.src = 'mountains.png';
-    img.onload = function () {
-        background_context.drawImage(img, 0, 0, background_canvas.width, background_canvas.height);
-    }
+    background_context.clearRect(0, 0, background_canvas.width, background_canvas.height);
+    background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height);
 }
 
 var animate = function () {
     gEngine.update();
     gEngine.draw();
-    drawBackground();
+    
+    if (introFrame < introSeconds * FPS) {
+        // Create Intro radial gradient
+        var grd = context.createRadialGradient(800, 450, 10, 800, 450, 2000);
+
+        var grd = context.createRadialGradient(800, 450, 10 + (introFrame / introSeconds), 800, 450, 4000 - (introFrame * introFrame)); // Shrinking radius 
+        var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
+        grd.addColorStop(1, 'transparent');
+        grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
+        context.fillStyle = grd;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        introFrame++;
+    }
 };
 
 var Vec2 = Box2D.Common.Math.b2Vec2;
@@ -263,4 +269,7 @@ var canvas = null;
 var context = null;
 var background_canvas = null;
 var background_context = null;
-var FPS = 10;
+var background_image = null;
+var FPS = 13;
+var introFrame = 0;
+var introSeconds = 4;

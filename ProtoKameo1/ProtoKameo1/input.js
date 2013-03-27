@@ -35,6 +35,9 @@ InputClass = Class.extend({
     onMouseMove: function (event) { // Get coordinates avoiding webpage scrolling offsets
         gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
         gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+        var pos = findPos(canvas); // Get canvas current position
+        gInput.mouse.x -= pos.x;
+        gInput.mouse.y -= pos.y;
     },
 
     //-----------------------------

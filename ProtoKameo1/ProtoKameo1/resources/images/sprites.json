@@ -2,67 +2,67 @@
 
 "kami-head-slap.png":
 {
-	"frame": {"x":2,"y":2,"w":154,"h":171},
+	"frame": {"x":2,"y":2,"w":123,"h":137},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":154,"h":171},
-	"sourceSize": {"w":154,"h":171}
+	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":137},
+	"sourceSize": {"w":123,"h":137}
 },
 "kami-tongue-001.png":
 {
-	"frame": {"x":158,"y":2,"w":410,"h":108},
+	"frame": {"x":127,"y":2,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":410,"h":108},
-	"sourceSize": {"w":410,"h":108}
+	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
+	"sourceSize": {"w":328,"h":86}
 },
 "kami-tongue-002.png":
 {
-	"frame": {"x":570,"y":2,"w":410,"h":108},
+	"frame": {"x":2,"y":141,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":410,"h":108},
-	"sourceSize": {"w":410,"h":108}
+	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
+	"sourceSize": {"w":328,"h":86}
 },
 "kami-tongue-003.png":
 {
-	"frame": {"x":2,"y":175,"w":410,"h":108},
+	"frame": {"x":2,"y":229,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":410,"h":108},
-	"sourceSize": {"w":410,"h":108}
+	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
+	"sourceSize": {"w":328,"h":86}
 },
 "kami-walk-001.png":
 {
-	"frame": {"x":414,"y":175,"w":500,"h":232},
+	"frame": {"x":2,"y":317,"w":400,"h":186},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":232},
-	"sourceSize": {"w":500,"h":232}
+	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":186},
+	"sourceSize": {"w":400,"h":186}
 },
 "kami-walk-002.png":
 {
-	"frame": {"x":2,"y":409,"w":500,"h":238},
+	"frame": {"x":2,"y":505,"w":400,"h":190},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":238},
-	"sourceSize": {"w":500,"h":238}
+	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":190},
+	"sourceSize": {"w":400,"h":190}
 },
 "kami-walk-003.png":
 {
-	"frame": {"x":504,"y":409,"w":500,"h":233},
+	"frame": {"x":2,"y":697,"w":400,"h":186},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":233},
-	"sourceSize": {"w":500,"h":233}
+	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":186},
+	"sourceSize": {"w":400,"h":186}
 }},
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
 	"image": "sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":1024,"h":1024},
+	"size": {"w":512,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e8ba98d78fe9d5c3587ab66d81c4208e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:fffaf433f8b19253895da2da5669bd40$"
 }
 }
