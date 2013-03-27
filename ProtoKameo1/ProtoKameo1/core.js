@@ -213,7 +213,7 @@ var setup = function () {
 };
 
 var drawBackground = function () {
-    var sprite = 'kami-walk-001.png';
+    /*var sprite = 'kami-walk-001.png';
     var posX = 250;
     var posY = 400;
     //background_context.clearRect(0, 0, bcanvas.width, bcanvas.height); // First clean up screen
@@ -231,6 +231,13 @@ var drawBackground = function () {
         background_context.drawImage(sheet.img, sprite.x, sprite.y, sprite.w, sprite.h, posX + 250, posY + 116, sprite.w, sprite.h);
         // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
         return;
+    }*/
+
+    //background_context.clearRect(0, 0, background_canvas.width, background_canvas.height);
+    var img = new Image();
+    img.src = 'mountains.png';
+    img.onload = function () {
+        background_context.drawImage(img, 0, 0, background_canvas.width, background_canvas.height);
     }
 }
 

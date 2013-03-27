@@ -1,6 +1,6 @@
 ﻿
 PlayerClass = EntityClass.extend({
-    pos: { x: 250, y: 500 },
+    pos: { x: 250, y: 800 },
     walkSpeed: 20,
     zindex: 50,
     currSpriteName: null,

@@ -227,7 +227,7 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle) {
     if ((typeof angle !== 'undefined') && angle != null) { // Pain tongue
         context.translate(posX, posY);
         context.rotate(angle);
-        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, 0 + hlf.x, 0 + hlf.y, spt.w, spt.h);
+        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
         context.rotate(-angle);
         context.translate(-posX, -posY);
         
