@@ -22,7 +22,6 @@ EngineClass = Class.extend({
     setup: function () {
         // Call our input setup method to bind our keys to actions and set the event listeners.
         gInput.setup();
-        //////////gMap = new TILEDMapClass();
     },
 
     spawnEntity: function (typename) {
@@ -38,9 +37,30 @@ EngineClass = Class.extend({
         // We'll fill it in later this unit.
     },
 
+    updateBackground: function () {
+        sun_angle += 0.001; // Sun rotation speed
+    },
+
+    drawBackground: function () {
+        //background_context.clearRect(0, 0, background_canvas.width, background_canvas.height); // Clear background
+        background_context.beginPath();
+        background_context.rect(0, 0, background_canvas.width, background_canvas.height);
+        background_context.fillStyle = 'LightCyan';
+        background_context.fill();
+        // Draw sun plus back circular glow
+        var grd = background_context.createRadialGradient(1420, 170, 100, 1420, 270, 400);
+        grd.addColorStop(1, 'rgba(250,250,255,0.5)');
+        grd.addColorStop(0, 'rgba(250,250,120,0.8)');
+        background_context.fillStyle = grd;
+        background_context.fillRect(0, 0, canvas.width, canvas.height);
+        drawSprite('sol.png', 1420, 170, sun_angle, background_context); // Draw sun
+
+        background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
+    },
+
     update: function () {
         // Update player position from previous unit.
-        gEngine.updatePlayer();
+        /////////////////////////////////////////////gEngine.updatePlayer();
 
         // Loop through the entities and call that entity's 'update' method, but only do it if that entity's '_killed' flag is set to true.
         for (var i = 0; i < gEngine.entities.length; i++) {
@@ -79,8 +99,6 @@ EngineClass = Class.extend({
     //-----------------------------
     draw: function () {
         context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
-        // Draw map. Note that we're passing a canvas context of 'null' in. This would normally be our game context, but we don't need to grade this here.
-        /////////////////////////////////////////////////////////gMap.draw(null);
 
         // Bucket entities by zIndex
         var fudgeVariance = 128;
@@ -180,23 +198,38 @@ EngineClass = Class.extend({
 
 });
 
+
 //-----------------------------------------
-// External-facing function for drawing sprites based on the sprite name (ie. "kami-001.png", and the position on the canvas to draw to.
-var drawSprite = function (spritename, posX, posY, angle) {
+// External-facing function to get sprite based on the sprite name (ie. "kami-001.png")
+var getSprite = function (spritename) {
     // Walk through all our spritesheets defined in 'gSpriteSheets' and for each sheet...
     for (var sheetName in gSpriteSheets) {
-
         // Use the getStats method of the spritesheet to find if a sprite with name 'spritename' exists in that sheet...
         var sheet = gSpriteSheets[sheetName];
         var sprite = sheet.getStats(spritename);
+        if (sprite === null) {
+            continue;
+        }
+        // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
+        return sprite;
+    }
+    return null;
+};
 
+
+//-----------------------------------------
+// External-facing function for drawing sprites based on the sprite name (ie. "kami-001.png", and the position on the canvas to draw to.
+var drawSprite = function (spritename, posX, posY, angle, draw_context) {
+    // Walk through all our spritesheets defined in 'gSpriteSheets' and for each sheet...
+    for (var sheetName in gSpriteSheets) {
+        // Use the getStats method of the spritesheet to find if a sprite with name 'spritename' exists in that sheet...
+        var sheet = gSpriteSheets[sheetName];
+        var sprite = sheet.getStats(spritename);
         // If we find the appropriate sprite, call '__drawSpriteInternal' with parameters as described below. Otherwise, continue with the loop...
         if (sprite === null) {
             continue;
         }
-
-        __drawSpriteInternal(sprite, sheet, posX, posY, angle);
-
+        __drawSpriteInternal(sprite, sheet, posX, posY, angle, draw_context);
         // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
         return;
     }
@@ -204,7 +237,7 @@ var drawSprite = function (spritename, posX, posY, angle) {
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite object stored in the 'sprites Array, the 'SpriteSheetClass' object stored in the 'gSpriteSheets' dictionary, and the position on canvas to draw to.
-var __drawSpriteInternal = function (spt, sheet, posX, posY, angle) {
+var __drawSpriteInternal = function (spt, sheet, posX, posY, angle, draw_context) {
     if (spt === null || sheet === null) {
         return;
     }
@@ -224,16 +257,19 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle) {
         x: spt.cx,
         y: spt.cy
     };
-    if ((typeof angle !== 'undefined') && angle != null) { // Pain tongue
-        context.translate(posX, posY);
-        context.rotate(angle);
-        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
-        context.rotate(-angle);
-        context.translate(-posX, -posY);
+    if ((typeof draw_context === 'undefined') || (draw_context == null)) {
+        draw_context = context; // Use default drawing canvas if no other is defined
+    }
+    if ((typeof angle !== 'undefined') && (angle != null)) { // Paint tongue
+        draw_context.translate(posX, posY);
+        draw_context.rotate(angle);
+        draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
+        draw_context.rotate(-angle);
+        draw_context.translate(-posX, -posY);
         
         /////////////////////////////console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + (0 + hlf.y) + " " + (0 + hlf.y) + " " + spt.w + " " + spt.h + " angle:" + angle);
     } else {
-        context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
+        draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
     }
 };
 

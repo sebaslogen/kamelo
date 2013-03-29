@@ -218,6 +218,31 @@ var setup = function () {
     var entityPlayer = gEngine.spawnEntity("Player");
     entityPlayer.spritename = 'kami-walk-00';
     gEngine.gPlayer0.mpPhysBody.type = Body.b2_dynamicBody;
+    // Create clouds with random position, speed and layer index
+    var entityCloud = gEngine.spawnEntity("Cloud");
+    entityCloud.spritename = 'nube-001';
+    entityCloud.speed = Math.floor(Math.random() * 10) + 1;
+    entityCloud.zindex = Math.floor(Math.random() * 10) + 1;
+    entityCloud.pos.x += Math.floor(Math.random() * 1800);
+    entityCloud.pos.y += Math.floor(Math.random() * 100);
+    entityCloud = gEngine.spawnEntity("Cloud");
+    entityCloud.spritename = 'nube-002';
+    entityCloud.speed = Math.floor(Math.random() * 10) + 1;
+    entityCloud.zindex = Math.floor(Math.random() * 10) + 1;
+    entityCloud.pos.x += Math.floor(Math.random() * 1200) + 200;
+    entityCloud.pos.y += Math.floor(Math.random() * 100);
+    entityCloud = gEngine.spawnEntity("Cloud");
+    entityCloud.spritename = 'nube-003';
+    entityCloud.speed = Math.floor(Math.random() * 10) + 1;
+    entityCloud.zindex = Math.floor(Math.random() * 10) + 1;
+    entityCloud.pos.x += Math.floor(Math.random() * 800) + 100;
+    entityCloud.pos.y += Math.floor(Math.random() * 100);
+    entityCloud = gEngine.spawnEntity("Cloud");
+    entityCloud.spritename = 'nube-004';
+    entityCloud.speed = Math.floor(Math.random() * 10) + 1;
+    entityCloud.zindex = Math.floor(Math.random() * 10) + 1;
+    entityCloud.pos.x += Math.floor(Math.random() * 400);
+    entityCloud.pos.y += Math.floor(Math.random() * 100);
 
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
@@ -225,25 +250,22 @@ var setup = function () {
     background_image = new Image();
     background_image.src = 'mountains.png';
     background_image.onload = function () {
-        drawBackground(); // Static background painted only once
-        //window.setInterval(drawBackground, 1000 / FPS); // Dynamic background
+        window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
     }
 };
 
-var drawBackground = function () {
-    background_context.clearRect(0, 0, background_canvas.width, background_canvas.height);
-    background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height);
-}
+var animateBackground = function () {
+    gEngine.updateBackground();
+    gEngine.drawBackground();
+};
 
 var animate = function () {
     gEngine.update();
     gEngine.draw();
-    
+    // Create Intro radial gradient in foreground while everything loads in the background
     if (introFrame < introSeconds * FPS) {
-        // Create Intro radial gradient
-        var grd = context.createRadialGradient(800, 450, 10, 800, 450, 2000);
-
-        var grd = context.createRadialGradient(800, 450, 10 + (introFrame / introSeconds), 800, 450, 4000 - (introFrame * introFrame)); // Shrinking radius 
+        var external_r = 20000 - (introFrame * introFrame * 2);
+        var grd = context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius 
         var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
         grd.addColorStop(1, 'transparent');
         grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
@@ -272,4 +294,5 @@ var background_context = null;
 var background_image = null;
 var FPS = 13;
 var introFrame = 0;
-var introSeconds = 4;
+var introSeconds = 7;
+var sun_angle = 0;

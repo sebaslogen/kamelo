@@ -27,6 +27,7 @@
     <Content Include="howler.js" />
     <Content Include="input.js" />
     <Content Include="entity.js" />
+    <Content Include="cloud.js" />
     <Content Include="mountains.png" />
     <Content Include="player.js" />
     <Content Include="sound_engine.js" />

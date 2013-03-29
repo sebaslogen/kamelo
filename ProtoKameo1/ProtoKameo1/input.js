@@ -24,7 +24,6 @@ InputClass = Class.extend({
         gInput.bind(gInput.KEY.S, 'stop-background');
 
         // Adding the event listeners for the appropriate DOM events.
-        console.log(canvas);
         canvas.addEventListener('click', gInput.onClick);
         canvas.addEventListener('mousemove', gInput.onMouseMove);
         canvas.addEventListener('keydown', gInput.onKeyDown);

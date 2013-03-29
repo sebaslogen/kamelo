@@ -18,7 +18,7 @@
 },
 "kami-tongue-002.png":
 {
-	"frame": {"x":2,"y":141,"w":328,"h":86},
+	"frame": {"x":457,"y":2,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
@@ -26,7 +26,7 @@
 },
 "kami-tongue-003.png":
 {
-	"frame": {"x":2,"y":229,"w":328,"h":86},
+	"frame": {"x":2,"y":141,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
@@ -34,7 +34,7 @@
 },
 "kami-walk-001.png":
 {
-	"frame": {"x":2,"y":317,"w":400,"h":186},
+	"frame": {"x":332,"y":141,"w":400,"h":186},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":186},
@@ -42,7 +42,7 @@
 },
 "kami-walk-002.png":
 {
-	"frame": {"x":2,"y":505,"w":400,"h":190},
+	"frame": {"x":2,"y":329,"w":400,"h":190},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":190},
@@ -50,19 +50,59 @@
 },
 "kami-walk-003.png":
 {
-	"frame": {"x":2,"y":697,"w":400,"h":186},
+	"frame": {"x":404,"y":329,"w":400,"h":186},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":186},
 	"sourceSize": {"w":400,"h":186}
+},
+"nube-001.png":
+{
+	"frame": {"x":806,"y":329,"w":178,"h":123},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":123},
+	"sourceSize": {"w":178,"h":123}
+},
+"nube-002.png":
+{
+	"frame": {"x":2,"y":521,"w":213,"h":148},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":148},
+	"sourceSize": {"w":213,"h":148}
+},
+"nube-003.png":
+{
+	"frame": {"x":217,"y":521,"w":174,"h":124},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":174,"h":124},
+	"sourceSize": {"w":174,"h":124}
+},
+"nube-004.png":
+{
+	"frame": {"x":393,"y":521,"w":209,"h":148},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":209,"h":148},
+	"sourceSize": {"w":209,"h":148}
+},
+"sol.png":
+{
+	"frame": {"x":604,"y":521,"w":334,"h":316},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":334,"h":316},
+	"sourceSize": {"w":334,"h":316}
 }},
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
 	"image": "sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":512,"h":1024},
+	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:fffaf433f8b19253895da2da5669bd40$"
+	"smartupdate": "$TexturePacker:SmartUpdate:aaaa16b24b26ac8e9f050ed06978b6af$"
 }
 }
