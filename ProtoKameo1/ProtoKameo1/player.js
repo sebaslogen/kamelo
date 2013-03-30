@@ -2,12 +2,11 @@
 var start_tongue_med_segment = 46; // Pixel where the middle part of the tongue starts in the image Minus the half of the picture pixels
 var tong_med_size = 34; // Size of the middle of the tongue that will be extended/repeated to extend tongue size
 var tongue_offset = { x: 193, y: 16 }; // Offset of tongue start position from player body
-var world_player_start_pos = { x: 250, y: 680 }; // Initial position of player in canvas
 var tongue_tilting_angle = 25; // This tilts the tongue to elevate the tip of the tongue to make it overlap the mouse
 var max_tongue_frames = 4;
 
 PlayerClass = EntityClass.extend({
-    pos: { x: world_player_start_pos.x, y: world_player_start_pos.y },
+    id: "Player",
     walkSpeed: 20,
     zindex: 50,
     currSpriteName: null,
@@ -25,34 +24,39 @@ PlayerClass = EntityClass.extend({
     t_start : "kami-tongue-001.png",
     t_med : "kami-tongue-002.png",
     t_end : "kami-tongue-003.png",
-    mpPhysBody: new BodyDef(), // This is hooking into the Box2D Physics library
+    physBody: null, // This is hooking into the Box2D Physics library
+
+    init: function (x, y) {
+        this.parent(x, y);
+    },
 
     update: function () {
-        gEngine.move_dir.x = 0;
-        gEngine.move_dir.y = 0;
+        var move_dir = new Vec2(0, 0);
+        move_dir.x = 0;
+        move_dir.y = 0;
         if (gInput.actions['move-left']) { // adjust the move_dir by 1 in the x direction.
-            gEngine.move_dir.x -= 1;
+            move_dir.x -= 1;
             this.move = true;
             console.log("Muevo Izq");
         }
         if (gInput.actions['move-right']) { // adjust the move_dir by 1 in the x direction.
-            gEngine.move_dir.x += 1;
+            move_dir.x += 1;
             this.move = true;
             console.log("Muevo Derch");
         }
 
         // After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
-        if (gEngine.move_dir.LengthSquared()) {
+        if (move_dir.LengthSquared()) {
             // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
-            gEngine.move_dir.Normalize();
+            move_dir.Normalize();
             // Next, multiply 'move_dir' by the player's set 'walkSpeed'. We do this in case we might want to change the player's walk speed due to a power-up, etc.
-            gEngine.move_dir.Multiply(this.walkSpeed);
+            move_dir.Multiply(this.walkSpeed);
         }
 
-        ////////////////        gEngine.gPlayer0.mpPhysBody.SetLinearVelocity(gEngine.move_dir.x, gEngine.move_dir.y);
+        ////////////////        gEngine.gPlayer0.mpPhysBody.SetLinearVelocity(move_dir.x, move_dir.y);
         // Fake physics
-        this.pos.x += gEngine.move_dir.x;
-        this.pos.y += gEngine.move_dir.y;
+        this.pos.x += move_dir.x;
+        this.pos.y += move_dir.y;
         ///console.log("Muevo a " + this.pos.x + "," + this.pos.y);
 
         // Tongue fire distance and angle from mouth calculations

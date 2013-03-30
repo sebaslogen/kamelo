@@ -215,9 +215,9 @@ var setup = function () {
 
     // Game setup
     gEngine.setup();
-    var entityPlayer = gEngine.spawnEntity("Player");
+    // Create game entities
+    var entityPlayer = gEngine.spawnEntity("Player", 250, 680); // Create player with initial position in canvas
     entityPlayer.spritename = 'kami-walk-00';
-    gEngine.gPlayer0.mpPhysBody.type = Body.b2_dynamicBody;
     // Create clouds with random position, speed and layer index
     var entityCloud = gEngine.spawnEntity("Cloud");
     entityCloud.spritename = 'nube-001';
@@ -250,6 +250,7 @@ var setup = function () {
     background_image = new Image();
     background_image.src = 'mountains.png';
     background_image.onload = function () {
+        background_loaded = true;
         window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
     }
 };
@@ -260,8 +261,13 @@ var animateBackground = function () {
 };
 
 var animate = function () {
-    gEngine.update();
-    gEngine.draw();
+    if (background_loaded) {
+        gEngine.update();
+        gEngine.updatePhysics();
+        gEngine.draw();
+    } else { // Reset start up animation until background image is loaded
+        introFrame = 0;
+    }
     // Create Intro radial gradient in foreground while everything loads in the background
     if (introFrame < introSeconds * FPS) {
         var external_r = 20000 - (introFrame * introFrame * 2);
@@ -275,18 +281,6 @@ var animate = function () {
     }
 };
 
-var Vec2 = Box2D.Common.Math.b2Vec2;
-var BodyDef = Box2D.Dynamics.b2BodyDef;
-var Body = Box2D.Dynamics.b2Body;
-var FixtureDef = Box2D.Dynamics.b2FixtureDef;
-var Fixture = Box2D.Dynamics.b2Fixture;
-var World = Box2D.Dynamics.b2World;
-var MassData = Box2D.Collision.Shapes.b2MassData;
-var PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
-var CircleShape = Box2D.Collision.Shapes.b2CircleShape;
-var DebugDraw = Box2D.Dynamics.b2DebugDraw;
-var RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef;
-
 var canvas = null;
 var context = null;
 var background_canvas = null;
@@ -296,3 +290,7 @@ var FPS = 13;
 var introFrame = 0;
 var introSeconds = 7;
 var sun_angle = 0;
+var background_loaded = false;
+
+
+var disable_sound = false; // Debug option to disable any sound

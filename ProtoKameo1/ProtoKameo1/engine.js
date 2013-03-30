@@ -1,41 +1,57 @@
 ﻿
 EngineClass = Class.extend({
 
-    move_dir: new Vec2(0, 0),
-    dirVec: new Vec2(0, 0),
+    /************move_dir: new Vec2(0, 0),
+    dirVec: new Vec2(0, 0),*/
 
     entities: [],
     factory: {},
     _deferredKill: [],
 
-    gPlayer0: {  ///// Player0 is not used in this implementation /////
-        pos: {
-            x: 100,
-            y: 100
-        },
-        walkSpeed: 1,
-        // This is hooking into the Box2D Physics library. We'll be going over this in more detail later.
-        mpPhysBody: new BodyDef()
-    },
+    flyes_alive: 0,
+    max_flyes_alive: 20,
+    last_fly_created: 0,
 
     //-----------------------------
     setup: function () {
         // Call our input setup method to bind our keys to actions and set the event listeners.
         gInput.setup();
+        // Create physics engine
+        gPhysicsEngine.create();
+        // Add contact listener
+        gPhysicsEngine.addContactListener({
+
+            PostSolve: function (bodyA, bodyB, impulse) {
+                var uA = bodyA ? bodyA.GetUserData() : null;
+                var uB = bodyB ? bodyB.GetUserData() : null;
+
+                if (uA !== null) {
+                    if (uA.ent !== null && uA.ent.onTouch) {
+                        uA.ent.onTouch(bodyB, null, impulse);
+                    }
+                }
+
+                if (uB !== null) {
+                    if (uB.ent !== null && uB.ent.onTouch) {
+                        uB.ent.onTouch(bodyA, null, impulse);
+                    }
+                }
+            }
+        });
     },
 
-    spawnEntity: function (typename) {
-        var ent = new (gEngine.factory[typename])();
-
+    spawnEntity: function (typename, x, y) {
+        var entityClass = gEngine.factory[typename];
+        var ent = new (entityClass)(x, y);
+        console.log("SPAWNING " + typename + " WITH ID " + ent.id);
         gEngine.entities.push(ent);
-
         return ent;
     },
 
-    removeEntity: function (removeEnt) {
+/****************    removeEntity: function (removeEnt) {
         // We don't do anything with this right now.
         // We'll fill it in later this unit.
-    },
+    }, */
 
     updateBackground: function () {
         sun_angle += 0.001; // Sun rotation speed
@@ -58,9 +74,21 @@ EngineClass = Class.extend({
         background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
     },
 
-    update: function () {
-        // Update player position from previous unit.
-        /////////////////////////////////////////////gEngine.updatePlayer();
+    update: function () { // Update player position of player and flies, create and delete flies as the born and die
+
+        if (this.flyes_alive < this.max_flyes_alive) { // Create flies until the maximum is reached
+            var flyID = Math.floor(Math.random() * 3);
+            var seconds = (new Date()).getTime() / 1000;
+            if ((flyID > 0) && (seconds - this.last_fly_created > 2)) { // Choose randomly to create fly model 1 or 2 or none only after a few seconds
+                var entFly = gEngine.spawnEntity("Fly");
+                entFly.spritename = 'fly-00' + flyID;
+                entFly.speed = Math.floor(Math.random() * 100) + 1;
+                entFly.zindex += Math.floor(Math.random() * 20);
+                entFly.init(Math.floor(Math.random() * 1600), Math.floor(Math.random() * 700));
+                this.last_fly_created = seconds;
+                this.flyes_alive++;
+            }
+        }
 
         // Loop through the entities and call that entity's 'update' method, but only do it if that entity's '_killed' flag is set to true.
         for (var i = 0; i < gEngine.entities.length; i++) {
@@ -69,6 +97,9 @@ EngineClass = Class.extend({
                 ent.update();
             } else { // Otherwise, push that entity onto the '_deferredKill' list defined above.
                 gEngine._deferredKill.push(ent);
+                if (ent.id == "Fly") {
+                    this.flyes_alive--;
+                }
             }
         }
 
@@ -79,9 +110,7 @@ EngineClass = Class.extend({
         gEngine._deferredKill = []; // Once you're done looping through '_deferredKill', set it back to the empty array, indicating all entities in it have been removed from the 'entities' list.
 
         /// Update sound world ///
-        // Atmos loop
-        ///////////console.log(sound_atmos.pos());
-        if (sound_atmos.pos() >= 20.0)
+        if (sound_atmos.pos() >= 20.0) // Atmos loop
         {
             if (!sound_atmos_retriggered)
             {
@@ -96,7 +125,17 @@ EngineClass = Class.extend({
         }
     },
 
-    //-----------------------------
+    updatePhysics: function () {
+        gPhysicsEngine.update(); // Update physics
+        for (var i = 0; i < gEngine.entities.length; i++) { // Update entities with physics calculations
+            var ent = gEngine.entities[i];
+            if (ent.physBody) {
+                ent.pos = ent.physBody.GetPosition();
+            }
+        }
+    },
+
+    //----- Draw all entities in the game engine
     draw: function () {
         context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
 
@@ -129,73 +168,6 @@ EngineClass = Class.extend({
         });
     },
 
-    updatePlayer: function () {
-        /*
-        // move_dir is a Vec2 object from the Box2d
-        // physics library, which is of the form
-        // {
-        //     x: 0,
-        //     y: 0
-        // }
-        //
-        // We'll be going more into Box2D later in the course. The Vec2 constructor takes an initial x and y value to set the vector to.
-
-        if (gInput.actions['move-left']) {
-            // adjust the move_dir by 1 in the x direction.
-            gEngine.move_dir.x -= 1;
-            console.log("Muevo Izq");
-        }
-        if (gInput.actions['move-right']) {
-            // adjust the move_dir by 1 in the x direction.
-            gEngine.move_dir.x += 1;
-            console.log("Muevo Derch");
-        }
-
-        // Added by Tapi March 19 2013 => triggering the sound when firing
-        if (gInput.actions['fire-tongue']) {
-            // launch the sound for the tongue
-            console.log("Pulso Espacio");
-            launchTongue();
-        }
-
-        if (gInput.actions['stop-background']) {
-            /////////////////// USED???     playing = false;
-            sound_atmos.fadeOut(0.0,2500,null);
-            console.log("Pulso 'S'");
-        }
-
-        // After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
-        if (gEngine.move_dir.LengthSquared()) {
-            // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
-            gEngine.move_dir.Normalize();
-
-            // Next, multiply 'move_dir' by the player's set 'walkSpeed'. We do this in case we might want to change the player's walk speed due to a power-up, etc.
-            gEngine.move_dir.Multiply(gEngine.gPlayer0.walkSpeed);
-        }
-
-        ////////////////        gEngine.gPlayer0.mpPhysBody.SetLinearVelocity(gEngine.move_dir.x, gEngine.move_dir.y);
-        // Fake physics
-        this.gPlayer0.pos.x += gEngine.move_dir.x;
-        this.gPlayer0.pos.y += gEngine.move_dir.y;
-
-        // Keyboard based facing & firing direction
-        /* No Render Engine Yet
-        if (gInput.actions.fire) {
-
-            // Grab the player's screen position in space.
-            var playerInScreenSpace = {
-                x: gRenderEngine.getScreenPosition(this.gPlayer0.pos).x,
-                y: gRenderEngine.getScreenPosition(this.gPlayer0.pos).y
-            };
-
-            // Set the dirVec property to the difference between the current mouse position and the player's position in screen space.
-            dirVec.x = gInput.mouse.x - playerInScreenSpace.x;
-            dirVec.y = gInput.mouse.y - playerInScreenSpace.y;
-
-            dirVec.normalize();
-        }*/
-    }
-
 });
 
 
@@ -216,10 +188,9 @@ var getSprite = function (spritename) {
     return null;
 };
 
-
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite name (ie. "kami-001.png", and the position on the canvas to draw to.
-var drawSprite = function (spritename, posX, posY, angle, draw_context) {
+var drawSprite = function (spritename, posX, posY, angle, draw_context, flipped) {
     // Walk through all our spritesheets defined in 'gSpriteSheets' and for each sheet...
     for (var sheetName in gSpriteSheets) {
         // Use the getStats method of the spritesheet to find if a sprite with name 'spritename' exists in that sheet...
@@ -229,7 +200,7 @@ var drawSprite = function (spritename, posX, posY, angle, draw_context) {
         if (sprite === null) {
             continue;
         }
-        __drawSpriteInternal(sprite, sheet, posX, posY, angle, draw_context);
+        __drawSpriteInternal(sprite, sheet, posX, posY, angle, draw_context, flipped);
         // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
         return;
     }
@@ -259,6 +230,9 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle, draw_context
     };
     if ((typeof draw_context === 'undefined') || (draw_context == null)) {
         draw_context = context; // Use default drawing canvas if no other is defined
+    }
+    if ((typeof flipped === 'undefined') || (flipped == null)) {
+        flipped = false; // By default don't mirror
     }
     if ((typeof angle !== 'undefined') && (angle != null)) { // Paint tongue
         draw_context.translate(posX, posY);
