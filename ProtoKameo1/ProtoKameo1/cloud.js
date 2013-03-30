@@ -5,11 +5,16 @@ CloudClass = EntityClass.extend({
 
     update: function () {
         //Update positions
-        if (Math.floor(Math.random() * 10) > 5) { // Randomly choose to move it or not
+        var random_speed = Math.floor(Math.random() * 10);
+        if (random_speed > 5) { // Randomly choose to move it or not
             this.pos.x -= (this.speed / 10);
-            if (this.pos.x < -100) { // get out from left of the screen and reappear on the right
-                this.pos.x = 1700;
-            }
+        } else if (random_speed > 1) {
+            this.pos.x -= (this.speed / 20); // Small movement to prevent stop
+        } else {
+            this.pos.x -= (this.speed / 100); // Small movement to prevent stop
+        }
+        if (this.pos.x < -100) { // get out from left of the screen and reappear on the right
+            this.pos.x = 1700;
         }
     },
 

@@ -4,6 +4,7 @@ var tong_med_size = 34; // Size of the middle of the tongue that will be extende
 var tongue_offset = { x: 193, y: 16 }; // Offset of tongue start position from player body
 var tongue_tilting_angle = 25; // This tilts the tongue to elevate the tip of the tongue to make it overlap the mouse
 var max_tongue_frames = 4;
+var max_tongue_size = 800;
 
 PlayerClass = EntityClass.extend({
     id: "Player",
@@ -44,22 +45,16 @@ PlayerClass = EntityClass.extend({
             this.move = true;
             console.log("Muevo Derch");
         }
-
-        // After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
-        if (move_dir.LengthSquared()) {
-            // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
-            move_dir.Normalize();
-            // Next, multiply 'move_dir' by the player's set 'walkSpeed'. We do this in case we might want to change the player's walk speed due to a power-up, etc.
-            move_dir.Multiply(this.walkSpeed);
+        // Fake physics, simply move in x axis
+        if (move_dir.LengthSquared()) {// After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
+            move_dir.Normalize(); // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
+            move_dir.Multiply(this.walkSpeed); // Next, multiply 'move_dir' by the player's set 'walkSpeed'. We do this in case we might want to change the player's walk speed due to a power-up, etc.
         }
-
-        ////////////////        gEngine.gPlayer0.mpPhysBody.SetLinearVelocity(move_dir.x, move_dir.y);
-        // Fake physics
         this.pos.x += move_dir.x;
         this.pos.y += move_dir.y;
-        ///console.log("Muevo a " + this.pos.x + "," + this.pos.y);
 
         // Tongue fire distance and angle from mouth calculations
+        var hit_fly = null;
         if (gInput.actions['fire-mouse']) { // Update tongue target position only after shoot, not during player movement either mouse move
             this.tong_fire_pos.x = gInput.mouse.x;
             this.tong_fire_pos.y = gInput.mouse.y;
@@ -69,6 +64,10 @@ PlayerClass = EntityClass.extend({
         var tong_size_x = this.tong_fire_pos.x - this.tong_pos.x;
         var tong_size_y = this.tong_fire_pos.y - this.tong_pos.y;
         this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
+        if (this.tong_distance > max_tongue_size) {
+            this.tong_distance = max_tongue_size;
+            hit_fly = false;
+        }
         var angle_tip_tongue_offset = Math.atan2(-tongue_tilting_angle, this.tong_distance); // This tilts the tongue to elevate the tip of the tongue to make it overlap the mouse
         this.angle = -Math.atan2(-tong_size_y, tong_size_x) + angle_tip_tongue_offset;
         if (gInput.actions['fire-mouse']) { // launch the sound for the tongue and the animation
@@ -127,8 +126,8 @@ PlayerClass = EntityClass.extend({
                     current_tong_pos_x += Math.cos(this.angle) * tong_med_size;
                     current_tong_pos_y += Math.sin(this.angle) * tong_med_size;
                 }
-                current_tong_pos_x -= Math.cos(this.angle) * (tong_med_size * 2.5);// Put tip of the tongue over medium part
-                current_tong_pos_y -= Math.sin(this.angle) * (tong_med_size * 2.5);
+                current_tong_pos_x -= Math.cos(this.angle) * (tong_med_size * 2);// Put tip of the tongue over medium part
+                current_tong_pos_y -= Math.sin(this.angle) * (tong_med_size * 2);
                 current_tong_pos_x += Math.cos(this.angle) * (distance - start_tongue_med_segment);// Extend tip of tongue progressively with mouse movement
                 current_tong_pos_y += Math.sin(this.angle) * (distance - start_tongue_med_segment);
                 drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle);

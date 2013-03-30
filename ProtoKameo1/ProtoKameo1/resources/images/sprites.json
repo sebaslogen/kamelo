@@ -2,23 +2,23 @@
 
 "fly-001.png":
 {
-	"frame": {"x":2,"y":2,"w":79,"h":78},
+	"frame": {"x":2,"y":2,"w":63,"h":62},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":79,"h":78},
-	"sourceSize": {"w":79,"h":78}
+	"spriteSourceSize": {"x":0,"y":0,"w":63,"h":62},
+	"sourceSize": {"w":63,"h":62}
 },
 "fly-002.png":
 {
-	"frame": {"x":83,"y":2,"w":96,"h":88},
+	"frame": {"x":67,"y":2,"w":70,"h":62},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":88},
-	"sourceSize": {"w":96,"h":88}
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":62},
+	"sourceSize": {"w":70,"h":62}
 },
 "kami-head-slap.png":
 {
-	"frame": {"x":181,"y":2,"w":123,"h":137},
+	"frame": {"x":139,"y":2,"w":123,"h":137},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":137},
@@ -26,7 +26,7 @@
 },
 "kami-tongue-001.png":
 {
-	"frame": {"x":306,"y":2,"w":328,"h":86},
+	"frame": {"x":264,"y":2,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
@@ -34,7 +34,7 @@
 },
 "kami-tongue-002.png":
 {
-	"frame": {"x":636,"y":2,"w":328,"h":86},
+	"frame": {"x":594,"y":2,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
@@ -119,6 +119,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6b258d9f37d55c9ee1bcdbe3134d8fae$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a35292d0c5c7fb64f1af1afab2a2f89a$"
 }
 }

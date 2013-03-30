@@ -9,7 +9,7 @@ EngineClass = Class.extend({
     _deferredKill: [],
 
     flyes_alive: 0,
-    max_flyes_alive: 20,
+    max_flyes_alive: 15,
     last_fly_created: 0,
 
     //-----------------------------
@@ -64,9 +64,9 @@ EngineClass = Class.extend({
         background_context.fillStyle = 'LightCyan';
         background_context.fill();
         // Draw sun plus back circular glow
-        var grd = background_context.createRadialGradient(1420, 170, 100, 1420, 270, 400);
-        grd.addColorStop(1, 'rgba(250,250,255,0.5)');
-        grd.addColorStop(0, 'rgba(250,250,120,0.8)');
+        var grd = background_context.createRadialGradient(1420, 170, 150, 1420, 270, 400);
+        grd.addColorStop(1, 'rgba(250,250,255,0.7)');
+        grd.addColorStop(0, 'rgba(250,250,120,1)');
         background_context.fillStyle = grd;
         background_context.fillRect(0, 0, canvas.width, canvas.height);
         drawSprite('sol.png', 1420, 170, sun_angle, background_context); // Draw sun
@@ -76,15 +76,17 @@ EngineClass = Class.extend({
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
 
-        if (this.flyes_alive < this.max_flyes_alive) { // Create flies until the maximum is reached
+        if ((this.flyes_alive < this.max_flyes_alive) && // Create flies until the maximum is reached
+            (introFrame == introSeconds * FPS)){ // only after game intro finishes
             var flyID = Math.floor(Math.random() * 3);
             var seconds = (new Date()).getTime() / 1000;
             if ((flyID > 0) && (seconds - this.last_fly_created > 2)) { // Choose randomly to create fly model 1 or 2 or none only after a few seconds
-                var entFly = gEngine.spawnEntity("Fly");
+                var entFly = gEngine.spawnEntity("Fly", Math.floor(Math.random() * 1600), Math.floor(Math.random() * 700));
                 entFly.spritename = 'fly-00' + flyID;
-                entFly.speed = Math.floor(Math.random() * 100) + 1;
+                entFly.speed = Math.floor(Math.random() * 500) + 50;
+                console.log("Fly speed:" + entFly.speed);
                 entFly.zindex += Math.floor(Math.random() * 20);
-                entFly.init(Math.floor(Math.random() * 1600), Math.floor(Math.random() * 700));
+                entFly.seed = Math.floor(Math.random() * 100);
                 this.last_fly_created = seconds;
                 this.flyes_alive++;
             }
@@ -131,6 +133,9 @@ EngineClass = Class.extend({
             var ent = gEngine.entities[i];
             if (ent.physBody) {
                 ent.pos = ent.physBody.GetPosition();
+                if ((ent.angle != 'undetermined') && (ent.angle != null)) {
+                    ent.angle = ent.physBody.GetAngle();
+                }
             }
         }
     },
