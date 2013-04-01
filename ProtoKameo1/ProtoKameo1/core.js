@@ -201,7 +201,7 @@ var findPos = function (obj) {
 var setup = function () {
 
     // Canvas setup
-    canvas = document.getElementById('CanvasPlayground');
+    canvas = document.getElementById('PlaygroundCanvas');
     canvas.focus();
     context = canvas.getContext('2d');
     // Background canvas

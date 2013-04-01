@@ -87,7 +87,6 @@ EngineClass = Class.extend({
                 var entFly = gEngine.spawnEntity("Fly", Math.floor(Math.random() * 1600), Math.floor(Math.random() * 700));
                 entFly.spritename = 'fly-00' + flyID;
                 entFly.speed = Math.floor(Math.random() * 500) + 50;
-                console.log("Fly speed:" + entFly.speed);
                 entFly.zindex += Math.floor(Math.random() * 20);
                 this.last_fly_created = seconds;
                 this.flyes_alive++;

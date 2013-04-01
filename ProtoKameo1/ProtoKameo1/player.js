@@ -3,8 +3,9 @@ var start_tongue_med_segment = 46; // Pixel where the middle part of the tongue 
 var tong_med_size = 34; // Size of the middle of the tongue that will be repeated to extend tongue size
 var tongue_offset = { x: 193, y: 16 }; // Offset of tongue start position from player body
 var tongue_tilting_angle = 25; // This tilts the tongue to elevate the tip of the tongue to make it overlap the mouse
-var max_tongue_frames = 4;
+var max_tongue_frames = 3;
 var max_tongue_size = 700;
+var max_eye_sprites = 8;
 
 PlayerClass = EntityClass.extend({
     id: "Player",
@@ -15,6 +16,8 @@ PlayerClass = EntityClass.extend({
     total_frames: 3,
     direction: true,
     moving: false,
+    last_eye_changed: 0,
+    current_eye: 1,
     tongue_frame: 0, // Number of frame drawn for the tongue
     miss_in_da_face: false, // When fire position is incorrect, just slap the tongue in the head
     tong_pos: { x: 0, y: 0 }, // Position of tongue start
@@ -40,7 +43,7 @@ PlayerClass = EntityClass.extend({
             type: 'static',
             x: startPos.x,
             y: startPos.y,
-            halfHeight: 100, // Bounding collision box size for the player
+            halfHeight: 80, // Bounding collision box size for the player
             halfWidth: 200,
             angle: 0,
             userData: {
@@ -58,12 +61,12 @@ PlayerClass = EntityClass.extend({
         var move_dir = new Vec2(0, 0);
         move_dir.x = 0;
         move_dir.y = 0;
-        if (gInput.actions['move-left']) { // adjust the move_dir by 1 in the x direction.
+        if ((gInput.actions['move-left']) && (this.pos.x > 100)) { // adjust the move_dir by 1 in the x direction.
             move_dir.x -= 1;
             this.moving = true;
             console.log("Muevo Izq");
         }
-        if (gInput.actions['move-right']) { // adjust the move_dir by 1 in the x direction.
+        if ((gInput.actions['move-right']) && (this.pos.x < canvas.width - 150)) { // adjust the move_dir by 1 in the x direction.
             move_dir.x += 1;
             this.moving = true;
             console.log("Muevo Derch");
@@ -72,7 +75,7 @@ PlayerClass = EntityClass.extend({
         if (move_dir.LengthSquared()) {// After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
             move_dir.Normalize(); // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
             move_dir.Multiply(this.walkSpeed); // Next, multiply 'move_dir' by the player's set 'walkSpeed'. We do this in case we might want to change the player's walk speed due to a power-up, etc.
-        }
+        }        
         this.pos.x += move_dir.x;
         this.pos.y += move_dir.y;
 
@@ -148,6 +151,15 @@ PlayerClass = EntityClass.extend({
                 context.clearRect(this.pos.x + 140, this.pos.y + 24, 80, 20); // Clean up previous face
                 context.clearRect(this.pos.x + 112, this.pos.y - 96, 48, 48); // Clean up previous face
                 drawSprite('kami-head-slap.png', this.pos.x + 163, this.pos.y - 25);
+            } else { // Draw different face animations
+                var now = (new Date()).getTime() / 10;
+                if (now - this.last_eye_changed > 70) { // Every less than a second it's possible to change the eye
+                    this.last_eye_changed = now;
+                    this.current_eye = Math.floor(Math.random() * (max_eye_sprites + 1));
+                }
+                if (this.current_eye != 0) { // Draw a new eye on top of the default eye
+                    drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37);
+                }
             }
         }
         if (this.tongue_frame != 0) { // Draw tongue
