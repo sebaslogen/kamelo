@@ -1,8 +1,7 @@
 ﻿
 EngineClass = Class.extend({
 
-    /************move_dir: new Vec2(0, 0),
-    dirVec: new Vec2(0, 0),*/
+    player0: null,
 
     entities: [],
     factory: {},
@@ -38,6 +37,9 @@ EngineClass = Class.extend({
                 }
             }
         });
+        // Create game entities
+        this.player0 = gEngine.spawnEntity("Player", 250, 680); // Create player with initial position in canvas
+        this.player0.spritename = 'kami-walk-00';
     },
 
     spawnEntity: function (typename, x, y) {
@@ -76,6 +78,7 @@ EngineClass = Class.extend({
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
 
+        /// This clousure is full of shit to generate flies ///
         if ((this.flyes_alive < this.max_flyes_alive) && // Create flies until the maximum is reached
             (introFrame == introSeconds * FPS)){ // only after game intro finishes
             var flyID = Math.floor(Math.random() * 3);
@@ -105,6 +108,8 @@ EngineClass = Class.extend({
             }
         }
 
+        gEngine.updatePhysics(); /// Physics engine plus manual collision detections take place here ///
+
         // Loop through the '_deferredKill' list and remove each entity in it from the 'entities' list.
         for (var j = 0; j < gEngine._deferredKill.length; j++) {
             gEngine.entities.erase(gEngine._deferredKill[j]);
@@ -112,17 +117,10 @@ EngineClass = Class.extend({
         gEngine._deferredKill = []; // Once you're done looping through '_deferredKill', set it back to the empty array, indicating all entities in it have been removed from the 'entities' list.
 
         /// Update sound world ///
-        if (sound_atmos.pos() >= 20.0) // Atmos loop
-        {
-            if (!sound_atmos_retriggered)
-            {
-                sound_atmos_retriggered = true;
-                // Trigger atmos sound again
-                launchClip(sound_atmos,'atmos');
-            }
-        }
-        else
-        {
+        if ((sound_atmos.pos() >= 20.0) && (!sound_atmos_retriggered)) { // Atmos loop
+            sound_atmos_retriggered = true;
+            launchClip(sound_atmos, 'atmos'); // Trigger atmos sound again
+        } else {
             sound_atmos_retriggered = false;
         }
     },
@@ -137,6 +135,10 @@ EngineClass = Class.extend({
                     ent.angle = ent.physBody.GetAngle();
                 }
             }
+            /// Fly hunting method when tongue reaches target ///
+            if ((ent.id == "Fly") && (this.player0.tongue_frame == max_tongue_frames - 1)) {
+                ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y);
+            }
         }
     },
 
@@ -149,11 +151,11 @@ EngineClass = Class.extend({
         var zIndex_array = [];
         var entities_bucketed_by_zIndex = {};
         gEngine.entities.forEach(function (entity) {
-            //don't draw entities that are off screen
-            /*                          if (entity.pos.x >= gMap.viewRect.x - fudgeVariance &&
-               entity.pos.x < gMap.viewRect.x + gMap.viewRect.w + fudgeVariance &&
-               entity.pos.y >= gMap.viewRect.y - fudgeVariance &&
-               entity.pos.y < gMap.viewRect.y + gMap.viewRect.h + fudgeVariance)*/ {
+            //only draw entities that are in the screen
+            if (entity.pos.x <= canvas.width + (entity.size.width / 2) &&
+               entity.pos.x >= -(entity.size.width / 2) &&
+               entity.pos.y >= -(entity.size.height / 2) &&
+               entity.pos.y <= canvas.height + (entity.size.height / 2)) {
                 // Bucket the entities in the entities list by their zindex property.
                 if (!entities_bucketed_by_zIndex[entity.zindex]) {
                     entities_bucketed_by_zIndex[entity.zindex] = [];
@@ -195,7 +197,7 @@ var getSprite = function (spritename) {
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite name (ie. "kami-001.png", and the position on the canvas to draw to.
-var drawSprite = function (spritename, posX, posY, angle, draw_context, flipped) {
+var drawSprite = function (spritename, posX, posY, angle, draw_context) {
     // Walk through all our spritesheets defined in 'gSpriteSheets' and for each sheet...
     for (var sheetName in gSpriteSheets) {
         // Use the getStats method of the spritesheet to find if a sprite with name 'spritename' exists in that sheet...
@@ -205,7 +207,7 @@ var drawSprite = function (spritename, posX, posY, angle, draw_context, flipped)
         if (sprite === null) {
             continue;
         }
-        __drawSpriteInternal(sprite, sheet, posX, posY, angle, draw_context, flipped);
+        __drawSpriteInternal(sprite, sheet, posX, posY, angle, draw_context);
         // We assume there isn't another sprite of the given 'spritename' that we want to draw, so we return!
         return;
     }

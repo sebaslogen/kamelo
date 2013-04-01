@@ -215,9 +215,6 @@ var setup = function () {
 
     // Game setup
     gEngine.setup();
-    // Create game entities
-    var entityPlayer = gEngine.spawnEntity("Player", 250, 680); // Create player with initial position in canvas
-    entityPlayer.spritename = 'kami-walk-00';
     // Create clouds with random position, speed and layer index
     var entityCloud = gEngine.spawnEntity("Cloud");
     entityCloud.spritename = 'nube-001';
@@ -244,15 +241,15 @@ var setup = function () {
     entityCloud.pos.x += Math.floor(Math.random() * 400);
     entityCloud.pos.y += Math.floor(Math.random() * 100);
 
-    // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
-    window.setInterval(animate, 1000 / FPS);
-
     background_image = new Image();
     background_image.src = 'mountains.png';
     background_image.onload = function () {
         background_loaded = true;
         window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
     }
+
+    // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
+    window.setInterval(animate, 1000 / FPS);
 };
 
 var animateBackground = function () {
@@ -261,9 +258,8 @@ var animateBackground = function () {
 };
 
 var animate = function () {
-    if (background_loaded) {
+    if (background_loaded) { /// Main game update loop /// - This is where all the shit happens to attract the flies
         gEngine.update();
-        gEngine.updatePhysics();
         gEngine.draw();
     } else { // Reset start up animation until background image is loaded
         introFrame = 0;
@@ -293,4 +289,4 @@ var sun_angle = 0;
 var background_loaded = false;
 
 
-var disable_sound = false; // Debug option to disable any sound
+var disable_sound = true; //false; // Debug option to disable any sound

@@ -52,11 +52,11 @@ FlyClass = EntityClass.extend({
         var physOwner = otherBody.GetUserData().ent;
         if (physOwner !== null) {
             if (physOwner._killed) return false;
-            /////////////////////////////////////////////////////console.log("Collision detected!");
+            /////////////////////////////////////////////////////console.log("Collision between flies detected!");
             // Kill fly only when the tongue touches it
-            if (otherBody.GetUserData() && (otherBody.GetUserData().id != "Fly")) { // TODO change != fly for == "Tongue"
+            if (otherBody.GetUserData() && (otherBody.GetUserData().id != "Fly")) { // Something collided with me that was not a Fly!
                 this.markForDeath = true; // Kill when touched
-                console.log("This fly has been captured and it's going to die!");
+                console.log("This fly has been captured and it's going to die!!!");
             }
         }
         return true;
@@ -68,7 +68,8 @@ FlyClass = EntityClass.extend({
             return;
         }
         var angle_variation = Math.floor(Math.random() * 360);
-        if ((this.pos.x > canvas.width + 40) || (this.pos.y > canvas.height - 200) || (this.pos.x < -40) || (this.pos.y < -40)) {
+        if ((this.pos.x > canvas.width + (this.size.width / 2)) || (this.pos.y > canvas.height - 200) ||
+            (this.pos.x < -(this.size.width / 2)) || (this.pos.y < -(this.size.height / 2))) {
             if (this.escaped) { // Fly is still stuck in danger zone, let her recover continuing moving on the same direction as before
                 angle_variation = 0;
                 if ((this.pos.x > canvas.width + 80) || (this.pos.y > canvas.height + 80) || (this.pos.x < -80) || (this.pos.y < -80)) {
@@ -95,8 +96,6 @@ FlyClass = EntityClass.extend({
         var move_dir = new Vec2(0, 0);
         move_dir.x = this.speed * Math.cos(this.physBody.GetAngle());
         move_dir.y = this.speed * Math.sin(this.physBody.GetAngle());
-//        if (Math.floor(Math.random() * 10) > 5) {
-        //}
 
         // After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
         if (move_dir.LengthSquared()) {
@@ -104,15 +103,35 @@ FlyClass = EntityClass.extend({
             move_dir.Multiply(this.speed); // Next, multiply 'move_dir' by the entity's set 'speed'
         }        
         this.physBody.SetLinearVelocity(move_dir);
-        //////////////////////////console.log("Getting linear velocity:" + move_dir.x + "," + move_dir.y);
-        //////////////////////////console.log("moved fly to position:" + this.pos.x + "," + this.pos.y);
+        if (this.size.width == 0 && this.size.height == 0) {
+            var sprite = getSprite(this.spritename + '.png');
+            this.size.width = sprite.w;
+            this.size.height = sprite.h;
+        }
+    },
+
+    updateCatch: function (fire_x, fire_y) { // Update collisions with the tongue tip a.k.a. mouse position
+        var tongue = { left: fire_x - 20, right: fire_x + 20, top: fire_y - 20, bottom: fire_y + 20 };
+        var fly = { left: this.pos.x - 20, right: this.pos.x + 20, top: this.pos.y - 20, bottom: this.pos.y + 20 };
+        if (!(tongue.left > fly.right ||
+             tongue.right < fly.left ||
+             tongue.top > fly.bottom ||
+             tongue.bottom < fly.top)) {
+            this.markForDeath = true; // Kill when touched
+            console.log("This fly has been captured and it's going to die!!!");
+            launchSlapSound();
+        }
     },
 
     //-----------------------------------------
     draw: function () {
         if (this.spritename) { // Draw cloud
-            var real_spritename = this.spritename + '.png';
-            drawSprite(real_spritename, this.pos.x, this.pos.y, this.angle, context);
+            if (this.markForDeath) {
+                drawSprite('sol.png', this.pos.x, this.pos.y, this.angle, context);
+            } else {
+                var real_spritename = this.spritename + '.png';
+                drawSprite(real_spritename, this.pos.x, this.pos.y, this.angle, context);
+            }
         }
     }
 });

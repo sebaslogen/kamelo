@@ -2,6 +2,7 @@
 EntityClass = Class.extend({
     // can all be referenced by child classes
     pos: { x: 0, y: 0 },
+    size: { width: 0, height: 0 },
     currSpriteName: null,
     zindex: 0,
 
@@ -19,8 +20,5 @@ EntityClass = Class.extend({
 
     //-----------------------------------------
     draw: function () {
-        /*if (this.spritename) {
-            drawSprite(this.spritename, this.pos.x, this.pos.y);
-        }*/
     }
 });

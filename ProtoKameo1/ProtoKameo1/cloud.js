@@ -13,8 +13,13 @@ CloudClass = EntityClass.extend({
         } else {
             this.pos.x -= (this.speed / 100); // Small movement to prevent stop
         }
-        if (this.pos.x < -100) { // get out from left of the screen and reappear on the right
-            this.pos.x = 1700;
+        if (this.pos.x < -(this.size.width / 2)) { // get out from left of the screen and reappear on the right
+            this.pos.x = canvas.width + (this.size.width / 2);
+        }
+        if (this.size.width == 0 && this.size.height == 0) {
+            var sprite = getSprite(this.spritename + '.png');
+            this.size.width = sprite.w;
+            this.size.height = sprite.h;
         }
     },
 
