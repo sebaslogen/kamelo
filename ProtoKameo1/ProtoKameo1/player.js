@@ -25,9 +25,33 @@ PlayerClass = EntityClass.extend({
     t_start : "kami-tongue-001.png",
     t_med : "kami-tongue-002.png",
     t_end: "kami-tongue-003.png",
+    physBody: null, // This is hooking into the Box2D Physics library
 
     init: function (x, y) {
         this.parent(x, y);
+
+        var startPos = {
+            x: x,
+            y: y
+        };
+
+        var entityDef = { // Create our physics body;
+            id: "Player",
+            type: 'static',
+            x: startPos.x,
+            y: startPos.y,
+            halfHeight: 100, // Bounding collision box size for the player
+            halfWidth: 200,
+            angle: 0,
+            userData: {
+                "id": "Player",
+                "ent": this
+            }
+        };
+
+        this.physBody = gPhysicsEngine.addBody(entityDef);
+        this.physBody.SetLinearVelocity(new Vec2(0, 0));
+        this.physBody.linearDamping = 0;
     },
 
     update: function () {

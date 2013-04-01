@@ -4,7 +4,6 @@ FlyClass = EntityClass.extend({
     speed: 1,
     angle: 0,
     zindex: 30,
-    seed: 1,
     rotation_dir: 1,
     _killed: false,
     markForDeath: false,
@@ -47,17 +46,18 @@ FlyClass = EntityClass.extend({
 
     //-----------------------------------------
     onTouch: function (otherBody, point, impulse) {
-        if(!this.physBody) return false;
-        if(!otherBody.GetUserData()) return false;
+        if (!this.physBody) return false;
+        if (!otherBody.GetUserData()) return false;
         var physOwner = otherBody.GetUserData().ent;
         if (physOwner !== null) {
             if (physOwner._killed) return false;
             /////////////////////////////////////////////////////console.log("Collision between flies detected!");
+            /* Disabled to use manual engine with mouse coordinates
             // Kill fly only when the tongue touches it
             if (otherBody.GetUserData() && (otherBody.GetUserData().id != "Fly")) { // Something collided with me that was not a Fly!
                 this.markForDeath = true; // Kill when touched
                 console.log("This fly has been captured and it's going to die!!!");
-            }
+            }*/
         }
         return true;
     },
@@ -82,7 +82,7 @@ FlyClass = EntityClass.extend({
             }
         } else {
             this.escaped = false;
-            if (((Math.floor(Math.random() * 100) + this.seed) % 97) != 0) { // High random chance of a very small angle change in the movement direction
+            if ((Math.floor(Math.random() * 100) % 97) != 0) { // High random chance of a very small angle change in the movement direction
                 angle_variation = angle_variation / 30; // Constant minimum variance in angle direction
             } else if ((angle_variation % 7) == 0) {
                 this.rotation_dir = -this.rotation_dir; // Every few random times change the rotation angle direction
@@ -103,7 +103,7 @@ FlyClass = EntityClass.extend({
             move_dir.Multiply(this.speed); // Next, multiply 'move_dir' by the entity's set 'speed'
         }        
         this.physBody.SetLinearVelocity(move_dir);
-        if (this.size.width == 0 && this.size.height == 0) {
+        if (this.size.width == 0 && this.size.height == 0) { // Set object width and high based on sprite size after loading image
             var sprite = getSprite(this.spritename + '.png');
             this.size.width = sprite.w;
             this.size.height = sprite.h;

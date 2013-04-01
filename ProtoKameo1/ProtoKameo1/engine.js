@@ -89,7 +89,6 @@ EngineClass = Class.extend({
                 entFly.speed = Math.floor(Math.random() * 500) + 50;
                 console.log("Fly speed:" + entFly.speed);
                 entFly.zindex += Math.floor(Math.random() * 20);
-                entFly.seed = Math.floor(Math.random() * 100);
                 this.last_fly_created = seconds;
                 this.flyes_alive++;
             }
@@ -130,13 +129,17 @@ EngineClass = Class.extend({
         for (var i = 0; i < gEngine.entities.length; i++) { // Update entities with physics calculations
             var ent = gEngine.entities[i];
             if (ent.physBody) {
-                ent.pos = ent.physBody.GetPosition();
-                if ((ent.angle != 'undetermined') && (ent.angle != null)) {
-                    ent.angle = ent.physBody.GetAngle();
+                if (ent.id == "Fly") { // Only flies follow the physics system
+                    ent.pos = ent.physBody.GetPosition();
+                    if ((ent.angle != 'undetermined') && (ent.angle != null)) {
+                        ent.angle = ent.physBody.GetAngle();
+                    }
+                } else if (ent.id == "Player") {
+                    ent.physBody.SetPosition(new Vec2(ent.pos.x, ent.pos.y));
                 }
             }
-            /// Fly hunting method when tongue reaches target ///
-            if ((ent.id == "Fly") && (this.player0.tongue_frame == max_tongue_frames - 1)) {
+            /// Fly hunting method when tongue animation reaches target ///
+            if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) && (this.player0.tongue_frame == max_tongue_frames - 1)) {
                 ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y);
             }
         }
