@@ -120,6 +120,7 @@ FlyClass = EntityClass.extend({
             this.markForDeath = true; // Kill when touched
             console.log("This fly has been captured and it's going to die!!!");
             launchSlapSound();
+            return true;
         }
     },
 
@@ -127,7 +128,7 @@ FlyClass = EntityClass.extend({
     draw: function () {
         if (this.spritename) { // Draw cloud
             if (this.markForDeath) {
-                drawSprite('sol.png', this.pos.x, this.pos.y, this.angle, context);
+                drawSprite('dead-fly.png', this.pos.x, this.pos.y, this.angle, context);
             } else {
                 var real_spritename = this.spritename + '.png';
                 drawSprite(real_spritename, this.pos.x, this.pos.y, this.angle, context);

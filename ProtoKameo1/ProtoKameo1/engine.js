@@ -11,6 +11,9 @@ EngineClass = Class.extend({
     max_flyes_alive: 15,
     last_fly_created: 0,
 
+    cheer_up_goal: 4,
+    scrore_frames: 0,
+
     //-----------------------------
     setup: function () {
         // Call our input setup method to bind our keys to actions and set the event listeners.
@@ -65,6 +68,7 @@ EngineClass = Class.extend({
         background_context.rect(0, 0, background_canvas.width, background_canvas.height);
         background_context.fillStyle = 'LightCyan';
         background_context.fill();
+
         // Draw sun plus back circular glow
         var grd = background_context.createRadialGradient(1420, 170, 150, 1420, 270, 400);
         grd.addColorStop(1, 'rgba(250,250,255,0.7)');
@@ -74,6 +78,14 @@ EngineClass = Class.extend({
         drawSprite('sol.png', 1420, 170, sun_angle, background_context); // Draw sun
 
         background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
+
+        if (this.scrore_frames > 0) {
+            background_context.font = 'bold 500pt Verdana';
+            background_context.fillStyle = 'blue';
+            background_context.textAlign = 'center';
+            background_context.fillText(this.player0.points, canvas.width / 2, canvas.height / 2 + 200);
+            this.scrore_frames = (this.scrore_frames + 1) % (FPS + 2); // Show for one second
+        }
     },
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
@@ -139,7 +151,15 @@ EngineClass = Class.extend({
             }
             /// Fly hunting method when tongue animation reaches target ///
             if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) && (this.player0.tongue_frame == max_tongue_frames - 1)) {
-                ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y);
+                if (ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y)) {
+                    this.player0.points++;
+                    console.log("Points:" + this.player0.points);
+                    if (this.player0.points >= this.cheer_up_goal) {
+                        launchSound('cheer'); // Cheer up the user
+                        this.cheer_up_goal += this.cheer_up_goal * 0.8; // Adjust complexity to less than double
+                        this.scrore_frames = 1; // Enable drawing score
+                    }
+                }
             }
         }
     },

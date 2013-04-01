@@ -9,6 +9,7 @@ var max_eye_sprites = 8;
 
 PlayerClass = EntityClass.extend({
     id: "Player",
+    points: 0,
     walkSpeed: 20,
     zindex: 50,
     currSpriteName: null,

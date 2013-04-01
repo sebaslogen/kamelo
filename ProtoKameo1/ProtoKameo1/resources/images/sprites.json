@@ -1,8 +1,16 @@
 {"frames": {
 
+"dead-fly.png":
+{
+	"frame": {"x":2,"y":2,"w":70,"h":62},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":62},
+	"sourceSize": {"w":70,"h":62}
+},
 "fly-001.png":
 {
-	"frame": {"x":2,"y":2,"w":63,"h":62},
+	"frame": {"x":74,"y":2,"w":63,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":63,"h":62},
@@ -10,7 +18,7 @@
 },
 "fly-002.png":
 {
-	"frame": {"x":67,"y":2,"w":70,"h":62},
+	"frame": {"x":139,"y":2,"w":70,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":62},
@@ -18,7 +26,7 @@
 },
 "kami-eye-001.png":
 {
-	"frame": {"x":139,"y":2,"w":36,"h":34},
+	"frame": {"x":211,"y":2,"w":36,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":34},
@@ -26,7 +34,7 @@
 },
 "kami-eye-002.png":
 {
-	"frame": {"x":177,"y":2,"w":36,"h":33},
+	"frame": {"x":249,"y":2,"w":36,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":33},
@@ -34,7 +42,7 @@
 },
 "kami-eye-003.png":
 {
-	"frame": {"x":215,"y":2,"w":36,"h":33},
+	"frame": {"x":287,"y":2,"w":36,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":33},
@@ -42,7 +50,7 @@
 },
 "kami-eye-004.png":
 {
-	"frame": {"x":253,"y":2,"w":35,"h":34},
+	"frame": {"x":325,"y":2,"w":35,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":34},
@@ -50,7 +58,7 @@
 },
 "kami-eye-005.png":
 {
-	"frame": {"x":290,"y":2,"w":42,"h":33},
+	"frame": {"x":362,"y":2,"w":42,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":42,"h":33},
@@ -58,7 +66,7 @@
 },
 "kami-eye-006.png":
 {
-	"frame": {"x":334,"y":2,"w":35,"h":33},
+	"frame": {"x":406,"y":2,"w":35,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":33},
@@ -66,7 +74,7 @@
 },
 "kami-eye-007.png":
 {
-	"frame": {"x":371,"y":2,"w":35,"h":34},
+	"frame": {"x":443,"y":2,"w":35,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":34},
@@ -74,7 +82,7 @@
 },
 "kami-eye-008.png":
 {
-	"frame": {"x":408,"y":2,"w":38,"h":38},
+	"frame": {"x":480,"y":2,"w":38,"h":38},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":38},
@@ -82,7 +90,7 @@
 },
 "kami-head-slap.png":
 {
-	"frame": {"x":448,"y":2,"w":123,"h":137},
+	"frame": {"x":520,"y":2,"w":123,"h":137},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":137},
@@ -90,7 +98,7 @@
 },
 "kami-tongue-001.png":
 {
-	"frame": {"x":573,"y":2,"w":328,"h":86},
+	"frame": {"x":645,"y":2,"w":328,"h":86},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
@@ -183,6 +191,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:31f9b2c7ab168764ca56d640fa4dda30$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0e586ad51924a77033dfbf186927b085$"
 }
 }
