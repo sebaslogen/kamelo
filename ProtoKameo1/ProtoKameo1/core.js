@@ -201,8 +201,10 @@ var findPos = function (obj) {
 var setup = function () {
 
     // Canvas setup
+    player_canvas = document.getElementById('PlayerCanvas');
+    player_context = player_canvas.getContext('2d');
+    player_canvas.focus();
     canvas = document.getElementById('PlaygroundCanvas');
-    canvas.focus();
     context = canvas.getContext('2d');
     // Background canvas
     background_canvas = document.getElementById('background');
@@ -267,16 +269,18 @@ var animate = function () {
     // Create Intro radial gradient in foreground while everything loads in the background
     if (introFrame < introSeconds * FPS) {
         var external_r = 20000 - (introFrame * introFrame * 2);
-        var grd = context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius 
+        var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius 
         var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
         grd.addColorStop(1, 'transparent');
         grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
-        context.fillStyle = grd;
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        player_context.fillStyle = grd;
+        player_context.fillRect(0, 0, canvas.width, canvas.height);
         introFrame++;
     }
 };
 
+var player_canvas = null;
+var player_context = null;
 var canvas = null;
 var context = null;
 var background_canvas = null;
@@ -289,4 +293,4 @@ var sun_angle = 0;
 var background_loaded = false;
 
 
-var disable_sound = false; // Debug option to disable any sound
+var disable_sound = true;//false; // Debug option to disable any sound

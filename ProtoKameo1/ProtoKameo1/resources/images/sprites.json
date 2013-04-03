@@ -183,14 +183,22 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":334,"h":316},
 	"sourceSize": {"w":334,"h":316}
+},
+"tree.png":
+{
+	"frame": {"x":2,"y":927,"w":776,"h":718},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":776,"h":718},
+	"sourceSize": {"w":776,"h":718}
 }},
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
 	"image": "sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":1024,"h":1024},
+	"size": {"w":1024,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0e586ad51924a77033dfbf186927b085$"
+	"smartupdate": "$TexturePacker:SmartUpdate:7c6d902396d74d3f8eb7ecebcfa9d456$"
 }
 }

@@ -77,15 +77,16 @@ EngineClass = Class.extend({
         background_context.fillRect(0, 0, canvas.width, canvas.height);
         drawSprite('sol.png', 1420, 170, sun_angle, background_context); // Draw sun
 
+        // Draw background, score and tree
         background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
-
-        if (this.scrore_frames > 0) {
+        if (this.scrore_frames > 0) { // Draw Score
             background_context.font = 'bold 500pt Verdana';
             background_context.fillStyle = 'blue';
             background_context.textAlign = 'center';
             background_context.fillText(this.player0.points, canvas.width / 2, canvas.height / 2 + 200);
             this.scrore_frames = (this.scrore_frames + 1) % (FPS + 2); // Show for one second
         }
+        drawSprite('tree.png', 1100, 420, 0, background_context); // Draw tree
     },
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
@@ -167,6 +168,7 @@ EngineClass = Class.extend({
     //----- Draw all entities in the game engine
     draw: function () {
         context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
+        player_context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
 
         // Bucket entities by zIndex
         var fudgeVariance = 128;

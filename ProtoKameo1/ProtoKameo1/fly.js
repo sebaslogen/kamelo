@@ -8,6 +8,7 @@ FlyClass = EntityClass.extend({
     _killed: false,
     markForDeath: false,
     escaped: false,
+    time_trapped: 0,
     physBody: null, // This is hooking into the Box2D Physics library
 
     init: function (x, y) {
@@ -71,14 +72,17 @@ FlyClass = EntityClass.extend({
         if ((this.pos.x > canvas.width + (this.size.width / 2)) || (this.pos.y > canvas.height - 200) ||
             (this.pos.x < -(this.size.width / 2)) || (this.pos.y < -(this.size.height / 2))) {
             if (this.escaped) { // Fly is still stuck in danger zone, let her recover continuing moving on the same direction as before
-                angle_variation = 0;
-                if ((this.pos.x > canvas.width + 80) || (this.pos.y > canvas.height + 80) || (this.pos.x < -80) || (this.pos.y < -80)) {
+                if ((this.pos.x > canvas.width + 80) || (this.pos.y > canvas.height + 80) || (this.pos.x < -80) || (this.pos.y < -80) ||
+                    (((new Date()).getTime() / 1000) - this.time_trapped > 5)) {
+                    // Suicide when very far of the screen or trapped outside boundaries for long period
                     this.markForDeath = true;
                     console.log("Fly is out of screen and it's going to suicide!!!");
                 }
+                angle_variation = 0;
             } else {
                 this.escaped = true;
                 angle_variation = 180; // Go in the oppositte direction
+                this.time_trapped = (new Date()).getTime() / 1000;
             }
         } else {
             this.escaped = false;
@@ -111,8 +115,8 @@ FlyClass = EntityClass.extend({
     },
 
     updateCatch: function (fire_x, fire_y) { // Update collisions with the tongue tip a.k.a. mouse position
-        var tongue = { left: fire_x - 20, right: fire_x + 20, top: fire_y - 20, bottom: fire_y + 20 };
-        var fly = { left: this.pos.x - 20, right: this.pos.x + 20, top: this.pos.y - 20, bottom: this.pos.y + 20 };
+        var tongue = { left: fire_x - 25, right: fire_x + 25, top: fire_y - 25, bottom: fire_y + 25 };
+        var fly = { left: this.pos.x - 25, right: this.pos.x + 25, top: this.pos.y - 25, bottom: this.pos.y + 25 };
         if (!(tongue.left > fly.right ||
              tongue.right < fly.left ||
              tongue.top > fly.bottom ||
@@ -128,6 +132,11 @@ FlyClass = EntityClass.extend({
     draw: function () {
         if (this.spritename) { // Draw cloud
             if (this.markForDeath) {
+                var grd = context.createRadialGradient(this.pos.x, this.pos.y, 1, this.pos.x, this.pos.y, this.size.width);
+                grd.addColorStop(1, 'rgba(10,10,15,0)');
+                grd.addColorStop(0, 'rgba(0,0,0,1)');
+                context.fillStyle = grd;
+                context.fillRect(this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
                 drawSprite('dead-fly.png', this.pos.x, this.pos.y, this.angle, context);
             } else {
                 var real_spritename = this.spritename + '.png';

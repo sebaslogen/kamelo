@@ -146,12 +146,12 @@ PlayerClass = EntityClass.extend({
                 this.moving = false;
             }
             var real_spritename = this.spritename + this.frame + '.png';
-            drawSprite(real_spritename, this.pos.x, this.pos.y);
+            drawSprite(real_spritename, this.pos.x, this.pos.y, null, player_context);
             if (this.miss_in_da_face && (this.tongue_frame != 0)) { // Draw slap in da face!
-                context.clearRect(this.pos.x + 123, this.pos.y - 25, 80, 62); // Clean up previous face
-                context.clearRect(this.pos.x + 140, this.pos.y + 24, 80, 20); // Clean up previous face
-                context.clearRect(this.pos.x + 112, this.pos.y - 96, 48, 48); // Clean up previous face
-                drawSprite('kami-head-slap.png', this.pos.x + 163, this.pos.y - 25);
+                player_context.clearRect(this.pos.x + 123, this.pos.y - 25, 80, 62); // Clean up previous face
+                player_context.clearRect(this.pos.x + 140, this.pos.y + 24, 80, 20); // Clean up previous face
+                player_context.clearRect(this.pos.x + 112, this.pos.y - 96, 48, 48); // Clean up previous face
+                drawSprite('kami-head-slap.png', this.pos.x + 163, this.pos.y - 25, null, player_context);
             } else { // Draw different face animations
                 var now = (new Date()).getTime() / 10;
                 if (now - this.last_eye_changed > 70) { // Every less than a second it's possible to change the eye
@@ -159,13 +159,13 @@ PlayerClass = EntityClass.extend({
                     this.current_eye = Math.floor(Math.random() * (max_eye_sprites + 1));
                 }
                 if (this.current_eye != 0) { // Draw a new eye on top of the default eye
-                    drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37);
+                    drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37, null, player_context);
                 }
             }
         }
         if (this.tongue_frame != 0) { // Draw tongue
             if (!this.miss_in_da_face) {
-                drawSprite(this.t_start, this.tong_pos.x, this.tong_pos.y, this.angle);
+                drawSprite(this.t_start, this.tong_pos.x, this.tong_pos.y, this.angle, player_context);
                 var current_tong_pos_x = this.tong_pos.x;
                 var current_tong_pos_y = this.tong_pos.y;
                 var distance = this.tong_distance / (max_tongue_frames - this.tongue_frame);
@@ -173,7 +173,7 @@ PlayerClass = EntityClass.extend({
                     distance = this.tong_distance
                 }
                 while (distance - start_tongue_med_segment > tong_med_size) { // Continue adding "middle tongue chunks" after tongue start until the tongue-end covers the rest of the distance until the mouse pos.
-                    drawSprite(this.t_med, current_tong_pos_x, current_tong_pos_y, this.angle);
+                    drawSprite(this.t_med, current_tong_pos_x, current_tong_pos_y, this.angle, player_context);
                     distance -= tong_med_size;
                     current_tong_pos_x += Math.cos(this.angle) * tong_med_size;
                     current_tong_pos_y += Math.sin(this.angle) * tong_med_size;
@@ -182,7 +182,7 @@ PlayerClass = EntityClass.extend({
                 current_tong_pos_y -= Math.sin(this.angle) * (tong_med_size * 2);
                 current_tong_pos_x += Math.cos(this.angle) * (distance - start_tongue_med_segment);// Extend tip of tongue progressively with mouse movement
                 current_tong_pos_y += Math.sin(this.angle) * (distance - start_tongue_med_segment);
-                drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle);
+                drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle, player_context);
                 this.tongue_frame = (this.tongue_frame + 1) % (max_tongue_frames); // Less than half second at current FPS (10)
             } else { // How long to draw slap in da face
                 this.tongue_frame = (this.tongue_frame + 1) % (max_tongue_frames + (max_tongue_frames/2)); // A little bit longer than a tongue animation

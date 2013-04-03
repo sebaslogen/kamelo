@@ -24,10 +24,10 @@ InputClass = Class.extend({
         gInput.bind(gInput.KEY.S, 'stop-background');
 
         // Adding the event listeners for the appropriate DOM events.
-        canvas.addEventListener('click', gInput.onClick);
-        canvas.addEventListener('mousemove', gInput.onMouseMove);
-        canvas.addEventListener('keydown', gInput.onKeyDown);
-        canvas.addEventListener('keyup', gInput.onKeyUp);
+        player_canvas.addEventListener('click', gInput.onClick);
+        player_canvas.addEventListener('mousemove', gInput.onMouseMove);
+        player_canvas.addEventListener('keydown', gInput.onKeyDown);
+        player_canvas.addEventListener('keyup', gInput.onKeyUp);
     },
 
     //-----------------------------
