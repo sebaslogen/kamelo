@@ -293,4 +293,4 @@ var sun_angle = 0;
 var background_loaded = false;
 
 
-var disable_sound = true;//false; // Debug option to disable any sound
+var disable_sound = false; // Debug option to disable any sound

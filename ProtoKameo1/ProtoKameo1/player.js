@@ -162,6 +162,7 @@ PlayerClass = EntityClass.extend({
                     drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37, null, player_context);
                 }
             }
+            this.change_color(real_spritename, this.pos.x, this.pos.y, this.angle, 8 * this.points, -2*this.points, -2*this.points, player_context); // Color player character
         }
         if (this.tongue_frame != 0) { // Draw tongue
             if (!this.miss_in_da_face) {
@@ -188,6 +189,20 @@ PlayerClass = EntityClass.extend({
                 this.tongue_frame = (this.tongue_frame + 1) % (max_tongue_frames + (max_tongue_frames/2)); // A little bit longer than a tongue animation
             }
         }
+    },
+
+    change_color: function (spritename, posX, posY, angle, red, green, blue, draw_context) {
+        var sprite = getSprite(spritename);
+        var pos = { x: posX - (sprite.w / 2), y: posY - (sprite.h / 2) };
+        var imageData = draw_context.getImageData(pos.x, pos.y, sprite.w+25, sprite.h);
+        var data = imageData.data;
+        for (var i = 0; i < data.length; i += 4) {
+            data[i] = red + data[i]; // red
+            data[i + 1] = green + data[i + 1]; // green
+            data[i + 2] = blue + data[i + 2]; // blue
+        }
+        // overwrite original image
+        draw_context.putImageData(imageData, pos.x, pos.y);
     }
 });
 
