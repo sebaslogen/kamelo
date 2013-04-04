@@ -105,7 +105,7 @@ FlyClass = EntityClass.extend({
         if (move_dir.LengthSquared()) {
             move_dir.Normalize(); // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
             move_dir.Multiply(this.speed); // Next, multiply 'move_dir' by the entity's set 'speed'
-        }        
+        }
         this.physBody.SetLinearVelocity(move_dir);
         if (this.size.width == 0 && this.size.height == 0) { // Set object width and high based on sprite size after loading image
             var sprite = getSprite(this.spritename + '.png');
@@ -123,7 +123,8 @@ FlyClass = EntityClass.extend({
              tongue.bottom < fly.top)) {
             this.markForDeath = true; // Kill when touched
             console.log("This fly has been captured and it's going to die!!!");
-            launchSlapSound();
+            // Kami burps when catching a fly
+            launchBurpSound();
             return true;
         }
     },

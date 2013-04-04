@@ -269,7 +269,7 @@ var animate = function () {
     // Create Intro radial gradient in foreground while everything loads in the background
     if (introFrame < introSeconds * FPS) {
         var external_r = 20000 - (introFrame * introFrame * 2);
-        var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius 
+        var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
         var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
         grd.addColorStop(1, 'transparent');
         grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');

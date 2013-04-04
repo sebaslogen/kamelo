@@ -32,18 +32,18 @@ var sound_sprites = new Howl({
     sprite: {
             atmos: [0, 24440],
             tong1: [24418, 255],
-            tong2: [24847, 167],
-            tong3: [25014, 175],
-            tong4: [25190, 151],
-            tong5: [25340, 143],
-            tong6: [25483, 145],
-            bubble1: [25458, 154],
+            tong2: [24673, 175],
+            tong3: [24847, 167],
+            tong4: [25015, 175],
+            tong5: [25190, 151],
+            tong6: [25340, 143],
+            bubble1: [25483, 151],
             bubble2: [25628, 165],
             click: [25793, 906],
-            twist: [26699, 140],
+            twist: [26699, 139],
             check: [26839, 106],
             check2: [26945, 110],
-            check3: [27055, 323],
+            check3: [27055, 322],
             crackle: [27378, 059],
             hit: [27437, 263],
             bubble3: [27700, 070],
@@ -58,7 +58,7 @@ var sound_sprites = new Howl({
             fly2: [36130, 1814],
             slap: [37943, 496],
             tongmax: [38440, 487],
-            flyby: [38927, 1907]
+            flyby: [38927, 1906]
             }
 });
 
@@ -73,6 +73,12 @@ function launchClip(sound_object,clip)
 function launchTongueSound()
 {
     launch_sprite = "tong" + String(Math.floor(Math.random()*6) + 1);
+    launchSound(launch_sprite);
+}
+
+function launchBurpSound()
+{
+    launch_sprite = "burp" + String(Math.floor(Math.random()*5) + 1);
     launchSound(launch_sprite);
 }
 
