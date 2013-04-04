@@ -267,7 +267,7 @@ var animate = function () {
         introFrame = 0;
     }
     // Create Intro radial gradient in foreground while everything loads in the background
-    if (introFrame < introSeconds * FPS) {
+    if (play_game_intro) {
         var external_r = 20000 - (introFrame * introFrame * 2);
         var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
         var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
@@ -289,6 +289,7 @@ var background_image = null;
 var FPS = 13;
 var introFrame = 0;
 var introSeconds = 7;
+var play_game_intro = true;
 var sun_angle = 0;
 var background_loaded = false;
 
