@@ -10,15 +10,22 @@ var max_eye_sprites = 8;
 PlayerClass = EntityClass.extend({
     id: "Player",
     points: 0,
+    volatile_points: 0,
+    volatile_points_timer: 0,
+    health: 255,
+    dead: false,
     walkSpeed: 20,
     zindex: 50,
     currSpriteName: null,
+    health_timer: 0,
     frame: 1,
     total_frames: 3,
     direction: true,
     moving: false,
     last_eye_changed: 0,
     current_eye: 1,
+    color_variation: { red: 0, green: 0, blue: 0, alpha: 0 },
+    special_color: { red: 0, green: 0, blue: 0 },
     tongue_frame: 0, // Number of frame drawn for the tongue
     miss_in_da_face: false, // When fire position is incorrect, just slap the tongue in the head
     tong_pos: { x: 0, y: 0 }, // Position of tongue start
@@ -122,12 +129,41 @@ PlayerClass = EntityClass.extend({
                 sound_atmos.fadeOut(0.0, 5000, null);
             }
         }
-        /* /// Physical tongue representation ///
-            For now it's done without physics engine because I want to collide only the tip of the tongue on the mouse click coordinates */
+        /// Life management ///
+        if (this.health_timer != 0) { // Lifetime clock
+            var now = (new Date()).getTime();
+            if ((now - this.health_timer >= 200) && (this.health >= 0)) { // Every few milliseconds life decreases
+                this.health -= 1;
+                if (this.points > 30) { // Increase dificulty
+                    this.health -= Math.floor(this.points/30);
+                }
+                this.health_timer = now;
+            }
+            if (now - this.volatile_points_timer >= 3000) { // Every few seconds red color from eating decreases
+                if (this.volatile_points > 0) {
+                    this.volatile_points--; //Slower decrease
+                }
+                this.volatile_points_timer = now;
+            }
+        } else if (!play_game_intro) { // Intro finished, life starts ticking away
+            this.health_timer = (new Date()).getTime();
+        }
+        this.color_variation.red = 8 * this.volatile_points + (255 - this.health) + this.special_color.red; // Change color depending on points and health
+        this.color_variation.green = -2 * this.volatile_points + (255 - this.health) + this.special_color.green;
+        this.color_variation.blue = -2 * this.volatile_points + (255 - this.health) + this.special_color.blue;
+        if (this.health <= 100) { // Activate transparency when player is dying
+            this.color_variation.alpha = -(255 - (this.health * 255/100));
+        } else {
+            this.color_variation.alpha = 0;
+        }
+        /// Set image size after being loaded ///
         if (this.size.width == 0 && this.size.height == 0) {
             var sprite = getSprite(this.spritename + '1.png');
             this.size.width = sprite.w;
             this.size.height = sprite.h;
+        }
+        if (this.health <= 20) { // Vanished to death -> Show dead animation
+            this.dead = true;
         }
     },
 
@@ -162,7 +198,7 @@ PlayerClass = EntityClass.extend({
                     drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37, null, player_context);
                 }
             }
-            this.change_color(real_spritename, this.pos.x, this.pos.y, this.angle, 8 * this.points, -2*this.points, -2*this.points, player_context); // Color player character
+            this.change_color(real_spritename, this.pos.x, this.pos.y, this.angle, player_context); // Color player character
         }
         if (this.tongue_frame != 0) { // Draw tongue
             if (!this.miss_in_da_face) {
@@ -191,15 +227,18 @@ PlayerClass = EntityClass.extend({
         }
     },
 
-    change_color: function (spritename, posX, posY, angle, red, green, blue, draw_context) {
+    change_color: function (spritename, posX, posY, angle, draw_context) {
         var sprite = getSprite(spritename);
         var pos = { x: posX - (sprite.w / 2), y: posY - (sprite.h / 2) };
         var imageData = draw_context.getImageData(pos.x, pos.y, sprite.w+25, sprite.h);
         var data = imageData.data;
         for (var i = 0; i < data.length; i += 4) {
-            data[i] = red + data[i]; // red
-            data[i + 1] = green + data[i + 1]; // green
-            data[i + 2] = blue + data[i + 2]; // blue
+            data[i] = this.color_variation.red + data[i]; // red
+            data[i + 1] = this.color_variation.green + data[i + 1]; // green
+            data[i + 2] = this.color_variation.blue + data[i + 2]; // blue
+            if (this.color_variation.alpha != 0) {
+                data[i + 3] = this.color_variation.alpha + data[i + 3]; // alpha
+            }
         }
         // overwrite original image
         draw_context.putImageData(imageData, pos.x, pos.y);

@@ -1,6 +1,7 @@
 ﻿
 FlyClass = EntityClass.extend({
     id: "Fly",
+    count_id: "Fly",
     speed: 1,
     angle: 0,
     zindex: 30,
@@ -9,6 +10,7 @@ FlyClass = EntityClass.extend({
     markForDeath: false,
     escaped: false,
     time_trapped: 0,
+    evil: false,
     physBody: null, // This is hooking into the Box2D Physics library
 
     init: function (x, y) {
@@ -52,6 +54,7 @@ FlyClass = EntityClass.extend({
         var physOwner = otherBody.GetUserData().ent;
         if (physOwner !== null) {
             if (physOwner._killed) return false;
+            //launchSound('flyby');
             /////////////////////////////////////////////////////console.log("Collision between flies detected!");
             /* Disabled to use manual engine with mouse coordinates
             // Kill fly only when the tongue touches it
@@ -76,7 +79,7 @@ FlyClass = EntityClass.extend({
                     (((new Date()).getTime() / 1000) - this.time_trapped > 5)) {
                     // Suicide when very far of the screen or trapped outside boundaries for long period
                     this.markForDeath = true;
-                    console.log("Fly is out of screen and it's going to suicide!!!");
+                    console.log("Fly is out of screen and it's going to suicide!!! ID:" + this.count_id);
                 }
                 angle_variation = 0;
             } else {
@@ -115,24 +118,33 @@ FlyClass = EntityClass.extend({
     },
 
     updateCatch: function (fire_x, fire_y) { // Update collisions with the tongue tip a.k.a. mouse position
-        var tongue = { left: fire_x - 25, right: fire_x + 25, top: fire_y - 25, bottom: fire_y + 25 };
-        var fly = { left: this.pos.x - 25, right: this.pos.x + 25, top: this.pos.y - 25, bottom: this.pos.y + 25 };
-        if (!(tongue.left > fly.right ||
-             tongue.right < fly.left ||
-             tongue.top > fly.bottom ||
-             tongue.bottom < fly.top)) {
-            this.markForDeath = true; // Kill when touched
-            console.log("This fly has been captured and it's going to die!!!");
-            launchSlapSound();
-            return true;
+        if (!this.markForDeath) {
+            var tongue = { left: fire_x - 25, right: fire_x + 25, top: fire_y - 25, bottom: fire_y + 25 };
+            var fly = { left: this.pos.x - 25, right: this.pos.x + 25, top: this.pos.y - 25, bottom: this.pos.y + 25 };
+            if (!(tongue.left > fly.right ||
+                 tongue.right < fly.left ||
+                 tongue.top > fly.bottom ||
+                 tongue.bottom < fly.top)) {
+                this.markForDeath = true; // Kill when touched
+                console.log("This fly has been captured and it's going to die!!! ID:" + this.count_id);
+                launchSlapSound();
+                return true;
+            }
         }
     },
 
     //-----------------------------------------
     draw: function () {
         if (this.spritename) { // Draw cloud
-            if (this.markForDeath) {
+            if (this.evil) { // Evil halo
                 var grd = context.createRadialGradient(this.pos.x, this.pos.y, 1, this.pos.x, this.pos.y, this.size.width);
+                grd.addColorStop(1, 'rgba(10,200,20,0)');
+                grd.addColorStop(0, 'rgba(0,0,0,1)');
+                context.fillStyle = grd;
+                context.fillRect(this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
+            }
+            if (this.markForDeath) {
+                var grd = context.createRadialGradient(this.pos.x, this.pos.y, 1, this.pos.x, this.pos.y, this.size.width); // Death halo
                 grd.addColorStop(1, 'rgba(10,10,15,0)');
                 grd.addColorStop(0, 'rgba(0,0,0,1)');
                 context.fillStyle = grd;

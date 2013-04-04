@@ -10,6 +10,7 @@ EngineClass = Class.extend({
     flyes_alive: 0,
     max_flyes_alive: 15,
     last_fly_created: 0,
+    total_fly_counter: 0,
 
     cheer_up_goal: 4,
     scrore_frames: 0,
@@ -90,19 +91,28 @@ EngineClass = Class.extend({
     },
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
-
+        /// Control game intro ///
+        if (introFrame >= introSeconds * FPS) {
+            play_game_intro = false;
+        }
         /// This clousure is full of shit to generate flies ///
         if ((this.flyes_alive < this.max_flyes_alive) && // Create flies until the maximum is reached
-            (introFrame == introSeconds * FPS)){ // only after game intro finishes
+            !play_game_intro){ // only after game intro finishes
             var flyID = Math.floor(Math.random() * 3);
             var seconds = (new Date()).getTime() / 1000;
             if ((flyID > 0) && (seconds - this.last_fly_created > 2)) { // Choose randomly to create fly model 1 or 2 or none only after a few seconds
-                var entFly = gEngine.spawnEntity("Fly", Math.floor(Math.random() * 1600), Math.floor(Math.random() * 700));
+                var new_pos = { x: Math.floor(Math.random() * 1600), y: Math.floor(Math.random() * 700)};
+                var entFly = gEngine.spawnEntity("Fly", new_pos.x, new_pos.y);
                 entFly.spritename = 'fly-00' + flyID;
+                entFly.count_id = ++this.total_fly_counter;
                 entFly.speed = Math.floor(Math.random() * 500) + 50;
                 entFly.zindex += Math.floor(Math.random() * 20);
+                if (new_pos.x % 12 == 0) { // Turn the fly into an evil monster!
+                    entFly.evil = true;
+                }
                 this.last_fly_created = seconds;
                 this.flyes_alive++;
+                console.log("Spawned Fly WITH COUNTER ID " + entFly.count_id);
             }
         }
 
@@ -152,13 +162,30 @@ EngineClass = Class.extend({
             }
             /// Fly hunting method when tongue animation reaches target ///
             if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) && (this.player0.tongue_frame == max_tongue_frames - 1)) {
-                if (ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y)) {
-                    this.player0.points++;
-                    console.log("Points:" + this.player0.points);
-                    if (this.player0.points >= this.cheer_up_goal) {
-                        launchSound('cheer'); // Cheer up the user
-                        this.cheer_up_goal += this.cheer_up_goal * 0.8; // Adjust complexity to less than double
-                        this.scrore_frames = 1; // Enable drawing score
+                if (ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y)) { // Points for death
+                    if (ent.evil) { // Eat an evil poisoned fly!
+                        console.log("Ate a posioned fly!!!");
+                        if (this.player0.health > 120) {
+                            this.player0.health -= 120;
+                        } else {
+                            this.player0.health = 100;
+                        }
+                        this.player0.special_color = { red: -15, green: -15, blue: -220 }; // Turn yellow
+                    } else {
+                        this.player0.points++;
+                        this.player0.volatile_points++;
+                        if (this.player0.health < 255) {
+                            this.player0.health += 30;
+                            if ((this.player0.special_color.red != 0) && (this.player0.health > 160)) {
+                                this.player0.special_color = { red: 0, green: 0, blue: 0 }; // Remove poison
+                            }
+                        }
+                        console.log("Points:" + this.player0.points);
+                        if (this.player0.points >= this.cheer_up_goal) {
+                            launchSound('cheer'); // Cheer up the user
+                            this.cheer_up_goal += this.cheer_up_goal * 0.8; // Adjust complexity to less than double
+                            this.scrore_frames = 1; // Enable drawing score
+                        }
                     }
                 }
             }
