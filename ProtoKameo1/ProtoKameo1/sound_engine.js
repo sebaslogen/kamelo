@@ -3,7 +3,7 @@ var sound_atmos = new Howl({
     urls: ['resources/sounds/kame_hi.mp3',
            'resources/sounds/kame_hi.ogg'],
     sprite: {
-            atmos: [0, 24393]
+            atmos: [0, 24400]
             },
     autoplay: false,
     loop: false,
@@ -12,7 +12,7 @@ var sound_atmos = new Howl({
 
 var sound_atmos_retriggered = false;
 
-//sound_atmos contains the atmosphere sound
+//game_music contains the music while playing
 var game_music = new Howl({
     urls: ['resources/sounds/kameongame.mp3',
            'resources/sounds/kameongame.ogg'],
@@ -30,36 +30,35 @@ var sound_sprites = new Howl({
     urls: ['resources/sounds/kame_hi.mp3',
            'resources/sounds/kame_hi.ogg'],
     sprite: {
-            atmos: [0, 24393],
-            tong1: [24393, 215],
-            tong2: [24608, 200],
-            tong3: [24808, 158],
-            tong4: [24966, 162],
-            tong5: [25128, 156],
-            tong6: [25284, 147],
-            bubble1: [25431, 157],
-            bubble2: [25590, 168],
-            click: [25758, 107],
-            twist: [25865, 838],
-            check: [26704, 104],
-            check2: [26808, 99],
-            check3: [26907, 133],
-            crackle: [27040, 322],
-            hit: [27363, 58],
-            wow: [27421, 266],
-            bubble3: [27686, 172],
-            oops: [27858, 796],
-            burp1: [28654, 642],
-            burp2: [29296, 666],
-            burp3: [29962, 673],
-            burp4: [30636, 890],
-            burp5: [31525, 116],
+            atmos: [0, 24440],
+            tong1: [24418, 255],
+            tong2: [24847, 167],
+            tong3: [25014, 175],
+            tong4: [25190, 151],
+            tong5: [25340, 143],
+            tong6: [25483, 145],
+            bubble1: [25458, 154],
+            bubble2: [25628, 165],
+            click: [25793, 906],
+            twist: [26699, 140],
+            check: [26839, 106],
+            check2: [26945, 110],
+            check3: [27055, 323],
+            crackle: [27378, 059],
+            hit: [27437, 263],
+            bubble3: [27700, 070],
+            oops: [27770, 797],
+            burp1: [28567, 644],
+            burp2: [29210, 663],
+            burp3: [29873, 675],
+            burp4: [30549, 888],
+            burp5: [31437, 130],
             cheer: [31674, 2929],
-            fly1: [34604, 1886],
-            fly2: [36491, 1886],
-            fly3: [38376, 1868],
-            fly4: [40245, 1852],
-            slap: [42100, 383]
+            fly1: [34210, 1860],
+            fly2: [36130, 1814],
+            slap: [37943, 496],
+            tongmax: [38440, 487],
+            flyby: [38927, 1907]
             }
 });
 
