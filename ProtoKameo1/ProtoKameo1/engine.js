@@ -21,9 +21,9 @@ EngineClass = Class.extend({
         gInput.setup();
         // Create physics engine
         gPhysicsEngine.create();
+        /**
         // Add contact listener
         gPhysicsEngine.addContactListener({
-
             PostSolve: function (bodyA, bodyB, impulse) {
                 var uA = bodyA ? bodyA.GetUserData() : null;
                 var uB = bodyB ? bodyB.GetUserData() : null;
@@ -40,7 +40,7 @@ EngineClass = Class.extend({
                     }
                 }
             }
-        });
+        });*/
         // Create game entities
         this.player0 = gEngine.spawnEntity("Player", 250, 680); // Create player with initial position in canvas
         this.player0.spritename = 'kami-walk-00';
@@ -49,7 +49,7 @@ EngineClass = Class.extend({
     spawnEntity: function (typename, x, y) {
         var entityClass = gEngine.factory[typename];
         var ent = new (entityClass)(x, y);
-        console.log("SPAWNING " + typename + " WITH ID " + ent.id);
+        //////////////////////////////console.log("SPAWNING " + typename + " WITH ID " + ent.id);
         gEngine.entities.push(ent);
         return ent;
     },
@@ -107,16 +107,14 @@ EngineClass = Class.extend({
                 entFly.count_id = ++this.total_fly_counter;
                 entFly.speed = Math.floor(Math.random() * 500) + 50;
                 entFly.zindex += Math.floor(Math.random() * 20);
-                if (new_pos.x % 12 == 0) { // Turn the fly into an evil monster!
+                if (new_pos.x % 11 == 0) { // Turn the fly into an evil monster!
                     entFly.evil = true;
                 }
                 this.last_fly_created = seconds;
                 this.flyes_alive++;
                 // Play fly sound
                 launchFlySound();
-
-                console.log("Spawned Fly WITH COUNTER ID " + entFly.count_id);
-
+                ////////////////////////////////console.log("Spawned Fly WITH COUNTER ID " + entFly.count_id);
             }
         }
 
@@ -165,17 +163,23 @@ EngineClass = Class.extend({
                 }
             }
             /// Fly hunting method when tongue animation reaches target ///
-            if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) && (this.player0.tongue_frame == max_tongue_frames - 1)) {
+            if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) &&
+                (this.player0.tongue_frame == max_tongue_frames - 1) && !this.player0.dead) {
                 if (ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y)) { // Points for death
                     if (ent.evil) { // Eat an evil poisoned fly!
+                        launchBurpSound(); // Kami burps when catching an evil fly
                         console.log("Ate a posioned fly!!!");
-                        if (this.player0.health > 120) {
-                            this.player0.health -= 120;
+                        if (this.player0.health > 190) {
+                            this.player0.health -= 100;
+                        } else if (this.player0.health > 130) {
+                            this.player0.health -= 50;
                         } else {
-                            this.player0.health = 100;
+                            this.player0.health = 80;
                         }
                         this.player0.special_color = { red: -15, green: -15, blue: -220 }; // Turn yellow
                     } else {
+                        /////////////////////// Catch sound missing
+                        //launchSound('DrySlap!');
                         this.player0.points++;
                         this.player0.volatile_points++;
                         if (this.player0.health < 255) {
@@ -302,8 +306,6 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle, draw_context
         draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
         draw_context.rotate(-angle);
         draw_context.translate(-posX, -posY);
-
-        /////////////////////////////console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + (0 + hlf.y) + " " + (0 + hlf.y) + " " + spt.w + " " + spt.h + " angle:" + angle);
     } else {
         draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
     }

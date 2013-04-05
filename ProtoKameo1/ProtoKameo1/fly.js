@@ -48,7 +48,7 @@ FlyClass = EntityClass.extend({
     },
 
     //-----------------------------------------
-    onTouch: function (otherBody, point, impulse) {
+    /*onTouch: function (otherBody, point, impulse) {
         if (!this.physBody) return false;
         if (!otherBody.GetUserData()) return false;
         var physOwner = otherBody.GetUserData().ent;
@@ -56,15 +56,15 @@ FlyClass = EntityClass.extend({
             if (physOwner._killed) return false;
             //launchSound('flyby');
             /////////////////////////////////////////////////////console.log("Collision between flies detected!");
-            /* Disabled to use manual engine with mouse coordinates
+            // Disabled to use manual engine with mouse coordinates
             // Kill fly only when the tongue touches it
             if (otherBody.GetUserData() && (otherBody.GetUserData().id != "Fly")) { // Something collided with me that was not a Fly!
                 this.markForDeath = true; // Kill when touched
                 console.log("This fly has been captured and it's going to die!!!");
-            }*/
+            }
         }
         return true;
-    },
+    },*/
 
     update: function () { //Update positions
         if (this.markForDeath == true) {
@@ -119,16 +119,15 @@ FlyClass = EntityClass.extend({
 
     updateCatch: function (fire_x, fire_y) { // Update collisions with the tongue tip a.k.a. mouse position
         if (!this.markForDeath) {
-            var tongue = { left: fire_x - 25, right: fire_x + 25, top: fire_y - 25, bottom: fire_y + 25 };
-            var fly = { left: this.pos.x - 25, right: this.pos.x + 25, top: this.pos.y - 25, bottom: this.pos.y + 25 };
+            var fuzz = 30;
+            var tongue = { left: fire_x - fuzz, right: fire_x + fuzz, top: fire_y - fuzz, bottom: fire_y + fuzz };
+            var fly = { left: this.pos.x - fuzz, right: this.pos.x + fuzz, top: this.pos.y - fuzz, bottom: this.pos.y + fuzz };
             if (!(tongue.left > fly.right ||
                  tongue.right < fly.left ||
                  tongue.top > fly.bottom ||
                  tongue.bottom < fly.top)) {
                 this.markForDeath = true; // Kill when touched
                 console.log("This fly has been captured and it's going to die!!! ID:" + this.count_id);
-                // Kami burps when catching a fly
-                launchBurpSound();
                 return true;
             }
         }
