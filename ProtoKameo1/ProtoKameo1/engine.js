@@ -112,7 +112,11 @@ EngineClass = Class.extend({
                 }
                 this.last_fly_created = seconds;
                 this.flyes_alive++;
+                // Play fly sound
+                launchFlySound();
+
                 console.log("Spawned Fly WITH COUNTER ID " + entFly.count_id);
+
             }
         }
 
@@ -298,7 +302,7 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle, draw_context
         draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
         draw_context.rotate(-angle);
         draw_context.translate(-posX, -posY);
-        
+
         /////////////////////////////console.log("Painting in " + spt.x + " " + spt.y + " " + spt.w + " " + spt.h + " " + (0 + hlf.y) + " " + (0 + hlf.y) + " " + spt.w + " " + spt.h + " angle:" + angle);
     } else {
         draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);

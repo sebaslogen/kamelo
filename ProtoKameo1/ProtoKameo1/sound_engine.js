@@ -82,6 +82,12 @@ function launchBurpSound()
     launchSound(launch_sprite);
 }
 
+function launchFlySound()
+{
+    launch_sprite = "fly" + String(Math.floor(Math.random()*2) + 1);
+    launchSound(launch_sprite);
+}
+
 function launchSlapSound()
 {
     launchSound('slap');
