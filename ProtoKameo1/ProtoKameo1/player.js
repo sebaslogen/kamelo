@@ -315,7 +315,7 @@ PlayerClass = EntityClass.extend({
     },
 
     change_color: function (spritename, posX, posY, angle, draw_context) {
-        var offset_face = 45;
+        var offset_face = 50;
         var sprite = getSprite(spritename);
         var pos = { x: posX - (sprite.w / 2), y: posY - (sprite.h / 2) };
         var drawing_pos = { x: pos.x, y: pos.y };
