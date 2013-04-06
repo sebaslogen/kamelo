@@ -84,7 +84,8 @@ EngineClass = Class.extend({
         background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
         if (this.scrore_frames > 0) { // Draw Score
             background_context.font = 'bold 500pt Verdana';
-            background_context.fillStyle = 'blue';
+            var points_color = Math.round(this.player0.points * 255 / end_of_game_points);
+            background_context.fillStyle = 'rgba(' + points_color + ',0,' + (255 - points_color) + ',1)';
             background_context.textAlign = 'center';
             background_context.fillText(this.player0.points, canvas.width / 2, canvas.height / 2 + 200);
             this.scrore_frames = (this.scrore_frames + 1) % (FPS + 2); // Show for one second
@@ -96,8 +97,6 @@ EngineClass = Class.extend({
         /// Control game intro ///
         if ((introFrame >= introSeconds * FPS) && play_game_intro) {
             play_game_intro = false;
-            victory = true; //////////////////////////
-            createFirework(); // Player has win, show victory animation
         }
         /// This clousure is full of shit to generate flies ///
         if ((this.flyes_alive < this.max_flyes_alive) && // Create flies until the maximum is reached
@@ -118,7 +117,6 @@ EngineClass = Class.extend({
                 this.flyes_alive++;
                 // Play fly sound
                 launchFlySound();
-                ////////////////////////////////console.log("Spawned Fly WITH COUNTER ID " + entFly.count_id);
             }
         }
 
@@ -182,7 +180,7 @@ EngineClass = Class.extend({
                         }
                         this.player0.special_color = { red: -15, green: -15, blue: -220 }; // Turn yellow
                     } else {
-                        /////////////////////// Catch sound missing
+                        ////////////////////////////////// Catch sound missing
                         //launchSound('DrySlap!');
                         this.player0.points++;
                         this.player0.volatile_points++;
@@ -193,10 +191,14 @@ EngineClass = Class.extend({
                             }
                         }
                         console.log("Points:" + this.player0.points);
-                        if (this.player0.points >= this.cheer_up_goal) {
+                        if ((this.player0.points >= this.cheer_up_goal) || (this.player0.points >= end_of_game_points)) {
                             launchSound('cheer'); // Cheer up the user
-                            this.cheer_up_goal += this.cheer_up_goal * 0.8; // Adjust next target to less than double
+                            this.cheer_up_goal += Math.round(this.cheer_up_goal * 0.4); // Adjust next target to a little bit more difficult
                             this.scrore_frames = 1; // Enable drawing score
+                            if (this.player0.points >= end_of_game_points) { // Victory trigger
+                                victory = true;
+                                createFirework(); // Player has win, show victory animation
+                            }
                         }
                     }
                 }

@@ -258,27 +258,37 @@ var setup = function () {
 };
 
 var animateBackground = function () {
-    gEngine.updateBackground();
-    gEngine.drawBackground();
+    if (!end) {
+        gEngine.updateBackground();
+        gEngine.drawBackground();
+    }
 };
 
 var animate = function () {
-    if (background_loaded) { /// Main game update loop /// - This is where all the shit happens to attract the flies
-        gEngine.update();
-        gEngine.draw();
-    } else { // Reset start up animation until background image is loaded
-        introFrame = 0;
-    }
-    // Create Intro radial gradient in foreground while everything loads in the background
-    if (play_game_intro) {
-        var external_r = 20000 - (introFrame * introFrame * 2);
-        var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
-        var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
-        grd.addColorStop(1, 'transparent');
-        grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
-        player_context.fillStyle = grd;
-        player_context.fillRect(0, 0, canvas.width, canvas.height);
-        introFrame++;
+    if (!end) {
+        if (background_loaded) { /// Main game update loop /// - This is where all the shit happens to attract the flies
+            gEngine.update();
+            gEngine.draw();
+        } else { // Reset start up animation until background image is loaded
+            introFrame = 0;
+        }
+        // Create Intro radial gradient in foreground while everything loads in the background
+        if (play_game_intro) {
+            var external_r = 20000 - (introFrame * introFrame * 2);
+            var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
+            var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
+            grd.addColorStop(1, 'transparent');
+            grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
+            player_context.fillStyle = grd;
+            player_context.fillRect(0, 0, canvas.width, canvas.height);
+            introFrame++;
+        }
+    } else {
+        player_context.fillStyle = "rgba(0, 0, 0, 1)"; // Fill in black
+        background_context.font = 'bold 200pt Verdana';
+        background_context.fillStyle = 'blue';
+        background_context.textAlign = 'center';
+        background_context.fillText('The End', canvas.width / 2, canvas.height / 2 + 200);
     }
 };
 
@@ -296,6 +306,8 @@ var play_game_intro = true;
 var sun_angle = 0;
 var background_loaded = false;
 var victory = false;
+var end = false;
+var end_of_game_points = 50;
 
 
 var disable_sound = false; // Debug option to disable any sound

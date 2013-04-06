@@ -1,4 +1,5 @@
 ﻿// forked from norahiko's "花火 - fireworks" http://jsdo.it/norahiko/ls6x
+// Customized and tuned for Kamelo
 // =================================
 // Const
 // =================================
@@ -14,7 +15,7 @@ var defaultConfig = {
     radius: 5,              // px
     amount: 100,            // particle number
     speed: 12,
-    gravity: 0.2,
+    gravity: 0.1,
     friction: 0.96,
     reduction: 0.98,
     left: 0.2,
@@ -26,7 +27,7 @@ var defaultConfig = {
 function createFirework() {
     for (var i = 0; i < 15; i++) {
         var firework = new Firework({
-            duration: 200,
+            duration: 1000,
             left: Math.random() * 0.5 + 0.25,
             top: Math.random() * 0.5 + 0.25,
             amount: 80,
@@ -34,7 +35,7 @@ function createFirework() {
             radius: 4,
             reduction: 1,
             friction: 0.95,
-            speed: 15,
+            speed: Math.random() * 30 + 15,
             color: "hsl(" + Math.random() * 360 + ", 100%, 50%)"
         });
         Canvas.add(firework);
@@ -68,7 +69,7 @@ Firework.prototype = {
     initParticles: function () {
         this.particles = [];
         var x = this.canvas.width * this.left;
-        var y = this.canvas.height * this.top;
+        var y = (this.canvas.height - 100) * this.top;
         var maxSpeed = (this.speed / 2) * (this.speed / 2);
 
         while (this.particles.length < this.amount) {
@@ -102,6 +103,7 @@ Firework.prototype = {
             particle.x += particle.vx;
             particle.y += particle.vy;
         }
+        this.gravity += 0.01 + (this.gravity * this.gravity * this.gravity / 30); // Increase gravity towards the end of the animation
     },
 
     render: function () {
@@ -190,17 +192,10 @@ var Canvas = {
 
         if (0 < activeFireworkCount) {
             requestAnimationFrame(this.update.bind(this));
-        }/* else {
-            requestAnimationFrame(this.fadeout.bind(this, 10));
-        }*/
-    },
-
-    fadeout: function (count) {
-        if (count < 0) return;    // animation end
-        /*this.context.globalAlpha = 1;
-        this.context.fillStyle = "rgba(0, 0, 0, 0.2)";
-        this.fill();*/
-        requestAnimationFrame(this.fadeout.bind(this, count - 1));
+        } else {
+            victory = false;
+            end = true;
+        }
     }
 };
 

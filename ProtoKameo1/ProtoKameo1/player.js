@@ -218,6 +218,9 @@ PlayerClass = EntityClass.extend({
             if (this.angle < 1) {
                 this.angle += 0.008;
             }
+            if (this.dead_altitud == 10) { // End of game
+                end = true;
+            }
         }
     },
 
