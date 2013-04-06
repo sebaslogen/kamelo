@@ -6,6 +6,7 @@ var tongue_tilting_angle = 25; // This tilts the tongue to elevate the tip of th
 var max_tongue_frames = 3;
 var max_tongue_size = 700;
 var max_eye_sprites = 8;
+var max_tail_sprites = 3; ///////////////////////// INCREASE
 
 PlayerClass = EntityClass.extend({
     id: "Player",
@@ -18,12 +19,15 @@ PlayerClass = EntityClass.extend({
     zindex: 50,
     currSpriteName: null,
     health_timer: 0,
+    last_fire_timer: 0,
     frame: 1, // Player current frame for walking animation
     total_frames: 3,
     direction: true,
     moving: false,
     last_eye_changed: 0,
     current_eye: 1,
+    last_tail_changed: 0,
+    current_tail: 0,
     color_variation: { red: 0, green: 0, blue: 0, alpha: 0 },
     special_color: { red: 0, green: 0, blue: 0 },
     dead_altitud: 0,
@@ -66,9 +70,9 @@ PlayerClass = EntityClass.extend({
 
     update: function () {
         if (!this.dead) { // Update positions only when player is alive
+            var now = (new Date()).getTime();
+            /// Calculate horizontal movement ///
             var move_dir = new Vec2(0, 0);
-            /*move_dir.x = 0;
-            move_dir.y = 0;*****************/
             if ((gInput.actions['move-left']) && (this.pos.x > 100)) { // adjust the move_dir by 1 in the x direction.
                 move_dir.x -= 1;
                 this.moving = true;
@@ -86,12 +90,29 @@ PlayerClass = EntityClass.extend({
             }
             this.pos.x += move_dir.x;
 
-            /// Graphical tongue representation ///
-            // Tongue fire distance and angle from mouth calculations
+            /// Body animations ///
+            if ((now / 10) - this.last_eye_changed > 70) { // Every less than a second it's possible to change the eye
+                this.last_eye_changed = now / 10;
+                this.current_eye = Math.floor(Math.random() * (max_eye_sprites + 1));
+            }
+            if (this.color_variation.alpha != 0) { // Only change tails when not dying
+                this.current_tail = 0;
+            } else {
+                if (this.current_tail == 2) { // When showing long tail
+                    this.last_tail_changed -= 50; // Very short long tail show
+                }
+                if ((now / 10) - this.last_tail_changed > 150) { // Every less than a second it's possible to change the eye
+                    this.last_tail_changed = now / 10;
+                    this.current_tail = Math.floor(Math.random() * (max_tail_sprites + 1));
+                }
+            }
+
+            /// Graphical tongue representation /// - Tongue fire distance and angle from mouth calculations
             // Step 1 record hit position //
             if (gInput.actions['fire-mouse']) { // Update tongue TARGET position only after shoot, not during player movement either mouse move
                 this.tong_fire_pos.x = gInput.mouse.x;
                 this.tong_fire_pos.y = gInput.mouse.y;
+                this.last_fire_timer = now / 1000; // Record time in seconds of last fire
             }
             // Step 2 calculate distance and angle from player to hit position //
             if (gInput.actions['fire-mouse'] || (this.tongue_frame != 0)) {// Keep updating tongue position while the tongue is out
@@ -116,6 +137,7 @@ PlayerClass = EntityClass.extend({
             if (gInput.actions['fire-mouse']) { // launch the sound for the tongue and the animation
                 gInput.actions['fire-mouse'] = false;
                 this.tongue_frame = 1; // Activate tongue animation
+                this.current_tail = 2;
                 if ((this.angle < -1.9078242687063418) || (this.angle > 0.065) || this.tong_distance < 100) { // Behind, below or too close fire will slap in the face
                     this.miss_in_da_face = true; // Not possible to hit target position
                     launchSlapSound();
@@ -128,10 +150,19 @@ PlayerClass = EntityClass.extend({
                     gamer_active = true;
                     sound_atmos.fadeOut(0.0, 5000, null);
                 }
-            }
+            }/** Code not working well
+            else if ((this.last_fire_timer != 0) && gamer_active && ((now / 1000) - this.last_fire_timer > 5)) { // When player is not firing for a long period
+                gamer_active = false;
+                game_music.fadeOut(0.0, 5000, null);
+                //launchClip(sound_atmos, 'atmos');
+                //sound_atmos.stop().play();
+                sound_atmos.pause().fadeIn(0.1, 2000);
+                sound_atmos_retriggered = true;
+                //sound_atmos.fadeIn(0.0, 3000, null);
+                console.log("Retriggered is:" + sound_atmos_retriggered);
+            }*/
             /// Life management ///
             if (this.health_timer != 0) { // Lifetime clock
-                var now = (new Date()).getTime();
                 if ((now - this.health_timer >= 200) && (!this.dead)) { // Every few milliseconds life decreases
                     this.health -= 1;
                     if (this.points > 30) { // Increase dificulty
@@ -156,7 +187,7 @@ PlayerClass = EntityClass.extend({
             this.color_variation.green = -2 * this.volatile_points + (255 - this.health) + this.special_color.green;
             this.color_variation.blue = -2 * this.volatile_points + (255 - this.health) + this.special_color.blue;
             if (this.health <= 150) { // Activate transparency when player is dying
-                this.color_variation.alpha = -(255 - (this.health * 255 / 150));
+                this.color_variation.alpha = (this.health * 255 / 150) - 255;
             } else {
                 this.color_variation.alpha = 0;
             }
@@ -202,14 +233,14 @@ PlayerClass = EntityClass.extend({
                     player_context.clearRect(this.pos.x + 112, this.pos.y - 96, 48, 48); // Clean up previous face
                     drawSprite('kami-head-slap.png', this.pos.x + 163, this.pos.y - 25, null, player_context);
                 } else { // Draw different face animations
-                    var now = (new Date()).getTime() / 10;
-                    if (now - this.last_eye_changed > 70) { // Every less than a second it's possible to change the eye
-                        this.last_eye_changed = now;
-                        this.current_eye = Math.floor(Math.random() * (max_eye_sprites + 1));
-                    }
                     if (this.current_eye != 0) { // Draw a new eye on top of the default eye
                         drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37, null, player_context);
                     }
+                }
+                if (this.current_tail != 0) { // Paint alternative tails
+                    player_context.clearRect(this.pos.x - (this.size.width / 2) + 60, this.pos.y + 5, 70, 40); // Delete beginning of tail
+                    player_context.clearRect(this.pos.x - (this.size.width / 2), this.pos.y - 30, 120, 100); // Delete end of tail
+                    drawSprite('kami-tail-00' + this.current_tail + '.png', this.pos.x - 132, this.pos.y + 33, null, player_context);
                 }
                 this.change_color(real_spritename, this.pos.x, this.pos.y, this.angle, player_context); // Color player character
                 /// Tongue drawing ///
@@ -239,40 +270,63 @@ PlayerClass = EntityClass.extend({
                     }
                 }
             } else { // Dead, show pass to death
-                var real_spritename = this.spritename + this.frame + '.png'; // Draw phantom first
-                drawSprite(real_spritename, this.pos.x, this.dead_altitud, this.angle, player_context);
-                this.change_color(real_spritename, this.pos.x, this.dead_altitud, this.angle, player_context); // Color player character
-                drawSprite('kami-dead-00' + this.tongue_frame + '.png', this.pos.x, this.pos.y, null, player_context); // Draw dead body
                 if (this.dead_altitud < this.pos.y - 30) {
                     this.tongue_frame = 2;
-                }
+                    var real_spritename = this.spritename + this.frame + '.png'; // Draw phantom first
+                    drawSprite(real_spritename, this.pos.x, this.dead_altitud, this.angle, player_context);
+                    this.change_color(real_spritename, this.pos.x, this.dead_altitud, this.angle, player_context); // Color player character
+                }                
+                drawSprite('kami-dead-00' + this.tongue_frame + '.png', this.pos.x, this.pos.y, null, player_context); // Draw dead body
             }
         }
     },
 
     change_color: function (spritename, posX, posY, angle, draw_context) {
+        var offset_face = 45;
         var sprite = getSprite(spritename);
         var pos = { x: posX - (sprite.w / 2), y: posY - (sprite.h / 2) };
-        var drawing_pos = { x: posX - (sprite.w / 2), y: posY - (sprite.h / 2) };
+        var drawing_pos = { x: pos.x, y: pos.y };
         var max_side = 0;
         var imageData = null;
         if ((typeof angle !== 'undefined') && (angle != null) && (angle != 0)) { // Rotate
             draw_context.translate(pos.x, pos.y);
             draw_context.rotate(angle);
-            max_side = Math.max(sprite.w + 45, sprite.h);
+            max_side = Math.max(sprite.w + offset_face, sprite.h);
             drawing_pos = { x: posX - (max_side / 2), y: posY - (max_side / 2) };
             imageData = draw_context.getImageData(drawing_pos.x, drawing_pos.y, max_side, max_side);
         } else {
-            imageData = draw_context.getImageData(pos.x, pos.y, sprite.w + 45, sprite.h);
+            imageData = draw_context.getImageData(drawing_pos.x, drawing_pos.y, sprite.w + offset_face, sprite.h);
         }
         var data = imageData.data;
         for (var i = 0; i < data.length; i += 4) {
+            if (data[i + 3] == 0) {
+                continue; // Skip repainting transparent pixels!
+            }
             data[i] = this.color_variation.red + data[i]; // red
             data[i + 1] = this.color_variation.green + data[i + 1]; // green
             data[i + 2] = this.color_variation.blue + data[i + 2]; // blue
             if (this.color_variation.alpha != 0) {
                 data[i + 3] = this.color_variation.alpha + data[i + 3]; // alpha
             }
+        }
+        // Repaint tail separately
+        var offset_tail = 0;
+        if (this.current_tail != 0) { // Draw offset box for tail
+            offset_tail = { x: 100, y: 5};
+            var tailImageData = draw_context.getImageData(pos.x - offset_tail.x, pos.y - offset_tail.y, sprite.w / 3, sprite.h);
+            data = tailImageData.data;
+            for (var i = 0; i < data.length; i += 4) {
+                if (data[i + 3] == 0) {
+                    continue; // Skip repainting transparent pixels!
+                }
+                data[i] = this.color_variation.red + data[i]; // red
+                data[i + 1] = this.color_variation.green + data[i + 1]; // green
+                data[i + 2] = this.color_variation.blue + data[i + 2]; // blue
+                if (this.color_variation.alpha != 0) {
+                    data[i + 3] = this.color_variation.alpha + data[i + 3]; // alpha
+                }
+            }
+            draw_context.putImageData(tailImageData, pos.x - offset_tail.x, pos.y - offset_tail.y); // re-draw original image modified
         }
         draw_context.putImageData(imageData, drawing_pos.x, drawing_pos.y); // re-draw original image modified
         if ((typeof angle !== 'undefined') && (angle != null) && (angle != 0)) {

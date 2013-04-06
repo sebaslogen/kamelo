@@ -17,6 +17,8 @@ EngineClass = Class.extend({
 
     //-----------------------------
     setup: function () {
+        // Start atmosphere sound => while playing equals true, I will trigger the atmosphere background sound
+        launchClip(sound_atmos, 'atmos');
         // Call our input setup method to bind our keys to actions and set the event listeners.
         gInput.setup();
         // Create physics engine
@@ -313,7 +315,5 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle, draw_context
 
 
 
-// Start atmosphere sound => while playing equals true, I will trigger the atmosphere background sound
-launchClip(sound_atmos, 'atmos');
 var gEngine = new EngineClass();
 console.log("Engine loaded!");
