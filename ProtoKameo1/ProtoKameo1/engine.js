@@ -94,8 +94,10 @@ EngineClass = Class.extend({
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
         /// Control game intro ///
-        if (introFrame >= introSeconds * FPS) {
+        if ((introFrame >= introSeconds * FPS) && play_game_intro) {
             play_game_intro = false;
+            victory = true; //////////////////////////
+            createFirework(); // Player has win, show victory animation
         }
         /// This clousure is full of shit to generate flies ///
         if ((this.flyes_alive < this.max_flyes_alive) && // Create flies until the maximum is reached
@@ -156,11 +158,11 @@ EngineClass = Class.extend({
             var ent = gEngine.entities[i];
             if (ent.physBody) {
                 if (ent.id == "Fly") { // Only flies follow the physics system
-                    ent.pos = ent.physBody.GetPosition();
+                    ent.pos = ent.physBody.GetPosition(); // Update position
                     if ((ent.angle != 'undetermined') && (ent.angle != null)) {
-                        ent.angle = ent.physBody.GetAngle();
+                        ent.angle = ent.physBody.GetAngle(); // Update angle
                     }
-                } else if (ent.id == "Player") {
+                } else if (ent.id == "Player") { // Update physical body position from manual movement
                     ent.physBody.SetPosition(new Vec2(ent.pos.x, ent.pos.y));
                 }
             }
@@ -193,7 +195,7 @@ EngineClass = Class.extend({
                         console.log("Points:" + this.player0.points);
                         if (this.player0.points >= this.cheer_up_goal) {
                             launchSound('cheer'); // Cheer up the user
-                            this.cheer_up_goal += this.cheer_up_goal * 0.8; // Adjust complexity to less than double
+                            this.cheer_up_goal += this.cheer_up_goal * 0.8; // Adjust next target to less than double
                             this.scrore_frames = 1; // Enable drawing score
                         }
                     }
@@ -206,7 +208,7 @@ EngineClass = Class.extend({
     draw: function () {
         context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
         player_context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
-
+        
         // Bucket entities by zIndex
         var fudgeVariance = 128;
         var zIndex_array = [];
@@ -234,6 +236,10 @@ EngineClass = Class.extend({
                 entity.draw();
             });
         });
+        if (victory) {
+            context.fillStyle = "rgba(0, 0, 0, 0.5)"; // Dark everything behind player when winning
+            context.fillRect(0, 0, canvas.width, canvas.height);
+        }
     },
 
 });

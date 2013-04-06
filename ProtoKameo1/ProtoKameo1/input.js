@@ -34,13 +34,19 @@ InputClass = Class.extend({
     onMouseMove: function (event) { // Get coordinates avoiding webpage scrolling offsets
         gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
         gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-        var pos = findPos(canvas); // Get canvas current position
+        var pos = findPos(player_canvas); // Get canvas current position
         gInput.mouse.x -= pos.x;
         gInput.mouse.y -= pos.y;
+        gEngine.player0.direct_eyes = true;
     },
 
     //-----------------------------
     onClick: function (event) {
+        gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+        gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+        var pos = findPos(player_canvas); // Get canvas current position
+        gInput.mouse.x -= pos.x;
+        gInput.mouse.y -= pos.y; // Update click coordonates in case mouse move event occurs late
         var action = gInput.bindings[event.keyCode];
         console.log("fire mouse on coordinates: " + gInput.mouse.x + "," + gInput.mouse.y);
         if (action) {

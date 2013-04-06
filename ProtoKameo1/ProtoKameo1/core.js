@@ -209,6 +209,9 @@ var setup = function () {
     // Background canvas
     background_canvas = document.getElementById('background');
     background_context = background_canvas.getContext('2d');
+    // Initialize fireworks Canvas
+    Canvas.canvas = document.getElementById('FireworksCanvas');
+    Canvas.context = Canvas.canvas.getContext('2d');
 
     // Load each image URL from the assets array into the frames array in the correct order.
     var spriteSheet = new SpriteSheetClass();
@@ -286,12 +289,13 @@ var context = null;
 var background_canvas = null;
 var background_context = null;
 var background_image = null;
-var FPS = 13;
+var FPS = 14;
 var introFrame = 0;
 var introSeconds = 7;
 var play_game_intro = true;
 var sun_angle = 0;
 var background_loaded = false;
+var victory = false;
 
 
 var disable_sound = false; // Debug option to disable any sound

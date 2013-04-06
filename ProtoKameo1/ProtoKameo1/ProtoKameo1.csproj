@@ -29,6 +29,7 @@
     <Content Include="entity.js" />
     <Content Include="cloud.js" />
     <Content Include="fly.js" />
+    <Content Include="fireworks.js" />
     <Content Include="pyshics.js" />
     <Content Include="mountains.png" />
     <Content Include="player.js" />

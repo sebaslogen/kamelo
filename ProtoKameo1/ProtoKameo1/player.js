@@ -15,6 +15,7 @@ PlayerClass = EntityClass.extend({
     volatile_points_timer: 0,
     health: 255,
     dead: false,
+    dizzy: false,
     walkSpeed: 20,
     zindex: 50,
     currSpriteName: null,
@@ -24,6 +25,7 @@ PlayerClass = EntityClass.extend({
     total_frames: 3,
     direction: true,
     moving: false,
+    direct_eyes: false,
     last_eye_changed: 0,
     current_eye: 1,
     last_tail_changed: 0,
@@ -71,25 +73,38 @@ PlayerClass = EntityClass.extend({
     update: function () {
         if (!this.dead) { // Update positions only when player is alive
             var now = (new Date()).getTime();
+
             /// Calculate horizontal movement ///
             var move_dir = new Vec2(0, 0);
-            if ((gInput.actions['move-left']) && (this.pos.x > 100)) { // adjust the move_dir by 1 in the x direction.
+            if ((gInput.actions['move-left']) && (this.pos.x > 100)) { // adjust the move_dir by 1 in the x direction
                 move_dir.x -= 1;
                 this.moving = true;
                 console.log("Muevo Izq");
             }
-            if ((gInput.actions['move-right']) && (this.pos.x < canvas.width - 150)) { // adjust the move_dir by 1 in the x direction.
-                move_dir.x += 1;
-                this.moving = true;
+            if ((gInput.actions['move-right']) && (this.pos.x < canvas.width - 150)) { // adjust the move_dir by 1 in the x direction
+                if (this.moving) { // Dizzy moving both ways
+                    this.current_eye = Math.floor(Math.random() * (max_eye_sprites + 1));
+                    this.current_tail = Math.floor(Math.random() * (max_tail_sprites + 1));
+                    if (!this.dizzy && (this.current_tail % 5 == 0)) { // Dizzy sound at some random dizzy point
+                        launchBurpSound();
+                        this.dizzy = true;
+                    }
+                    this.moving = this.current_tail % 5 == 0;// This stops from moving in the same spot constantly (now randomly)
+                } else {
+                    this.dizzy = false;
+                    this.moving = true;
+                }
+                move_dir.x += 1;                
                 console.log("Muevo Derch");
             }
+
             // Fake physics, simply move in x axis
             if (move_dir.LengthSquared()) {// After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
                 move_dir.Normalize(); // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
                 move_dir.Multiply(this.walkSpeed); // Next, multiply 'move_dir' by the player's set 'walkSpeed'. We do this in case we might want to change the player's walk speed due to a power-up, etc.
             }
             this.pos.x += move_dir.x;
-
+            
             /// Body animations ///
             if ((now / 10) - this.last_eye_changed > 70) { // Every less than a second it's possible to change the eye
                 this.last_eye_changed = now / 10;
@@ -99,13 +114,14 @@ PlayerClass = EntityClass.extend({
                 this.current_tail = 0;
             } else {
                 if (this.current_tail == 2) { // When showing long tail
-                    this.last_tail_changed -= 50; // Very short long tail show
+                    this.last_tail_changed -= 20; // Very short long tail show
                 }
                 if ((now / 10) - this.last_tail_changed > 150) { // Every less than a second it's possible to change the eye
                     this.last_tail_changed = now / 10;
                     this.current_tail = Math.floor(Math.random() * (max_tail_sprites + 1));
                 }
             }
+            var angle_calculated = false;
 
             /// Graphical tongue representation /// - Tongue fire distance and angle from mouth calculations
             // Step 1 record hit position //
@@ -115,23 +131,9 @@ PlayerClass = EntityClass.extend({
                 this.last_fire_timer = now / 1000; // Record time in seconds of last fire
             }
             // Step 2 calculate distance and angle from player to hit position //
-            if (gInput.actions['fire-mouse'] || (this.tongue_frame != 0)) {// Keep updating tongue position while the tongue is out
-                this.tong_pos.x = this.pos.x + this.tong_offset.x;
-                this.tong_pos.y = this.pos.y + this.tong_offset.y;
-                var tong_size_x = this.tong_fire_pos.x - this.tong_pos.x;
-                var tong_size_y = this.tong_fire_pos.y - this.tong_pos.y;
-                this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
-                if (this.tong_distance > max_tongue_size) {
-                    this.tong_distance = max_tongue_size;
-                    launchSound('tongmax');
-                }
-                var angle_tip_tongue_offset = Math.atan2(-tongue_tilting_angle, this.tong_distance); // This tilts the tongue to elevate the tip of the tongue to make it overlap the mouse
-                this.angle = -Math.atan2(-tong_size_y, tong_size_x)
-                if (this.tong_distance == max_tongue_size) { // Undo all math calculations to return the position of the cursor(tongue tip) in a limited tongue
-                    this.tong_fire_pos.x = (Math.cos(this.angle) * max_tongue_size) + this.tong_pos.x;
-                    this.tong_fire_pos.y = (Math.sin(this.angle) * max_tongue_size) + this.tong_pos.y;
-                }
-                this.angle += angle_tip_tongue_offset;
+            if ((gInput.actions['fire-mouse'] || (this.tongue_frame != 0)) && !angle_calculated) {// Keep updating tongue position while the tongue is out
+                this.calculatePointerAngle();
+                angle_calculated = true;
             }
             // Step 3 Activate animations and sound //
             if (gInput.actions['fire-mouse']) { // launch the sound for the tongue and the animation
@@ -161,6 +163,14 @@ PlayerClass = EntityClass.extend({
                 //sound_atmos.fadeIn(0.0, 3000, null);
                 console.log("Retriggered is:" + sound_atmos_retriggered);
             }*/
+
+            /// Eyes looking towards mouse movement position ///
+            if (this.direct_eyes) {
+                this.direct_eyes = false;
+                this.calculatePointerAngle();
+                angle_calculated = true;
+            }
+
             /// Life management ///
             if (this.health_timer != 0) { // Lifetime clock
                 if ((now - this.health_timer >= 200) && (!this.dead)) { // Every few milliseconds life decreases
@@ -191,6 +201,7 @@ PlayerClass = EntityClass.extend({
             } else {
                 this.color_variation.alpha = 0;
             }
+
             /// Set image size after being loaded ///
             if (this.size.width == 0 && this.size.height == 0) {
                 var sprite = getSprite(this.spritename + '1.png');
@@ -208,6 +219,25 @@ PlayerClass = EntityClass.extend({
                 this.angle += 0.008;
             }
         }
+    },
+
+    calculatePointerAngle: function () {
+        this.tong_pos.x = this.pos.x + this.tong_offset.x;
+        this.tong_pos.y = this.pos.y + this.tong_offset.y;
+        var tong_size_x = this.tong_fire_pos.x - this.tong_pos.x;
+        var tong_size_y = this.tong_fire_pos.y - this.tong_pos.y;
+        this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
+        if (this.tong_distance > max_tongue_size) {
+            this.tong_distance = max_tongue_size;
+            launchSound('tongmax');
+        }
+        var angle_tip_tongue_offset = Math.atan2(-tongue_tilting_angle, this.tong_distance); // This tilts the tongue to elevate the tip of the tongue to make it overlap the mouse
+        this.angle = -Math.atan2(-tong_size_y, tong_size_x)
+        if (this.tong_distance == max_tongue_size) { // Undo all math calculations to return the position of the cursor(tongue tip) in a limited tongue
+            this.tong_fire_pos.x = (Math.cos(this.angle) * max_tongue_size) + this.tong_pos.x;
+            this.tong_fire_pos.y = (Math.sin(this.angle) * max_tongue_size) + this.tong_pos.y;
+        }
+        this.angle += angle_tip_tongue_offset;
     },
 
     //-----------------------------------------
