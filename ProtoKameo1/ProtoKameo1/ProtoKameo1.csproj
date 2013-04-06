@@ -20,9 +20,6 @@
     <Content Include="box2D.js" />
     <Content Include="core.js" />
     <Content Include="default.htm" />
-    <Content Include="app.js">
-      <DependentUpon>app.ts</DependentUpon>
-    </Content>
     <Content Include="engine.js" />
     <Content Include="howler.js" />
     <Content Include="input.js" />
@@ -36,9 +33,6 @@
     <Content Include="sound_engine.js" />
     <Content Include="sprites.png" />
     <Content Include="spriteSheet.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="app.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />

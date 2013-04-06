@@ -247,7 +247,7 @@ var setup = function () {
     entityCloud.pos.y += Math.floor(Math.random() * 100);
 
     background_image = new Image();
-    background_image.src = 'mountains.png';
+    background_image.src = 'resources/images/mountains.png';
     background_image.onload = function () {
         background_loaded = true;
         window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
