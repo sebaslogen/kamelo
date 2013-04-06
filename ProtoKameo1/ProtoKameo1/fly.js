@@ -112,8 +112,10 @@ FlyClass = EntityClass.extend({
         this.physBody.SetLinearVelocity(move_dir);
         if (this.size.width == 0 && this.size.height == 0) { // Set object width and high based on sprite size after loading image
             var sprite = getSprite(this.spritename + '.png');
-            this.size.width = sprite.w;
-            this.size.height = sprite.h;
+            if ((sprite.w != null) && (sprite.h != null)) {
+                this.size.width = sprite.w;
+                this.size.height = sprite.h;
+            }
         }
     },
 

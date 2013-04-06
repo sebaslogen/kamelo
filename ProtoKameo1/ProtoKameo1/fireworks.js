@@ -194,7 +194,7 @@ var Canvas = {
             requestAnimationFrame(this.update.bind(this));
         } else {
             victory = false;
-            end = true;
+            setTimeout(function () { end = true; }, 500);
         }
     }
 };

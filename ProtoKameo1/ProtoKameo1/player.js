@@ -205,8 +205,10 @@ PlayerClass = EntityClass.extend({
             /// Set image size after being loaded ///
             if (this.size.width == 0 && this.size.height == 0) {
                 var sprite = getSprite(this.spritename + '1.png');
-                this.size.width = sprite.w;
-                this.size.height = sprite.h;
+                if ((sprite.w != null) && (sprite.h != null)) {
+                    this.size.width = sprite.w;
+                    this.size.height = sprite.h;
+                }
             }
             if (this.health <= 70) { // Vanished to death -> Show dead animation
                 this.dead = true;

@@ -283,12 +283,14 @@ var animate = function () {
             player_context.fillRect(0, 0, canvas.width, canvas.height);
             introFrame++;
         }
-    } else {
-        player_context.fillStyle = "rgba(0, 0, 0, 1)"; // Fill in black
-        background_context.font = 'bold 200pt Verdana';
-        background_context.fillStyle = 'blue';
-        background_context.textAlign = 'center';
-        background_context.fillText('The End', canvas.width / 2, canvas.height / 2 + 200);
+    } else { // Let background and rest update correctly for the last time before showing THE END
+        setTimeout(function () { 
+            player_context.fillStyle = "rgba(0, 0, 0, 1)"; // Fill in black
+            background_context.font = 'bold 200pt Verdana';
+            background_context.fillStyle = 'blue';
+            background_context.textAlign = 'center';
+            background_context.fillText('The End', canvas.width / 2, canvas.height / 2 + 200);
+        }, 100);
     }
 };
 
