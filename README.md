@@ -14,6 +14,7 @@ Authors
 
 Play the game online
 --------------------
+Can you catch 50 flies?
 http://kamelo.net23.net/
 
 Screenshot: http://kamelo.net23.net/capture.png

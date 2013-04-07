@@ -18,7 +18,8 @@ EngineClass = Class.extend({
     //-----------------------------
     setup: function () {
         // Start atmosphere sound => while playing equals true, I will trigger the atmosphere background sound
-        launchClip(sound_atmos, 'atmos');
+        sound_atmos.play('atmos');
+        sound_atmos_active = true;
         // Call our input setup method to bind our keys to actions and set the event listeners.
         gInput.setup();
         // Create physics engine
@@ -61,8 +62,20 @@ EngineClass = Class.extend({
         game_music.fadeOut(0.0, 5000, null); // Disable any background music
         sound_atmos.fadeOut(0.0, 5000, null); // Disable any background music
         kami_death.fadeOut(0.0, 5000, null); // Disable any background music
-    }, 
+    },
 
+    activateMusic: function () { // Activate action music and disable background music
+        sound_atmos.fadeOut(0.0, 4000, function () { sound_atmos_active = false; });
+        game_music.stop();
+        game_music.fadeIn(0.6, 0, function () { game_music_active = true; });
+    },
+
+    activateAtmosMusic: function () { // Activate background music and disable action music
+        game_music.fadeOut(0.0, 4000, function () { game_music_active = false; });
+        sound_atmos.stop();
+        sound_atmos.fadeIn(0.1, 2000, function () { sound_atmos_active = true; }); // Fade in
+    },
+    
     updateBackground: function () {
         sun_angle += 0.001; // Sun rotation speed
     },
@@ -147,14 +160,6 @@ EngineClass = Class.extend({
             gEngine.entities.erase(gEngine._deferredKill[j]);
         }
         gEngine._deferredKill = []; // Once you're done looping through '_deferredKill', set it back to the empty array, indicating all entities in it have been removed from the 'entities' list.
-
-        /// Update sound world ///
-        if ((sound_atmos.pos() >= 20.0) && (!sound_atmos_retriggered)) { // Atmos loop
-            sound_atmos_retriggered = true;
-            launchClip(sound_atmos, 'atmos'); // Trigger atmos sound again
-        } else {
-            sound_atmos_retriggered = false;
-        }
     },
 
     updatePhysics: function () {

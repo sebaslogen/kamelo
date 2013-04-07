@@ -6,7 +6,7 @@ var sound_atmos = new Howl({
             atmos: [0, 24400]
             },
     autoplay: false,
-    loop: false,
+    loop: true,
     volume: 0.1,
 });
 
@@ -21,8 +21,6 @@ var kami_death = new Howl({
     loop: true,
     volume: 0.6,
 });
-
-var sound_atmos_retriggered = false;
 
 //game_music contains the music while playing
 var game_music = new Howl({

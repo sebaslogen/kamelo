@@ -6,7 +6,8 @@ var tongue_tilting_angle = 25; // This tilts the tongue to elevate the tip of th
 var max_tongue_frames = 3;
 var max_tongue_size = 700;
 var max_eye_sprites = 8;
-var max_tail_sprites = 3; ///////////////////////// INCREASE
+var max_tail_sprites = 3;
+var inactive_time = 5;
 
 PlayerClass = EntityClass.extend({
     id: "Player",
@@ -148,22 +149,17 @@ PlayerClass = EntityClass.extend({
                     launchTongueSound();
                 }
                 if (!gamer_active && !play_game_intro) { // Activate music when player gets active for the first time and starts hitting after the intro
-                    launchClip(game_music, 'music');
-                    gamer_active = true;
-                    sound_atmos.fadeOut(0.0, 5000, null);
+                    if (sound_atmos_active && !game_music_active) { // Avoid fade in and out simultaneously
+                        gamer_active = true;
+                        gEngine.activateMusic();
+                    }
                 }
-            }/** Code not working well
-            else if ((this.last_fire_timer != 0) && gamer_active && ((now / 1000) - this.last_fire_timer > 5)) { // When player is not firing for a long period
-                gamer_active = false;
-                game_music.fadeOut(0.0, 5000, null);
-                //launchClip(sound_atmos, 'atmos'); // Original start
-                //sound_atmos.stop().play();
-                sound_atmos.play('atmos').stop(); // Stop previous sound ???
-                sound_atmos.play('atmos').pause().fadeIn(0.1, 2000); // Fade in
-                sound_atmos_retriggered = false;
-                //sound_atmos.fadeIn(0.0, 3000, null);
-                console.log("Retriggered is:" + sound_atmos_retriggered);
-            }//*/
+            } else if ((this.last_fire_timer != 0) && gamer_active && ((now / 1000) - this.last_fire_timer > inactive_time)) { // When player is not firing for a long period
+                if (game_music_active && !sound_atmos_active) { // Avoid fade in and out simultaneously
+                    gamer_active = false;
+                    gEngine.activateAtmosMusic();
+                }
+            }
 
             /// Eyes looking towards mouse movement position ///
             if (this.direct_eyes) {
