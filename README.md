@@ -28,7 +28,7 @@ https://trello.com/board/kamelo/51499e326d78063b490017f9
 
 License
 -------
-
+Attribution 3.0 Unported (CC BY 3.0) - http://creativecommons.org/licenses/by/3.0/
 
 Third party libraries
 ---------------------
