@@ -82,13 +82,16 @@ EngineClass = Class.extend({
 
         // Draw background, score and tree
         background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
-        if ((this.scrore_frames > 0) || victory) { // Draw Score
+        if (this.scrore_frames > 0) { // Draw Score
             background_context.font = 'bold 500pt Verdana';
             var points_color = Math.round(this.player0.points * 255 / end_of_game_points);
             background_context.fillStyle = 'rgba(' + points_color + ',0,' + (255 - points_color) + ',1)';
             background_context.textAlign = 'center';
             background_context.fillText(this.player0.points, canvas.width / 2, canvas.height / 2 + 200);
             this.scrore_frames = (this.scrore_frames + 1) % (FPS + 2); // Show for one second
+            if (victory) {
+                this.scrore_frames = (FPS + 1);
+            }
         }
         drawSprite('tree.png', 1100, 420, 0, background_context); // Draw tree
     },
@@ -184,7 +187,7 @@ EngineClass = Class.extend({
                     } else {
                         ////////////////////////////////// Catch sound
                         launchDrySlapSound();
-                        this.player0.points+=50;
+                        this.player0.points++;
                         this.player0.volatile_points++;
                         if (this.player0.health < 255) {
                             this.player0.health += 30;
