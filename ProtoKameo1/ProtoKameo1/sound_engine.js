@@ -12,8 +12,8 @@ var sound_atmos = new Howl({
 
 //kami_death contains music when Kami dies
 var kami_death = new Howl({
-    urls: ['resources/sounds/kame_death.mp3',
-           'resources/sounds/kame_death.ogg'],
+    urls: ['resources/sounds/kami_death.mp3',
+           'resources/sounds/kami_death.ogg'],
     sprite: {
             death: [25, 7503]
             },
@@ -98,7 +98,7 @@ function launchBurpSound()
 
 function launchBubbleSound()
 {
-    launch_sprite = "bubble" + String(Math.floor(Math.random()*3) + 1);
+    launch_sprite = "bubble3";
     launchSound(launch_sprite);
 }
 

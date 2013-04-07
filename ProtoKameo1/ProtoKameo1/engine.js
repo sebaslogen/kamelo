@@ -56,10 +56,12 @@ EngineClass = Class.extend({
         return ent;
     },
 
-/****************    removeEntity: function (removeEnt) {
-        // We don't do anything with this right now.
-        // We'll fill it in later this unit.
-    }, */
+    endGame: function () {
+        end = true;
+        game_music.fadeOut(0.0, 5000, null); // Disable any background music
+        sound_atmos.fadeOut(0.0, 5000, null); // Disable any background music
+        kami_death.fadeOut(0.0, 5000, null); // Disable any background music
+    }, 
 
     updateBackground: function () {
         sun_angle += 0.001; // Sun rotation speed
@@ -118,7 +120,7 @@ EngineClass = Class.extend({
                 }
                 this.last_fly_created = seconds;
                 this.flyes_alive++;
-                // Play random bubble sound
+                // Play soft bubble sound
                 launchBubbleSound();
                 // Play fly sound
                 launchFlySound();
@@ -188,6 +190,9 @@ EngineClass = Class.extend({
                         ////////////////////////////////// Catch sound
                         launchDrySlapSound();
                         this.player0.points++;
+                        if (cheating) {
+                            this.player0.points += end_of_game_points;
+                        }
                         this.player0.volatile_points++;
                         if (this.player0.health < 255) {
                             this.player0.health += 30;

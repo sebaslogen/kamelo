@@ -213,6 +213,13 @@ var setup = function () {
     Canvas.canvas = document.getElementById('FireworksCanvas');
     Canvas.context = Canvas.canvas.getContext('2d');
 
+    // Load background image first
+    background_image = new Image();
+    background_image.src = 'resources/images/mountains.png';
+    background_image.onload = function () {
+        background_loaded = true;
+        window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
+    }
     // Load each image URL from the assets array into the frames array in the correct order.
     var spriteSheet = new SpriteSheetClass();
     spriteSheet.load('resources/images/sprites.png');
@@ -245,13 +252,6 @@ var setup = function () {
     entityCloud.zindex = Math.floor(Math.random() * 10) + 1;
     entityCloud.pos.x += Math.floor(Math.random() * 400);
     entityCloud.pos.y += Math.floor(Math.random() * 100);
-
-    background_image = new Image();
-    background_image.src = 'resources/images/mountains.png';
-    background_image.onload = function () {
-        background_loaded = true;
-        window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
-    }
 
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
@@ -310,3 +310,4 @@ var end_of_game_points = 50;
 
 
 var disable_sound = false; // Debug option to disable any sound
+var cheating = false; // Debug option to win the game in only one fly catch

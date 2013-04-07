@@ -210,8 +210,11 @@ PlayerClass = EntityClass.extend({
                     this.size.height = sprite.h;
                 }
             }
-            if (this.health <= 70) { // Vanished to death -> Show dead animation
+            if (this.health <= 70) { // Vanished to death -> Show dead animation and change music
                 this.dead = true;
+                game_music.fadeOut(0.0, 3000, null); // Disable any background music
+                sound_atmos.fadeOut(0.0, 3000, null); // Disable any background music
+                kami_death.play("death").fadeIn(0.5, 5000);
                 this.tongue_frame = 1;
                 this.angle = 0.1;
             }
@@ -221,11 +224,12 @@ PlayerClass = EntityClass.extend({
                 this.angle += 0.008;
             }
             if (this.dead_altitud == 10) { // End of game
-                end = true;
+                gEngine.endGame();
             }
         }
     },
 
+    /// Calculate distance to cursor and angle, both for tongue and eyes ///
     calculatePointerAngle: function () {
         this.tong_pos.x = this.pos.x + this.tong_offset.x;
         this.tong_pos.y = this.pos.y + this.tong_offset.y;
@@ -234,7 +238,9 @@ PlayerClass = EntityClass.extend({
         this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
         if (this.tong_distance > max_tongue_size) {
             this.tong_distance = max_tongue_size;
-            launchSound('tongmax');
+            if (gInput.actions['fire-mouse']) {
+                launchSound('tongmax');
+            }
         }
         var angle_tip_tongue_offset = Math.atan2(-tongue_tilting_angle, this.tong_distance); // This tilts the tongue to elevate the tip of the tongue to make it overlap the mouse
         this.angle = -Math.atan2(-tong_size_y, tong_size_x)
