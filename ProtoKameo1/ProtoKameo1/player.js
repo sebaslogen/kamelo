@@ -219,11 +219,11 @@ PlayerClass = EntityClass.extend({
                 this.angle = 0.1;
             }
         } else { // Elevate to death
-            this.dead_altitud -= 2;
+            this.dead_altitud -= (1.8 + (this.angle*2));
             if (this.angle < 1) {
                 this.angle += 0.008;
             }
-            if (this.dead_altitud == 10) { // End of game
+            if (this.dead_altitud <= 10) { // End of game
                 gEngine.endGame();
             }
         }

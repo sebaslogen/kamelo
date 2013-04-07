@@ -30,12 +30,10 @@
     <Content Include="pyshics.js" />
     <Content Include="player.js" />
     <Content Include="sound_engine.js" />
-    <Content Include="sprites.png" />
     <Content Include="spriteSheet.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
-    <Content Include="sprites.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
