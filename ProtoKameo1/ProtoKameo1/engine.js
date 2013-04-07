@@ -170,7 +170,7 @@ EngineClass = Class.extend({
                 }
             }
             /// Fly hunting method when tongue animation reaches target ///
-            if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) &&
+            if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) && !victory &&
                 (this.player0.tongue_frame == max_tongue_frames - 1) && !this.player0.dead) {
                 if (ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y)) { // Points for death
                     if (ent.evil) { // Eat an evil poisoned fly!
@@ -243,8 +243,8 @@ EngineClass = Class.extend({
                 entity.draw();
             });
         });
-        if (victory) {
-            context.fillStyle = "rgba(0, 0, 0, 0.5)"; // Dark everything behind player when winning
+        if (victory || end) {
+            context.fillStyle = "rgba(0, 0, 0, 0.5)"; // Dark everything behind player when winning or game ends
             context.fillRect(0, 0, canvas.width, canvas.height);
         }
     },

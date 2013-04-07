@@ -284,11 +284,10 @@ var animate = function () {
             introFrame++;
         }
     } else {
-        player_context.fillStyle = "rgba(0, 0, 0, 1)"; // Fill in black
-        background_context.font = 'bold 200pt Verdana';
+        background_context.font = 'bold 220pt Verdana';
         background_context.fillStyle = 'blue';
         background_context.textAlign = 'center';
-        background_context.fillText('The End', canvas.width / 2, canvas.height / 2 + 200);
+        background_context.fillText('The End', canvas.width / 2, canvas.height / 2 );
     }
 };
 
