@@ -173,7 +173,7 @@ PlayerClass = EntityClass.extend({
                 }
                 angle_calculated = true;
                 var degrees = -(this.angle * (180 / Math.PI)) % 360; // Calculate direction of eyes towards mouse pointer
-                if (degrees >= -30 && degrees < 30) {
+                if (degrees >= -15 && degrees < 30) {
                     if (this.tong_distance >= max_tongue_size * 0.8) { //Looking very far
                         this.current_eye = 5;
                     } else {
