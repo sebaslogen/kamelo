@@ -115,6 +115,8 @@ EngineClass = Class.extend({
                 }
                 this.last_fly_created = seconds;
                 this.flyes_alive++;
+                // Play random bubble sound
+                launchBubbleSound();
                 // Play fly sound
                 launchFlySound();
             }
@@ -180,8 +182,8 @@ EngineClass = Class.extend({
                         }
                         this.player0.special_color = { red: -15, green: -15, blue: -220 }; // Turn yellow
                     } else {
-                        ////////////////////////////////// Catch sound missing
-                        //launchSound('DrySlap!');
+                        ////////////////////////////////// Catch sound
+                        launchDrySlapSound();
                         this.player0.points+=50;
                         this.player0.volatile_points++;
                         if (this.player0.health < 255) {
@@ -210,7 +212,7 @@ EngineClass = Class.extend({
     draw: function () {
         context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
         player_context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
-        
+
         // Bucket entities by zIndex
         var fudgeVariance = 128;
         var zIndex_array = [];

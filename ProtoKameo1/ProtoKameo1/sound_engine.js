@@ -10,6 +10,18 @@ var sound_atmos = new Howl({
     volume: 0.1,
 });
 
+//kami_death contains music when Kami dies
+var kami_death = new Howl({
+    urls: ['resources/sounds/kame_death.mp3',
+           'resources/sounds/kame_death.ogg'],
+    sprite: {
+            death: [25, 7503]
+            },
+    autoplay: false,
+    loop: true,
+    volume: 0.5,
+});
+
 var sound_atmos_retriggered = false;
 
 //game_music contains the music while playing
@@ -31,34 +43,36 @@ var sound_sprites = new Howl({
            'resources/sounds/kame_hi.ogg'],
     sprite: {
             atmos: [0, 24440],
-            tong1: [24418, 255],
-            tong2: [24673, 175],
-            tong3: [24847, 167],
-            tong4: [25015, 175],
-            tong5: [25190, 151],
-            tong6: [25340, 143],
-            bubble1: [25483, 151],
-            bubble2: [25628, 165],
-            click: [25793, 906],
+            tong1: [24410, 240],
+            tong2: [24673, 155],
+            tong3: [24830, 140],
+            tong4: [25000, 145],
+            tong5: [25150, 145],
+            tong6: [25298, 130],
+            bubble1: [25470, 125],
+            bubble2: [25628, 150],
+            click: [25793, 900],
             twist: [26699, 139],
-            check: [26839, 106],
-            check2: [26945, 110],
-            check3: [27055, 322],
-            crackle: [27378, 059],
-            hit: [27437, 263],
-            bubble3: [27700, 070],
-            oops: [27770, 797],
-            burp1: [28567, 644],
-            burp2: [29210, 663],
-            burp3: [29873, 675],
-            burp4: [30549, 888],
-            burp5: [31437, 130],
-            cheer: [31674, 2929],
-            fly1: [34210, 1860],
-            fly2: [36130, 1814],
-            slap: [37943, 496],
-            tongmax: [38440, 487],
-            flyby: [38927, 1906]
+            check: [26839, 95],
+            check2: [26945, 90],
+            check3: [27055, 305],
+            crackle: [27378, 45],
+            hit: [27445, 250],
+            bubble3: [27705, 55],
+            oops: [27795, 850],
+            burp1: [28690, 630],
+            burp2: [29380, 560],
+            burp3: [29930, 665],
+            burp4: [30630, 875],
+            burp5: [31548, 115],
+            cheer: [31690, 2626],
+            fly1: [34600, 1860],
+            fly2: [38420, 1814],
+            slap: [42085, 496],
+            tongmax: [42550, 375],
+            flyby: [43050, 1835],
+            dryslap: [44900, 250],
+            fireworks: [45265, 3000]
             }
 });
 
@@ -82,6 +96,12 @@ function launchBurpSound()
     launchSound(launch_sprite);
 }
 
+function launchBubbleSound()
+{
+    launch_sprite = "bubble" + String(Math.floor(Math.random()*3) + 1);
+    launchSound(launch_sprite);
+}
+
 function launchFlySound()
 {
     launch_sprite = "fly" + String(Math.floor(Math.random()*2) + 1);
@@ -91,6 +111,11 @@ function launchFlySound()
 function launchSlapSound()
 {
     launchSound('slap');
+}
+
+function launchDrySlapSound()
+{
+    launchSound('dryslap');
 }
 
 function launchSound(sound) {

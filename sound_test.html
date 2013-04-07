@@ -12,36 +12,42 @@
         //sound.play();
 
         var sound_sprites = new Howl({
-        urls: ['resources/sounds/kame_hi.mp3',
-               'resources/sounds/kame_hi.ogg'],
-        sprite: {
-                    atmos: [0, 24393],
-                    tong1: [24393, 215],
-                    tong2: [24608, 200],
-                    tong3: [24808, 158],
-                    tong4: [24966, 162],
-                    tong5: [25128, 156],
-                    tong6: [25284, 147],
-                    bubble1: [25431, 157],
-                    bubble2: [25590, 168],
-                    click: [25758, 107],
-                    twist: [25865, 838],
-                    check: [26704, 104],
-                    check2: [26808, 99],
-                    check3: [26907, 133],
-                    crackle: [27040, 322],
-                    hit: [27363, 58],
-                    wow: [27421, 266],
-                    bubble3: [27686, 172],
-                    oops: [27858, 796],
-                    burp1: [28654, 642],
-                    burp2: [29296, 666],
-                    burp3: [29962, 673],
-                    burp4: [30636, 890],
-                    burp5: [31525, 116]
-
-                }
-        });
+    urls: ['ProtoKameo1/ProtoKameo1/resources/sounds/kame_hi.mp3',
+           'ProtoKameo1/ProtoKameo1/resources/sounds/kame_hi.ogg'],
+    sprite: {
+            atmos: [0, 24440],
+            tong1: [24410, 240],
+            tong2: [24673, 155],
+            tong3: [24830, 140],
+            tong4: [25000, 145],
+            tong5: [25150, 145],
+            tong6: [25298, 130],
+            bubble1: [25470, 125],
+            bubble2: [25628, 150],
+            click: [25793, 900],
+            twist: [26699, 139],
+            check: [26839, 95],
+            check2: [26945, 90],
+            check3: [27055, 305],
+            crackle: [27378, 45],
+            hit: [27445, 250],
+            bubble3: [27705, 55],
+            oops: [27795, 850],
+            burp1: [28690, 630],
+            burp2: [29380, 560],
+            burp3: [29930, 665],
+            burp4: [30630, 875],
+            burp5: [31548, 115],
+            cheer: [31690, 2626],
+            fly1: [34600, 1860],
+            fly2: [38420, 1814],
+            slap: [42085, 496],
+            tongmax: [42550, 375],
+            flyby: [43050, 1835],
+            dryslap: [44900, 250],
+            fireworks: [45265, 3000]
+            }
+});
 
         function launchclip(clip)
         {
@@ -83,7 +89,14 @@
         <button onclick='javascript:launchclip("burp3");'>21</button>
         <button onclick='javascript:launchclip("burp4");'>22</button>
         <button onclick='javascript:launchclip("burp5");'>23</button>
-        <button onclick='javascript:launchclip("atmos");'>24</button>
+        <button onclick='javascript:launchclip("cheer");'>24</button>
+        <button onclick='javascript:launchclip("fly1");'>25</button>
+        <button onclick='javascript:launchclip("fly2");'>26</button>
+        <button onclick='javascript:launchclip("slap");'>27</button>
+        <button onclick='javascript:launchclip("tongmax");'>28</button>
+        <button onclick='javascript:launchclip("flyby");'>29</button>
+        <button onclick='javascript:launchclip("dryslap");'>30</button>
+        <button onclick='javascript:launchclip("fireworks");'>31</button>
 
 </body>
 </html>
