@@ -97,8 +97,8 @@ FlyClass = EntityClass.extend({
         }
         var radians = angle_variation * (Math.PI / 180);
         var new_radians = (this.rotation_dir * radians) + this.angle;
-        var new_degress = (new_radians * (180 / Math.PI)) % 360; // Reduce number to avoid unnecessary variable size increasing
-        new_radians = new_degress * (Math.PI / 180);
+        var new_degrees = (new_radians * (180 / Math.PI)) % 360; // Reduce number to avoid unnecessary variable size increasing
+        new_radians = new_degrees * (Math.PI / 180);
         this.physBody.SetAngle(new_radians);
         var move_dir = new Vec2(0, 0);
         move_dir.x = this.speed * Math.cos(this.physBody.GetAngle());

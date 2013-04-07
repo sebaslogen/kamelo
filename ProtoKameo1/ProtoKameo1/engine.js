@@ -249,7 +249,7 @@ EngineClass = Class.extend({
             });
         });
         if (victory || end) {
-            context.fillStyle = "rgba(0, 0, 0, 0.5)"; // Dark everything behind player when winning or game ends
+            context.fillStyle = "rgba(0, 0, 0, 0.4)"; // Dark everything behind player when winning or game ends
             context.fillRect(0, 0, canvas.width, canvas.height);
         }
     },

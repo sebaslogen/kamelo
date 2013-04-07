@@ -285,7 +285,7 @@ var animate = function () {
         }
     } else {
         background_context.font = 'bold 220pt Verdana';
-        background_context.fillStyle = 'blue';
+        background_context.fillStyle = 'rgba(0, 50, 255, 1)';
         background_context.textAlign = 'center';
         background_context.fillText('The End', canvas.width / 2, canvas.height / 2 );
     }
@@ -310,4 +310,4 @@ var end_of_game_points = 50;
 
 
 var disable_sound = false; // Debug option to disable any sound
-var cheating = true; // Debug option to win the game in only one fly catch
+var cheating = false; // Debug option to win the game in only one fly catch

@@ -106,7 +106,7 @@ PlayerClass = EntityClass.extend({
             this.pos.x += move_dir.x;
             
             /// Body animations ///
-            if ((now / 10) - this.last_eye_changed > 70) { // Every less than a second it's possible to change the eye
+            if ((now / 10) - this.last_eye_changed > 100) { // Every less than a second it's possible to change the eye
                 this.last_eye_changed = now / 10;
                 this.current_eye = Math.floor(Math.random() * (max_eye_sprites + 1));
             }
@@ -132,7 +132,7 @@ PlayerClass = EntityClass.extend({
             }
             // Step 2 calculate distance and angle from player to hit position //
             if ((gInput.actions['fire-mouse'] || (this.tongue_frame != 0)) && !angle_calculated) {// Keep updating tongue position while the tongue is out
-                this.calculatePointerAngle();
+                this.calculatePointerAngle(false);
                 angle_calculated = true;
             }
             // Step 3 Activate animations and sound //
@@ -156,24 +156,39 @@ PlayerClass = EntityClass.extend({
             else if ((this.last_fire_timer != 0) && gamer_active && ((now / 1000) - this.last_fire_timer > 5)) { // When player is not firing for a long period
                 gamer_active = false;
                 game_music.fadeOut(0.0, 5000, null);
-                //launchClip(sound_atmos, 'atmos');
+                //launchClip(sound_atmos, 'atmos'); // Original start
                 //sound_atmos.stop().play();
-                sound_atmos.pause().fadeIn(0.1, 2000);
-                sound_atmos_retriggered = true;
+                sound_atmos.play('atmos').stop(); // Stop previous sound ???
+                sound_atmos.play('atmos').pause().fadeIn(0.1, 2000); // Fade in
+                sound_atmos_retriggered = false;
                 //sound_atmos.fadeIn(0.0, 3000, null);
                 console.log("Retriggered is:" + sound_atmos_retriggered);
-            }*/
+            }//*/
 
             /// Eyes looking towards mouse movement position ///
             if (this.direct_eyes) {
                 this.direct_eyes = false;
-                this.calculatePointerAngle();
+                if (!angle_calculated) {
+                    this.calculatePointerAngle(true);
+                }
                 angle_calculated = true;
+                var degrees = -(this.angle * (180 / Math.PI)) % 360; // Calculate direction of eyes towards mouse pointer
+                if (degrees >= -30 && degrees < 30) {
+                    if (this.tong_distance >= max_tongue_size * 0.8) { //Looking very far
+                        this.current_eye = 5;
+                    } else {
+                        this.current_eye = 1;
+                    }
+                } else if (degrees >= 30 && degrees < 60) {
+                    this.current_eye = 2;
+                } else if (degrees >= 60 && degrees < 100) {
+                    this.current_eye = 4;
+                }
             }
 
             /// Life management ///
             if (this.health_timer != 0) { // Lifetime clock
-                if ((now - this.health_timer >= 200) && (!this.dead)) { // Every few milliseconds life decreases
+                if ((now - this.health_timer >= 200) && (!this.dead) && (!victory)) { // Every few milliseconds life decreases
                     this.health -= 1;
                     if (this.points > 30) { // Increase dificulty
                         this.health -= Math.floor(this.points / 30);
@@ -230,11 +245,15 @@ PlayerClass = EntityClass.extend({
     },
 
     /// Calculate distance to cursor and angle, both for tongue and eyes ///
-    calculatePointerAngle: function () {
+    calculatePointerAngle: function (use_current_mouse_position) {
         this.tong_pos.x = this.pos.x + this.tong_offset.x;
         this.tong_pos.y = this.pos.y + this.tong_offset.y;
         var tong_size_x = this.tong_fire_pos.x - this.tong_pos.x;
         var tong_size_y = this.tong_fire_pos.y - this.tong_pos.y;
+        if (use_current_mouse_position) {
+            tong_size_x = gInput.mouse.x - this.tong_pos.x;
+            tong_size_y = gInput.mouse.y - this.tong_pos.y;
+        }
         this.tong_distance = Math.sqrt((tong_size_x * tong_size_x) + (tong_size_y * tong_size_y));
         if (this.tong_distance > max_tongue_size) {
             this.tong_distance = max_tongue_size;
