@@ -310,4 +310,4 @@ var end_of_game_points = 50;
 
 
 var disable_sound = false; // Debug option to disable any sound
-var cheating = true; // Debug option to win the game in only one fly catch
+var cheating = false; // Debug option to win the game in only one fly catch
