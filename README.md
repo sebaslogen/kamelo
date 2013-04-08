@@ -61,3 +61,4 @@ Game design in a nutshell
 - Layering on several canvas allows to clear and repaint parts of Kami body without having to use different resources (less bandwidth VS small extra processing).
 - Coloration of Kami's body is done using pixel color modifications on the required area of the canvas (avoiding processing of transparent pixels).
 - Sound and images are processed in atlases to reduce server requests, only big files are keep separately to allow simultaneous downloads and speed up game loading. Sound is processed with howler.js library
+- Assets (sound, images and heavy javascript) are loaded asynchronously to improve initial game load time.

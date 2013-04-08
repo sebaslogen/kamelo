@@ -16,7 +16,6 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="app.css" />
     <Content Include="box2D.js" />
     <Content Include="core.js" />
     <Content Include="index.html" />
