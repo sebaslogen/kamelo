@@ -260,6 +260,46 @@ var setup = function () {
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
     drawLoadingInstrucions();
+
+    /// Asynchronous assets loader for physics (not used until the first fly is created) ///
+    var oHead = document.getElementsByTagName('head').item(0);
+    var boxScript = document.createElement("script");
+    boxScript.type = "text/javascript";
+    boxScript.onload = function () { // Load second library only after the first one is loaded (dependencies)
+        var pHead = document.getElementsByTagName('head').item(0);
+        var pScript = document.createElement("script");
+        pScript.type = "text/javascript";
+        pScript.onload = function () { // Initalize pending physics
+            // Create physics engine
+            gPhysicsEngine.create();
+            /* // Add contact listener
+            gPhysicsEngine.addContactListener({
+                PostSolve: function (bodyA, bodyB, impulse) {
+                    var uA = bodyA ? bodyA.GetUserData() : null;
+                    var uB = bodyB ? bodyB.GetUserData() : null;
+    
+                    if (uA !== null) {
+                        if (uA.ent !== null && uA.ent.onTouch) {
+                            uA.ent.onTouch(bodyB, null, impulse);
+                        }
+                    }
+    
+                    if (uB !== null) {
+                        if (uB.ent !== null && uB.ent.onTouch) {
+                            uB.ent.onTouch(bodyA, null, impulse);
+                        }
+                    }
+                }
+            });*/
+            gEngine.player0.physBody = gPhysicsEngine.addBody(gEngine.player0.entityDef); // Initialize physic body of player to interact with flies
+            gEngine.player0.physBody.SetLinearVelocity(new Vec2(0, 0));
+            gEngine.player0.physBody.linearDamping = 0;
+        };
+        pScript.src = "pyshics.js";
+        pHead.appendChild(pScript);
+    };
+    boxScript.src = "box2D.js";
+    oHead.appendChild(boxScript);
 };
 
 var player_canvas = null;

@@ -44,6 +44,7 @@ PlayerClass = EntityClass.extend({
     t_start : "kami-tongue-001.png",
     t_med : "kami-tongue-002.png",
     t_end: "kami-tongue-003.png",
+    entityDef: null,
     physBody: null, // This is hooking into the Box2D Physics library
 
     init: function (x, y) {
@@ -53,7 +54,7 @@ PlayerClass = EntityClass.extend({
             x: x,
             y: y
         };
-        var entityDef = { // Create our physics body;
+        this.entityDef = { // Create our physics body;
             id: "Player",
             type: 'static',
             x: startPos.x,
@@ -66,9 +67,9 @@ PlayerClass = EntityClass.extend({
                 "ent": this
             }
         };
-        this.physBody = gPhysicsEngine.addBody(entityDef);
+        this.physBody = null;/*gPhysicsEngine.addBody(entityDef);
         this.physBody.SetLinearVelocity(new Vec2(0, 0));
-        this.physBody.linearDamping = 0;
+        this.physBody.linearDamping = 0;*/
     },
 
     update: function () {
@@ -76,9 +77,9 @@ PlayerClass = EntityClass.extend({
             var now = (new Date()).getTime();
 
             /// Calculate horizontal movement ///
-            var move_dir = new Vec2(0, 0);
+            var move_dir = { x: 0, y: 0 };
             if ((gInput.actions['move-left']) && (this.pos.x > 100)) { // adjust the move_dir by 1 in the x direction
-                move_dir.x -= 1;
+                move_dir.x -= this.walkSpeed;
                 this.moving = true;
                 console.log("Muevo Izq");
             }
@@ -95,15 +96,15 @@ PlayerClass = EntityClass.extend({
                     this.dizzy = false;
                     this.moving = true;
                 }
-                move_dir.x += 1;                
+                move_dir.x += this.walkSpeed;
                 console.log("Muevo Derch");
             }
-
+            /*
             // Fake physics, simply move in x axis
             if (move_dir.LengthSquared()) {// After modifying the move_dir above, we check if the vector is non-zero. If it is, we adjust the vector length based on the player's walk speed.
                 move_dir.Normalize(); // First set 'move_dir' to a unit vector in the same direction it's currently pointing.
                 move_dir.Multiply(this.walkSpeed); // Next, multiply 'move_dir' by the player's set 'walkSpeed'. We do this in case we might want to change the player's walk speed due to a power-up, etc.
-            }
+            }*/
             this.pos.x += move_dir.x;
             
             /// Body animations ///

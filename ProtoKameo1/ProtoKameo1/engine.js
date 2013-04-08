@@ -22,28 +22,6 @@ EngineClass = Class.extend({
         sound_atmos_active = true;
         // Call our input setup method to bind our keys to actions and set the event listeners.
         gInput.setup();
-        // Create physics engine
-        gPhysicsEngine.create();
-        /**
-        // Add contact listener
-        gPhysicsEngine.addContactListener({
-            PostSolve: function (bodyA, bodyB, impulse) {
-                var uA = bodyA ? bodyA.GetUserData() : null;
-                var uB = bodyB ? bodyB.GetUserData() : null;
-
-                if (uA !== null) {
-                    if (uA.ent !== null && uA.ent.onTouch) {
-                        uA.ent.onTouch(bodyB, null, impulse);
-                    }
-                }
-
-                if (uB !== null) {
-                    if (uB.ent !== null && uB.ent.onTouch) {
-                        uB.ent.onTouch(bodyA, null, impulse);
-                    }
-                }
-            }
-        });*/
         // Create game entities
         this.player0 = gEngine.spawnEntity("Player", 250, 680); // Create player with initial position in canvas
         this.player0.spritename = 'kami-walk-00';
@@ -162,7 +140,9 @@ EngineClass = Class.extend({
     },
 
     updatePhysics: function () {
-        gPhysicsEngine.update(); // Update physics
+        if (typeof gPhysicsEngine !== 'undefined') {
+            gPhysicsEngine.update(); // Update physics
+        }
         for (var i = 0; i < gEngine.entities.length; i++) { // Update entities with physics calculations
             var ent = gEngine.entities[i];
             if (ent.physBody) {
