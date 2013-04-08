@@ -98,7 +98,7 @@ EngineClass = Class.extend({
         // Draw background, score and tree
         background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
         if (this.scrore_frames > 0) { // Draw Score
-            background_context.font = 'bold 500pt Verdana';
+            background_context.font = 'bold 500pt Helvetica';
             var points_color = Math.round(this.player0.points * 255 / end_of_game_points);
             background_context.fillStyle = 'rgba(' + points_color + ',0,' + (255 - points_color) + ',1)';
             background_context.textAlign = 'center';
