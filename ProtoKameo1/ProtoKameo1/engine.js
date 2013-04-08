@@ -297,17 +297,23 @@ var drawLoadingInstrucions = function () {
     grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
     player_context.fillStyle = grd;
     player_context.fillRect(0, 0, canvas.width, canvas.height);
-    if (introFrame == 0) { // Show gameplay instructions while game background is loading
-        background_context.font = 'bold 70pt ' + game_font;
-        background_context.fillStyle = 'rgba(0, 155, 0, 1)'; // green
-        background_context.textAlign = 'center';
-        background_context.fillText('Use ← left and right →', canvas.width / 2, (canvas.height / 2) - 120);
-        background_context.fillStyle = 'rgba(255, 155, 0, 1)'; // orange
-        background_context.fillText('Use mouse to catch flies', canvas.width / 2, (canvas.height / 2));
-        background_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
-        background_context.fillText('Prevent Kame from starving' + dots, canvas.width / 2, (canvas.height / 2) + 120);
-        loading_dots += ".";
-        window.setTimeout(drawLoadingInstrucions, 1000); // Keep drawing instructions until background is loaded
+    if (introFrame <= FPS * 3) {// Show gameplay instructions while game background is loading
+        player_context.font = 'bold 70pt ' + game_font;
+        player_context.fillStyle = 'rgba(0, 155, 0, 1)'; // green
+        player_context.textAlign = 'center';
+        player_context.fillText('Move with ← left and right →', canvas.width / 2, (canvas.height / 2) - 120);
+        player_context.fillStyle = 'rgba(255, 155, 0, 1)'; // orange
+        player_context.fillText('Mouse click to catch flies', canvas.width / 2, (canvas.height / 2));
+        player_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
+        player_context.fillText('Prevent Kame from starving' + loading_dots, canvas.width / 2, (canvas.height / 2) + 120);
+    }
+    if (introFrame == 0) {
+        window.setTimeout(function(){
+            if (!background_loaded) {
+                loading_dots += ".";
+                drawLoadingInstrucions();
+            }
+        }, 1000); // Keep drawing instructions until background is loaded
     }    
 };
 
