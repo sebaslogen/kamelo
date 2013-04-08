@@ -207,9 +207,6 @@ var setup = function () {
     // Background canvas
     background_canvas = document.getElementById('background');
     background_context = background_canvas.getContext('2d');
-    // Initialize fireworks Canvas
-    Canvas.canvas = document.getElementById('FireworksCanvas');
-    Canvas.context = Canvas.canvas.getContext('2d');
 
     // Load background image first
     background_image = new Image();
@@ -261,7 +258,8 @@ var setup = function () {
     window.setInterval(animate, 1000 / FPS);
     drawLoadingInstrucions();
 
-    /// Asynchronous assets loader for physics (not used until the first fly is created) ///
+    /// Asynchronous assets loader for physics (not used until the first fly is created) and other libraries ///
+
     var oHead = document.getElementsByTagName('head').item(0);
     var boxScript = document.createElement("script");
     boxScript.type = "text/javascript";
@@ -300,6 +298,15 @@ var setup = function () {
     };
     boxScript.src = "box2D.js";
     oHead.appendChild(boxScript);
+    // Load firework library
+    var fireworksScript = document.createElement("script");
+    fireworksScript.type = "text/javascript";
+    fireworksScript.onload = function () { // Setup fireworks library
+        Canvas.canvas = document.getElementById('FireworksCanvas'); // Initialize fireworks Canvas
+        Canvas.context = Canvas.canvas.getContext('2d');
+    };
+    fireworksScript.src = "fireworks.js";
+    oHead.appendChild(fireworksScript);
 };
 
 var player_canvas = null;
