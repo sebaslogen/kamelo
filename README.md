@@ -5,6 +5,7 @@ Description
 -----------
 Our first HTML5 game in 2D handcrafted with love and beasts.
 Based on the code and topics of course HTML5 Game Development (https://www.udacity.com/course/cs255)
+Note: The game works best on the Chrome web browser (www.google.com/chrome)
 
 Authors
 -------
@@ -14,7 +15,8 @@ Authors
 
 Play the game online
 --------------------
-Can you catch 50 flies?
+Use left and right arrows to move Kami (a.k.a. the beast) and click with the mouse on the fly to catch it!
+Can you catch 50 flies to WIN the game?
 http://kamelo.net23.net/
 
 Screenshot: http://kamelo.net23.net/capture.png
@@ -45,3 +47,12 @@ NA MEDIA (http://www.abcministry.com/privacy_policy.php) - Personal Use Only
 NA MEDIA® Services are made available for your personal, non-commercial use only.
 You may not take the results from a search and reformat and display them, or mirror
 any NA MEDIA® home page or results pages on your Web site.
+
+Game design in a nutshell
+-------------------------
+All graphics are handmade, with a combination of Play-Doh handcrafting from the original game concept design http://kamelo.net23.net/concept_art.jpg
+Physics library Box2D is used for flies collision but firing detection is done in a much faster and simple way to avoid unnecessary processing.
+Layering on several canvas allows to clear and repaint parts of Kami body without having to use different resources (less bandwidth VS small extra processing).
+Coloration of Kami's body is done using pixel color modifications on the required area of the canvas (avoiding processing of transparent pixels).
+Sound and images are processed in atlases to reduce server requests, only big files are keep separately to allow simultaneous downloads and speed up game loading.
+
