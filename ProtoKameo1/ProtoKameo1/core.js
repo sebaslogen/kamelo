@@ -213,11 +213,11 @@ var setup = function () {
 
     // Load background image first
     background_image = new Image();
-    background_image.src = 'resources/images/mountains.png';
     background_image.onload = function () {
         background_loaded = true;
         window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
     }
+    background_image.src = 'resources/images/mountains.png';
     // Load each image URL from the assets array into the frames array in the correct order.
     var spriteSheet = new SpriteSheetClass();
     spriteSheet.load('resources/images/sprites.png');
