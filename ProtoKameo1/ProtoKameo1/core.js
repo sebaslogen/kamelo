@@ -198,7 +198,6 @@ var findPos = function (obj) {
 
 
 var setup = function () {
-
     // Canvas setup
     player_canvas = document.getElementById('PlayerCanvas');
     player_context = player_canvas.getContext('2d');
@@ -254,40 +253,7 @@ var setup = function () {
 
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
-};
-
-var animateBackground = function () {
-    if (!end) {
-        gEngine.updateBackground();
-        gEngine.drawBackground();
-    }
-};
-
-var animate = function () {
-    if (!end) {
-        if (background_loaded) { /// Main game update loop /// - This is where all the shit happens to attract the flies
-            gEngine.update();
-            gEngine.draw();
-        } else { // Reset start up animation until background image is loaded
-            introFrame = 0;
-        }
-        // Create Intro radial gradient in foreground while everything loads in the background
-        if (play_game_intro) {
-            var external_r = 20000 - (introFrame * introFrame * 2);
-            var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
-            var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
-            grd.addColorStop(1, 'transparent');
-            grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
-            player_context.fillStyle = grd;
-            player_context.fillRect(0, 0, canvas.width, canvas.height);
-            introFrame++;
-        }
-    } else {
-        background_context.font = 'bold 220pt Helvetica';
-        background_context.fillStyle = 'rgba(0, 50, 255, 1)';
-        background_context.textAlign = 'center';
-        background_context.fillText('The End', canvas.width / 2, canvas.height / 2 );
-    }
+    drawLoadingInstrucions();
 };
 
 var player_canvas = null;
@@ -308,7 +274,9 @@ var sound_atmos_active = false;
 var victory = false;
 var end = false;
 var end_of_game_points = 50;
+var game_font = 'Helvetica';
+var loading_dots = "";
 
-
+// Debugging options
 var disable_sound = false; // Debug option to disable any sound
 var cheating = false; // Debug option to win the game in only one fly catch

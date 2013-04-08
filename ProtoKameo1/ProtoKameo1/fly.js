@@ -48,6 +48,7 @@ FlyClass = EntityClass.extend({
     },
 
     //-----------------------------------------
+    // Disabled to use manual engine with mouse coordinates
     /*onTouch: function (otherBody, point, impulse) {
         if (!this.physBody) return false;
         if (!otherBody.GetUserData()) return false;
@@ -55,8 +56,7 @@ FlyClass = EntityClass.extend({
         if (physOwner !== null) {
             if (physOwner._killed) return false;
             //launchSound('flyby');
-            /////////////////////////////////////////////////////console.log("Collision between flies detected!");
-            // Disabled to use manual engine with mouse coordinates
+            //console.log("Collision between flies detected!");            
             // Kill fly only when the tongue touches it
             if (otherBody.GetUserData() && (otherBody.GetUserData().id != "Fly")) { // Something collided with me that was not a Fly!
                 this.markForDeath = true; // Kill when touched

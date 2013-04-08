@@ -52,7 +52,6 @@ EngineClass = Class.extend({
     spawnEntity: function (typename, x, y) {
         var entityClass = gEngine.factory[typename];
         var ent = new (entityClass)(x, y);
-        //////////////////////////////console.log("SPAWNING " + typename + " WITH ID " + ent.id);
         gEngine.entities.push(ent);
         return ent;
     },
@@ -98,7 +97,7 @@ EngineClass = Class.extend({
         // Draw background, score and tree
         background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
         if (this.scrore_frames > 0) { // Draw Score
-            background_context.font = 'bold 500pt Helvetica';
+            background_context.font = 'bold 500pt ' + game_font;
             var points_color = Math.round(this.player0.points * 255 / end_of_game_points);
             background_context.fillStyle = 'rgba(' + points_color + ',0,' + (255 - points_color) + ',1)';
             background_context.textAlign = 'center';
@@ -192,10 +191,9 @@ EngineClass = Class.extend({
                         }
                         this.player0.special_color = { red: -15, green: -15, blue: -220 }; // Turn yellow
                     } else {
-                        ////////////////////////////////// Catch sound
-                        launchDrySlapSound();
+                        launchDrySlapSound(); // Catch sound
                         this.player0.points++;
-                        if (cheating) {
+                        if (cheating) { // Cheating option to complete the game in one catch
                             this.player0.points += end_of_game_points;
                         }
                         this.player0.volatile_points++;
@@ -261,6 +259,57 @@ EngineClass = Class.extend({
 
 });
 
+
+/// External facing functions ///
+
+var animateBackground = function () {
+    if (!end) {
+        gEngine.updateBackground();
+        gEngine.drawBackground();
+    }
+};
+
+var animate = function () {
+    if (!end) {
+        if (background_loaded) { /// Main game update loop /// - This is where all the shit happens to attract the flies
+            gEngine.update();
+            gEngine.draw();
+            // Create Intro radial gradient in foreground while everything loads in the background
+            if (play_game_intro) {
+                introFrame++; // Start fading out loading screen
+                drawLoadingInstrucions();
+            }
+        }
+        
+    } else {
+        background_context.font = 'bold 220pt ' + game_font;
+        background_context.fillStyle = 'rgba(0, 50, 255, 1)';
+        background_context.textAlign = 'center';
+        background_context.fillText('The End', canvas.width / 2, canvas.height / 2);
+    }
+};
+
+var drawLoadingInstrucions = function () {
+    var external_r = 20000 - (introFrame * introFrame * 2);
+    var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
+    var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
+    grd.addColorStop(1, 'transparent');
+    grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
+    player_context.fillStyle = grd;
+    player_context.fillRect(0, 0, canvas.width, canvas.height);
+    if (introFrame == 0) { // Show gameplay instructions while game background is loading
+        background_context.font = 'bold 70pt ' + game_font;
+        background_context.fillStyle = 'rgba(0, 155, 0, 1)'; // green
+        background_context.textAlign = 'center';
+        background_context.fillText('Use ← left and right →', canvas.width / 2, (canvas.height / 2) - 120);
+        background_context.fillStyle = 'rgba(255, 155, 0, 1)'; // orange
+        background_context.fillText('Use mouse to catch flies', canvas.width / 2, (canvas.height / 2));
+        background_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
+        background_context.fillText('Prevent Kame from starving' + dots, canvas.width / 2, (canvas.height / 2) + 120);
+        loading_dots += ".";
+        window.setTimeout(drawLoadingInstrucions, 1000); // Keep drawing instructions until background is loaded
+    }    
+};
 
 //-----------------------------------------
 // External-facing function to get sprite based on the sprite name (ie. "kami-001.png")
