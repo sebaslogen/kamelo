@@ -27,6 +27,7 @@
     <Content Include="cloud.js" />
     <Content Include="fly.js" />
     <Content Include="fireworks.js" />
+    <Content Include="browserDetector.js" />
     <Content Include="pyshics.js" />
     <Content Include="player.js" />
     <Content Include="sound_engine.js" />

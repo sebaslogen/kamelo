@@ -251,6 +251,12 @@ var setup = function () {
     entityCloud.pos.x += Math.floor(Math.random() * 400);
     entityCloud.pos.y += Math.floor(Math.random() * 100);
 
+    if (BrowserDetect.browser != "Chrome") {
+        window.alert("Oops! The game is designed to run in Chrome web browser, playing in this browser may be slow and buggy :(");
+    }
+    if (BrowserDetect.OS != "Linux") { // Change font in Linux to a supported one
+        game_font = 'Helvetica';
+    }
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
     drawLoadingInstrucions();
@@ -274,7 +280,7 @@ var sound_atmos_active = false;
 var victory = false;
 var end = false;
 var end_of_game_points = 50;
-var game_font = 'Helvetica';
+var game_font = 'Verdana';
 var loading_dots = "";
 
 // Debugging options

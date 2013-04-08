@@ -56,7 +56,7 @@ any NA MEDIA® home page or results pages on your Web site.
 
 Game design in a nutshell
 -------------------------
-- All graphics are handmade, with a combination of Play-Doh handcrafting and digital painting based on the original game concept design http://kamelo.net23.net/concept_art.jpg
+- All graphics are handmade, with a combination of Play-Doh handcrafting and digital painting based on the original game concept design https://raw.github.com/neoranga55/kamelo/master/concept_art.jpg
 - Physics library Box2D is used for flies collision but firing detection is done in a much faster and simple way to avoid unnecessary processing.
 - Layering on several canvas allows to clear and repaint parts of Kami body without having to use different resources (less bandwidth VS small extra processing).
 - Coloration of Kami's body is done using pixel color modifications on the required area of the canvas (avoiding processing of transparent pixels).
