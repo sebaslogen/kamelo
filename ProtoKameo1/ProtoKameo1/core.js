@@ -1,5 +1,4 @@
 
-
 Array.prototype.erase = function (item) {
 	for (var i = this.length; i--; i) {
 		if (this[i] === item) this.splice(i, 1);
@@ -284,7 +283,7 @@ var animate = function () {
             introFrame++;
         }
     } else {
-        background_context.font = 'bold 220pt Verdana';
+        background_context.font = 'bold 220pt Helvetica';
         background_context.fillStyle = 'rgba(0, 50, 255, 1)';
         background_context.textAlign = 'center';
         background_context.fillText('The End', canvas.width / 2, canvas.height / 2 );
