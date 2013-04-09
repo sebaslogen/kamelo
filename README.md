@@ -50,9 +50,12 @@ Licensed under MIT License - http://www.opensource.org/licenses/mit-license.php
 
 - 'fly.wav' Sound used in sound file kame_hi.mp3/ogg
 NA MEDIA (http://www.abcministry.com/privacy_policy.php) - Personal Use Only
-NA MEDIA® Services are made available for your personal, non-commercial use only.
+NA MEDIAï¿½ Services are made available for your personal, non-commercial use only.
 You may not take the results from a search and reformat and display them, or mirror
-any NA MEDIA® home page or results pages on your Web site.
+any NA MEDIAï¿½ home page or results pages on your Web site.
+
+- Class object based on John Resigs code; inspired by base2 and Prototype
+http://ejohn.org/blog/simple-javascript-inheritance/
 
 Game design in a nutshell
 -------------------------
