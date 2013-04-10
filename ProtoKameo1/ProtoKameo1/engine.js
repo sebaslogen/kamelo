@@ -254,30 +254,36 @@ EngineClass = Class.extend({
 /// External facing functions ///
 
 var animateBackground = function () {
-    if (!end) {
-        gEngine.updateBackground();
-        gEngine.drawBackground();
-    }
+    setTimeout(function() {
+        if (!end) {
+            gEngine.updateBackground();
+            gEngine.drawBackground();
+        }
+        requestAnimationFrame(animateBackground);
+    }, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
 };
 
 var animate = function () {
-    if (!end) {
-        if (background_loaded) { /// Main game update loop /// - This is where all the shit happens to attract the flies
-            gEngine.update();
-            gEngine.draw();
-            // Create Intro radial gradient in foreground while everything loads in the background
-            if (play_game_intro) {
-                introFrame++; // Start fading out loading screen
-                drawLoadingInstructions();
+    setTimeout(function () {
+        if (!end) {
+            if (background_loaded) { /// Main game update loop /// - This is where all the shit happens to attract the flies
+                gEngine.update();
+                gEngine.draw();
+                // Create Intro radial gradient in foreground while everything loads in the background
+                if (play_game_intro) {
+                    introFrame++; // Start fading out loading screen
+                    drawLoadingInstructions();
+                }
             }
-        }
         
-    } else {
-        dynamic_background_context.font = 'bold 220pt ' + game_font;
-        dynamic_background_context.fillStyle = 'rgba(0, 50, 255, 1)';
-        dynamic_background_context.textAlign = 'center';
-        dynamic_background_context.fillText('The End', canvas.width / 2, canvas.height / 2);
-    }
+        } else {
+            dynamic_background_context.font = 'bold 220pt ' + game_font;
+            dynamic_background_context.fillStyle = 'rgba(0, 50, 255, 1)';
+            dynamic_background_context.textAlign = 'center';
+            dynamic_background_context.fillText('The End', canvas.width / 2, canvas.height / 2);
+        }
+        requestAnimationFrame(animate); // Call again on next possible frame
+    }, 1000 / FPS);
 };
 
 var drawLoadingInstructions = function () {
@@ -289,7 +295,7 @@ var drawLoadingInstructions = function () {
     player_context.fillStyle = grd;
     player_context.fillRect(0, 0, canvas.width, canvas.height);
     if (introFrame <= FPS * 3) {// Show gameplay instructions while game background is loading
-        player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height);//, 0, 0, canvas.width, canvas.height);
+        player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
     }
     if (introFrame == 0) {
         window.setTimeout(function(){

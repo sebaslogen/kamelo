@@ -223,7 +223,7 @@ var setup = function () {
         static_background_context.fill();
         // Paint mountains plus ground
         static_background_context.drawImage(background_image, 0, 0, static_background_canvas.width, static_background_canvas.height); // Draw background
-        window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
+        requestAnimationFrame(animateBackground); // Dynamic background drawn half times than foreground
     }
     background_image.src = 'resources/images/mountains.png';
     // Load each image URL from the assets array into the frames array in the correct order.
@@ -267,10 +267,9 @@ var setup = function () {
     }
     drawLoadingInstructions();
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
-    window.setInterval(animate, 1000 / FPS);
+    requestAnimationFrame(animate);
 
     /// Asynchronous assets loader for physics (not used until the first fly is created) and other libraries ///
-
     var oHead = document.getElementsByTagName('head').item(0);
     var boxScript = document.createElement("script");
     boxScript.type = "text/javascript";
@@ -319,6 +318,12 @@ var setup = function () {
     fireworksScript.src = "fireworks.js";
     oHead.appendChild(fireworksScript);
 };
+
+requestAnimationFrame = window.requestAnimationFrame ||
+                        window.mozRequestAnimationFrame ||
+                        window.webkitRequestAnimationFrame ||
+                        window.msRequestAnimationFrame ||
+                        setTimeout;
 
 var player_canvas = null;
 var player_context = null;
