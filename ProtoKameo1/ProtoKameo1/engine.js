@@ -58,34 +58,29 @@ EngineClass = Class.extend({
     },
 
     drawBackground: function () {
-        //background_context.clearRect(0, 0, background_canvas.width, background_canvas.height); // Clear background
-        background_context.beginPath();
-        background_context.rect(0, 0, background_canvas.width, background_canvas.height);
-        background_context.fillStyle = 'LightCyan';
-        background_context.fill();
+        dynamic_background_context.clearRect(0, 0, dynamic_background_canvas.width, dynamic_background_canvas.height); // Clear background
 
         // Draw sun plus back circular glow
-        var grd = background_context.createRadialGradient(1420, 170, 150, 1420, 270, 400);
-        grd.addColorStop(1, 'rgba(250,250,255,0.7)');
+        var grd = dynamic_background_context.createRadialGradient(1420, 170, 150, 1420, 270, 400);
+        grd.addColorStop(1, 'rgba(250,250,255,0)');
         grd.addColorStop(0, 'rgba(250,250,120,1)');
-        background_context.fillStyle = grd;
-        background_context.fillRect(0, 0, canvas.width, canvas.height);
-        drawSprite('sol.png', 1420, 170, sun_angle, background_context); // Draw sun
+        dynamic_background_context.fillStyle = grd;
+        dynamic_background_context.fillRect(0, 0, canvas.width, canvas.height);
+        drawSprite('sol.png', 1420, 170, sun_angle, dynamic_background_context); // Draw sun
 
         // Draw background, score and tree
-        background_context.drawImage(background_image, 0, 0, background_canvas.width, background_canvas.height); // Draw background
         if (this.scrore_frames > 0) { // Draw Score
-            background_context.font = 'bold 500pt ' + game_font;
+            dynamic_background_context.font = 'bold 500pt ' + game_font;
             var points_color = Math.round(this.player0.points * 255 / end_of_game_points);
-            background_context.fillStyle = 'rgba(' + points_color + ',0,' + (255 - points_color) + ',1)';
-            background_context.textAlign = 'center';
-            background_context.fillText(this.player0.points, canvas.width / 2, canvas.height / 2 + 200);
+            dynamic_background_context.fillStyle = 'rgba(' + points_color + ',0,' + (255 - points_color) + ',1)';
+            dynamic_background_context.textAlign = 'center';
+            dynamic_background_context.fillText(this.player0.points, canvas.width / 2, canvas.height / 2 + 200);
             this.scrore_frames = (this.scrore_frames + 1) % (FPS + 2); // Show for one second
             if (victory) {
                 this.scrore_frames = (FPS + 1);
             }
         }
-        drawSprite('tree.png', 1100, 420, 0, background_context); // Draw tree
+        drawSprite('tree.png', 1100, 420, 0, dynamic_background_context); // Draw tree
     },
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
@@ -262,10 +257,10 @@ var animate = function () {
         }
         
     } else {
-        background_context.font = 'bold 220pt ' + game_font;
-        background_context.fillStyle = 'rgba(0, 50, 255, 1)';
-        background_context.textAlign = 'center';
-        background_context.fillText('The End', canvas.width / 2, canvas.height / 2);
+        dynamic_background_context.font = 'bold 220pt ' + game_font;
+        dynamic_background_context.fillStyle = 'rgba(0, 50, 255, 1)';
+        dynamic_background_context.textAlign = 'center';
+        dynamic_background_context.fillText('The End', canvas.width / 2, canvas.height / 2);
     }
 };
 

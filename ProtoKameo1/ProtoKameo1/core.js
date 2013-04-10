@@ -202,16 +202,28 @@ var setup = function () {
     player_canvas = document.getElementById('PlayerCanvas');
     player_context = player_canvas.getContext('2d');
     player_canvas.focus();
+    // Flies canvas
     canvas = document.getElementById('PlaygroundCanvas');
     context = canvas.getContext('2d');
-    // Background canvas
-    background_canvas = document.getElementById('background');
-    background_context = background_canvas.getContext('2d');
+    // Dynamic background canvas
+    dynamic_background_canvas = /*document.createElement("canvas");
+    canvas.width = canvas.height = 1600; //*/document.getElementById('dynamicBackground');
+    dynamic_background_context = dynamic_background_canvas.getContext('2d');
+    // Static background canvas
+    static_background_canvas = document.getElementById('staticBackground');
+    static_background_context = static_background_canvas.getContext('2d');
 
     // Load background image first
     background_image = new Image();
     background_image.onload = function () {
         background_loaded = true;
+        // Paint blue sky
+        static_background_context.beginPath();
+        static_background_context.rect(0, 0, static_background_canvas.width, static_background_canvas.height);
+        static_background_context.fillStyle = 'LightCyan';
+        static_background_context.fill();
+        // Paint mountains plus ground
+        static_background_context.drawImage(background_image, 0, 0, static_background_canvas.width, static_background_canvas.height); // Draw background
         window.setInterval(animateBackground, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
     }
     background_image.src = 'resources/images/mountains.png';
@@ -313,8 +325,10 @@ var player_canvas = null;
 var player_context = null;
 var canvas = null;
 var context = null;
-var background_canvas = null;
-var background_context = null;
+var dynamic_background_canvas = null;
+var dynamic_background_context = null;
+var static_background_canvas = null;
+var static_background_context = null;
 var background_image = null;
 var FPS = 14;
 var introFrame = 0;
