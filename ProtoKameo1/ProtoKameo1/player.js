@@ -338,7 +338,7 @@ PlayerClass = EntityClass.extend({
         }
     },
 
-    change_color: function (spritename, posX, posY, angle, draw_context) {/*
+    change_color: function (spritename, posX, posY, angle, draw_context) {
         var offset_face = 50;
         var sprite = getSprite(spritename);
         var pos = { x: posX - (sprite.w / 2), y: posY - (sprite.h / 2) };
@@ -390,7 +390,7 @@ PlayerClass = EntityClass.extend({
             draw_context.rotate(-angle);
             draw_context.translate(-pos.x, -pos.y);
         }
-    */}
+    }
 });
 
 gEngine.factory['Player'] = PlayerClass;

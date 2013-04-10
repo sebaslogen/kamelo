@@ -206,8 +206,7 @@ var setup = function () {
     canvas = document.getElementById('PlaygroundCanvas');
     context = canvas.getContext('2d');
     // Dynamic background canvas
-    dynamic_background_canvas = /*document.createElement("canvas");
-    canvas.width = canvas.height = 1600; //*/document.getElementById('dynamicBackground');
+    dynamic_background_canvas = document.getElementById('dynamicBackground');
     dynamic_background_context = dynamic_background_canvas.getContext('2d');
     // Static background canvas
     static_background_canvas = document.getElementById('staticBackground');
@@ -266,9 +265,9 @@ var setup = function () {
     if (BrowserDetect.OS != "Linux") { // Change font in Linux to a supported one
         game_font = 'Helvetica';
     }
+    drawLoadingInstructions();
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     window.setInterval(animate, 1000 / FPS);
-    drawLoadingInstrucions();
 
     /// Asynchronous assets loader for physics (not used until the first fly is created) and other libraries ///
 

@@ -15,8 +15,24 @@ EngineClass = Class.extend({
     cheer_up_goal: 4,
     scrore_frames: 0,
 
+    //instructions_image: null,
+    instructions_canvas: null,
+
     //-----------------------------
     setup: function () {
+        // Prepare on loading screen playing instructions
+        this.instructions_canvas = document.createElement("canvas");
+        this.instructions_canvas.width = canvas.width;
+        this.instructions_canvas.height = canvas.height;
+        var instructions_context = this.instructions_canvas.getContext('2d');
+        instructions_context.font = 'bold 70pt ' + game_font;
+        instructions_context.fillStyle = 'rgba(0, 155, 0, 1)'; // green
+        instructions_context.textAlign = 'center';
+        instructions_context.fillText('Move with ← left and right →', canvas.width / 2, (canvas.height / 2) - 120);
+        instructions_context.fillStyle = 'rgba(255, 155, 0, 1)'; // orange
+        instructions_context.fillText('Mouse click to catch flies', canvas.width / 2, (canvas.height / 2));
+        instructions_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
+        instructions_context.fillText('Prevent Kame from starving' + loading_dots, canvas.width / 2, (canvas.height / 2) + 120);
         // Start atmosphere sound => while playing equals true, I will trigger the atmosphere background sound
         sound_atmos.play('atmos');
         sound_atmos_active = true;
@@ -252,7 +268,7 @@ var animate = function () {
             // Create Intro radial gradient in foreground while everything loads in the background
             if (play_game_intro) {
                 introFrame++; // Start fading out loading screen
-                drawLoadingInstrucions();
+                drawLoadingInstructions();
             }
         }
         
@@ -264,7 +280,7 @@ var animate = function () {
     }
 };
 
-var drawLoadingInstrucions = function () {
+var drawLoadingInstructions = function () {
     var external_r = 20000 - (introFrame * introFrame * 2);
     var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
     var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
@@ -273,20 +289,13 @@ var drawLoadingInstrucions = function () {
     player_context.fillStyle = grd;
     player_context.fillRect(0, 0, canvas.width, canvas.height);
     if (introFrame <= FPS * 3) {// Show gameplay instructions while game background is loading
-        player_context.font = 'bold 70pt ' + game_font;
-        player_context.fillStyle = 'rgba(0, 155, 0, 1)'; // green
-        player_context.textAlign = 'center';
-        player_context.fillText('Move with ← left and right →', canvas.width / 2, (canvas.height / 2) - 120);
-        player_context.fillStyle = 'rgba(255, 155, 0, 1)'; // orange
-        player_context.fillText('Mouse click to catch flies', canvas.width / 2, (canvas.height / 2));
-        player_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
-        player_context.fillText('Prevent Kame from starving' + loading_dots, canvas.width / 2, (canvas.height / 2) + 120);
+        player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height);//, 0, 0, canvas.width, canvas.height);
     }
     if (introFrame == 0) {
         window.setTimeout(function(){
             if (!background_loaded) {
                 loading_dots += ".";
-                drawLoadingInstrucions();
+                drawLoadingInstructions();
             }
         }, 1000); // Keep drawing instructions until background is loaded
     }    
