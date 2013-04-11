@@ -17,6 +17,7 @@ EngineClass = Class.extend({
     scrore_frames: 0,
 
     instructions_canvas: null,
+    bar_canvas: null,
 
     //-----------------------------
     setup: function () {
@@ -32,7 +33,12 @@ EngineClass = Class.extend({
         instructions_context.fillStyle = 'rgba(255, 155, 0, 1)'; // orange
         instructions_context.fillText('Mouse click to catch flies', canvas.width / 2, (canvas.height / 2));
         instructions_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
-        instructions_context.fillText('Prevent Kame from starving' + loading_dots, canvas.width / 2, (canvas.height / 2) + 120);
+        instructions_context.fillText('Prevent Kame from starving', canvas.width / 2, (canvas.height / 2) + 120);
+        // Create a loading bar
+        this.bar_canvas = document.createElement("canvas");
+        var ctx = this.bar_canvas.getContext("2d");
+        ctx.fillStyle = "#EE0000";
+        ctx.fillRect(0, 0, 100, 20);
         // Start atmosphere sound => while playing equals true, I will trigger the atmosphere background sound
         sound_atmos.play('atmos');
         sound_atmos_active = true;
@@ -269,7 +275,7 @@ var animate = function () {
                 // Create Intro radial gradient in foreground while everything loads in the background
                 if (play_game_intro) {
                     introFrame++; // Start fading out loading screen
-                    drawLoadingInstructions();
+                    drawLoadingScreen(); // Still draw instructions for a few seconds while gradient is disolving
                 }
             }
         
@@ -283,7 +289,7 @@ var animate = function () {
     }, 1000 / FPS);
 };
 
-var drawLoadingInstructions = function () {
+var drawLoadingScreen = function () {
     var external_r = 20000 - (introFrame * introFrame * 2);
     var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
     var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
@@ -291,16 +297,19 @@ var drawLoadingInstructions = function () {
     grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
     player_context.fillStyle = grd;
     player_context.fillRect(0, 0, canvas.width, canvas.height);
-    if (introFrame <= FPS * 3) {// Show gameplay instructions while game background is loading
+    if (introFrame <= FPS * 3) {// Show gameplay instructions while game background is loading and a few seconds more to allow for reading
         player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+        for (var i = 0; i < loading_bars; i++) { // Draw animated loading bars
+            player_context.drawImage(gEngine.bar_canvas, 0, 0, 100, 20, canvas.width / 2 - 300 + (200 * i), (canvas.height / 2) + 300, 100, 20);
+        }
     }
     if (introFrame == 0) {
         window.setTimeout(function(){
-            if (!background_loaded) {
-                loading_dots += ".";
-                drawLoadingInstructions();
+            if (!background_loaded) { // Keep drawing instructions plus loading bars only until background is loaded
+                loading_bars++;
+                drawLoadingScreen();
             }
-        }, 1000); // Keep drawing instructions until background is loaded
+        }, 500);
     }    
 };
 

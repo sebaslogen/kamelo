@@ -221,14 +221,14 @@ var setup = function () {
         static_background_context.rect(0, 0, static_background_canvas.width, static_background_canvas.height);
         static_background_context.fillStyle = 'LightCyan';
         static_background_context.fill();
+        // Paint mountains plus ground
+        static_background_context.drawImage(background_image, 0, 0, static_background_canvas.width, static_background_canvas.height); // Draw background (not a sprite)
         // Create sun gradient background
         var grd = static_background_context.createRadialGradient(1420, 170, 150, 1420, 270, 400);
         grd.addColorStop(1, 'rgba(250,250,255,0)');
         grd.addColorStop(0, 'rgba(250,250,120,1)');
         static_background_context.fillStyle = grd;
         static_background_context.fillRect(0, 0, canvas.width, canvas.height);
-        // Paint mountains plus ground
-        static_background_context.drawImage(background_image, 0, 0, static_background_canvas.width, static_background_canvas.height); // Draw background (not a sprite)
         // Initialize dynamic background
         requestAnimationFrame(animateBackground); // Dynamic background drawn half times than foreground
     }
@@ -272,7 +272,7 @@ var setup = function () {
     if (BrowserDetect.OS != "Linux") { // Change font in Linux to a supported one
         game_font = 'Helvetica';
     }
-    drawLoadingInstructions();
+    drawLoadingScreen();
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     requestAnimationFrame(animate);
 
@@ -353,7 +353,7 @@ var victory = false;
 var end = false;
 var end_of_game_points = 50;
 var game_font = 'Verdana';
-var loading_dots = "";
+var loading_bars = 0;
 
 // Debugging options
 var disable_sound = false; // Debug option to disable any sound
