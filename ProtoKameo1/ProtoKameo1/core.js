@@ -206,10 +206,10 @@ var setup = function () {
     canvas = document.getElementById('PlaygroundCanvas');
     context = canvas.getContext('2d');
     // Dynamic background canvas
-    dynamic_background_canvas = document.getElementById('dynamicBackground');
+    dynamic_background_canvas = document.getElementById('DynamicBackground');
     dynamic_background_context = dynamic_background_canvas.getContext('2d');
     // Static background canvas
-    static_background_canvas = document.getElementById('staticBackground');
+    static_background_canvas = document.getElementById('StaticBackground');
     static_background_context = static_background_canvas.getContext('2d');
 
     // Load background image first
@@ -221,8 +221,15 @@ var setup = function () {
         static_background_context.rect(0, 0, static_background_canvas.width, static_background_canvas.height);
         static_background_context.fillStyle = 'LightCyan';
         static_background_context.fill();
+        // Create sun gradient background
+        var grd = static_background_context.createRadialGradient(1420, 170, 150, 1420, 270, 400);
+        grd.addColorStop(1, 'rgba(250,250,255,0)');
+        grd.addColorStop(0, 'rgba(250,250,120,1)');
+        static_background_context.fillStyle = grd;
+        static_background_context.fillRect(0, 0, canvas.width, canvas.height);
         // Paint mountains plus ground
-        static_background_context.drawImage(background_image, 0, 0, static_background_canvas.width, static_background_canvas.height); // Draw background
+        static_background_context.drawImage(background_image, 0, 0, static_background_canvas.width, static_background_canvas.height); // Draw background (not a sprite)
+        // Initialize dynamic background
         requestAnimationFrame(animateBackground); // Dynamic background drawn half times than foreground
     }
     background_image.src = 'resources/images/mountains.png';

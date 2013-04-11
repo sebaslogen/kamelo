@@ -20,13 +20,16 @@ SpriteSheetClass = Class.extend({
 	init: function () {},
 
 	//-----------------------------------------
-    // Load the atlas at the path 'imgName' into memory. This is similar to how we've loaded images in previous units.
+    // Load the atlas at the path 'imgName' into memory.
 	load: function (imgName) {
 		// Store the URL of the spritesheet we want.
         this.url = imgName;
         
         // Create a new image whose source is at 'imgName'.
-		var img = new Image();
+        var img = new Image();
+        img.onload = function () {
+            gEngine.sprites_loaded = 1;
+        }
 		img.src = imgName;
 
         // Store the Image object in the img parameter.

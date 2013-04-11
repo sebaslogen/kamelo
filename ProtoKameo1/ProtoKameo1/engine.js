@@ -6,6 +6,7 @@ EngineClass = Class.extend({
     entities: [],
     factory: {},
     _deferredKill: [],
+    sprites_loaded: 0, // 0 means not loaded, 1 and 2 loaded
 
     flyes_alive: 0,
     max_flyes_alive: 15,
@@ -15,7 +16,6 @@ EngineClass = Class.extend({
     cheer_up_goal: 4,
     scrore_frames: 0,
 
-    //instructions_image: null,
     instructions_canvas: null,
 
     //-----------------------------
@@ -73,19 +73,17 @@ EngineClass = Class.extend({
         sun_angle += 0.001; // Sun rotation speed
     },
 
-    drawBackground: function () {
+    drawBackground: function () { // Draw background with moving sun and score
+        if (this.sprites_loaded == 1) { // Draw only when images are loaded
+            this.sprites_loaded = 2; // Never draw it again
+            var tree_context = document.getElementById('TreeCanvas').getContext('2d');
+            drawSprite('tree.png', 1100, 420, 0, tree_context); // Draw tree on top of future score text
+        }
         dynamic_background_context.clearRect(0, 0, dynamic_background_canvas.width, dynamic_background_canvas.height); // Clear background
-
-        // Draw sun plus back circular glow
-        var grd = dynamic_background_context.createRadialGradient(1420, 170, 150, 1420, 270, 400);
-        grd.addColorStop(1, 'rgba(250,250,255,0)');
-        grd.addColorStop(0, 'rgba(250,250,120,1)');
-        dynamic_background_context.fillStyle = grd;
-        dynamic_background_context.fillRect(0, 0, canvas.width, canvas.height);
+        // Draw sun on top of circular glow
         drawSprite('sol.png', 1420, 170, sun_angle, dynamic_background_context); // Draw sun
-
-        // Draw background, score and tree
-        if (this.scrore_frames > 0) { // Draw Score
+        // Draw Score
+        if (this.scrore_frames > 0) {
             dynamic_background_context.font = 'bold 500pt ' + game_font;
             var points_color = Math.round(this.player0.points * 255 / end_of_game_points);
             dynamic_background_context.fillStyle = 'rgba(' + points_color + ',0,' + (255 - points_color) + ',1)';
@@ -96,7 +94,6 @@ EngineClass = Class.extend({
                 this.scrore_frames = (FPS + 1);
             }
         }
-        drawSprite('tree.png', 1100, 420, 0, dynamic_background_context); // Draw tree
     },
 
     update: function () { // Update player position of player and flies, create and delete flies as the born and die
