@@ -263,7 +263,7 @@ var animateBackground = function () {
             gEngine.drawBackground();
         }
         requestAnimationFrame(animateBackground);
-    }, 1000 / FPS / 2); // Dynamic background drawn half times than foreground
+    }, 1000 / (FPS / 2)); // Dynamic background drawn half times than foreground
 };
 
 var animate = function () {
