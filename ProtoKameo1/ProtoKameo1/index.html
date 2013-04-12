@@ -16,7 +16,7 @@
             evt.preventDefault();
         }
     </script>
-    <script type="text/javascript" src="browserDetector.js"></script>
+    <!--<script type="text/javascript" src="browserDetector.js"></script>
     <script type="text/javascript" src="core.js"></script>
     <script type="text/javascript" src="howler.js"></script>
     <script type="text/javascript" src="sound_engine.js"></script>
@@ -26,9 +26,31 @@
     <script type="text/javascript" src="cloud.js"></script>
     <script type="text/javascript" src="fly.js"></script>
     <script type="text/javascript" src="spriteSheet.js"></script>
-    <script type="text/javascript" src="input.js"></script>
+    <script type="text/javascript" src="input.js"></script>-->
     <script type="text/javascript">
-        window.onload = setup;
+        var scripts_list = ["browserDetector.js", "core.js", "howler.js", "sound_engine.js", "engine.js", "entity.js", "player.js", "cloud.js", "fly.js", "spriteSheet.js", "input.js"];
+        var head = document.getElementsByTagName('head').item(0);
+        var loadJS = function (position) {
+            loadJS_ready = false;
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.onload = function () { // Initalize pending scripts
+                if ((position + 1) < scripts_list.length) {
+                    loadJS(position + 1);
+                } else {
+                    setup(); // Execute real game
+                }
+            }
+            script.src = scripts_list[position];
+            head.appendChild(script);
+        };
+        window.onload = function () { // Load all scripts after painting the html page for the first time
+            var canvas = document.getElementById('PlayerCanvas');
+            var context = canvas.getContext('2d');
+            context.fillStyle = 'rgba(250,250,120,1)'; // Show first draw to user in a few milliseconds after HTML is loaded
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            loadJS(0);
+        };
     </script>
 </head>
 <body onkeypress="stopDefAction(event);">
