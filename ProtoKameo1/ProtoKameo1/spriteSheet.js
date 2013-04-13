@@ -95,13 +95,12 @@ SpriteSheetClass = Class.extend({
 	    for (var i = 0; i < this.sprites.length; i++) {
 	        sprite = this.sprites[i];
 		    if (sprite.id === name) {		        
-		        if (sprite.canvasCache === null) { // Create a canvas to store the drawn image
+		        if ((sprite.canvasCache === null) && (gEngine.sprites_loaded != 0)) { // Create a canvas to store the drawn image when image is loaded
 		            var canvas = document.createElement("canvas");
 		            canvas.width = sprite.w;
 		            canvas.height = sprite.h;
-                    canvas.getContext("2d").drawImage(this.img, sprite.x, sprite.y, sprite.w, sprite.h);
+		            canvas.getContext("2d").drawImage(this.img, sprite.x, sprite.y, sprite.w, sprite.h, 0, 0, sprite.w, sprite.h);
                     sprite.canvasCache = canvas; // Store canvas to paint it later
-////////////////////draw_context.drawImage(sheet.img, sprite.x, sprite.y, sprite.w, sprite.h, posX + sprite.cx.x, posY + sprite.cy.y, sprite.w, sprite.h);
 		        }
 		        return sprite;
             }

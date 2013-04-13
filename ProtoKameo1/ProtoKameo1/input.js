@@ -34,7 +34,9 @@ InputClass = Class.extend({
     onMouseMove: function (event) { // Get coordinates avoiding webpage scrolling offsets
         gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
         gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+        //////////////////console.log("Event XY:" + event.clientX + "," + event.clientY + "-scroll XY:" + document.body.scrollLeft + "," + document.body.scrollTop);
         var pos = findPos(player_canvas); // Get canvas current position
+        ////////////////console.log("Pos canvas XY:" + (pos.x * resolution_size) + "," + (pos.y * resolution_size));
         gInput.mouse.x -= pos.x;
         gInput.mouse.y -= pos.y;
         gEngine.player0.direct_eyes = true;

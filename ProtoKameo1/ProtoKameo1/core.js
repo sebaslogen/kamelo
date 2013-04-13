@@ -272,6 +272,18 @@ var setup = function () {
     if (BrowserDetect.OS != "Linux") { // Change font in Linux to a supported one
         game_font = 'Helvetica';
     }
+    /*  AUTOMATIC ZOOM LEVEL DISABLED
+    if (screen.width < 19200) { // Change size of game canvases to fit in screen
+        resolution_size = 0.50;
+        //resolution_size = 0.75;
+        //if (screen.width < 1600) {
+        //    resolution_size = 0.5;
+        //}
+        //if (screen.width < 960) {
+        //    resolution_size = 0.25;
+        //}
+        document.getElementById('gameDiv').style.zoom = resolution_size;
+    }*/
     drawLoadingScreen();
     // Call setInterval to run at a framerate of XX frames per second, calling the animate function each time.
     requestAnimationFrame(animate);
@@ -332,6 +344,7 @@ requestAnimationFrame = window.requestAnimationFrame ||
                         window.msRequestAnimationFrame ||
                         setTimeout;
 
+var resolution_size = 1;
 var player_canvas = null;
 var player_context = null;
 var canvas = null;
@@ -340,6 +353,8 @@ var dynamic_background_canvas = null;
 var dynamic_background_context = null;
 var static_background_canvas = null;
 var static_background_context = null;
+var evil_fly_halo_canvas = null;
+var dead_fly_halo_canvas = null;
 var background_image = null;
 var FPS = 14;
 var introFrame = 0;

@@ -381,14 +381,22 @@ var __drawSpriteInternal = function (spt, sheet, posX, posY, angle, draw_context
     if ((typeof flipped === 'undefined') || (flipped == null)) {
         flipped = false; // By default don't mirror
     }
-    if ((typeof angle !== 'undefined') && (angle != null)) { // Paint tongue
+    if ((typeof angle !== 'undefined') && (angle != null)) { // Paint rotated object
         draw_context.translate(posX, posY);
         draw_context.rotate(angle);
-        draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
+        if (spt.canvasCache != null) { // Rendering precalculated canvas
+            draw_context.drawImage(spt.canvasCache, 0, 0, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
+        } else {
+            draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, hlf.x, hlf.y, spt.w, spt.h);
+        }
         draw_context.rotate(-angle);
         draw_context.translate(-posX, -posY);
     } else {
-        draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
+        if (spt.canvasCache != null) { // Rendering precalculated canvas
+            draw_context.drawImage(spt.canvasCache, 0, 0, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
+        } else {
+            draw_context.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + hlf.x, posY + hlf.y, spt.w, spt.h);
+        }
     }
 };
 
