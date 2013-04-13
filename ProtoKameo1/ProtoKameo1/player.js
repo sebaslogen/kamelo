@@ -217,7 +217,7 @@ PlayerClass = EntityClass.extend({
             /// Set image size after being loaded ///
             if (this.size.width == 0 && this.size.height == 0) {
                 var sprite = getSprite(this.spritename + '1.png');
-                if ((sprite.w != null) && (sprite.h != null)) {
+                if ((typeof sprite !== 'undefined') && (sprite != null) && (sprite.w != null) && (sprite.h != null)) {
                     this.size.width = sprite.w;
                     this.size.height = sprite.h;
                 }

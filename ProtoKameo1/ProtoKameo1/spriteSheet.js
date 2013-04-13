@@ -55,7 +55,8 @@ SpriteSheetClass = Class.extend({
 			"w": w,
 			"h": h,
 			"cx": cx === null ? 0 : cx,
-			"cy": cy === null ? 0 : cy
+			"cy": cy === null ? 0 : cy,
+			"canvasCache": null
 		};
 		this.sprites.push(spt); // We push this new object into our array of sprite objects, at the end of the array.
 	},
@@ -90,9 +91,19 @@ SpriteSheetClass = Class.extend({
 	//-----------------------------------------
 	// Walk through all the sprite definitions for this atlas, and find which one matches the name.
 	getStats: function (name) {
-		for (var i = 0; i < this.sprites.length; i++) {
-            if(this.sprites[i].id === name) {
-                return this.sprites[i];
+	    var sprite = null;
+	    for (var i = 0; i < this.sprites.length; i++) {
+	        sprite = this.sprites[i];
+		    if (sprite.id === name) {		        
+		        if (sprite.canvasCache === null) { // Create a canvas to store the drawn image
+		            var canvas = document.createElement("canvas");
+		            canvas.width = sprite.w;
+		            canvas.height = sprite.h;
+                    canvas.getContext("2d").drawImage(this.img, sprite.x, sprite.y, sprite.w, sprite.h);
+                    sprite.canvasCache = canvas; // Store canvas to paint it later
+////////////////////draw_context.drawImage(sheet.img, sprite.x, sprite.y, sprite.w, sprite.h, posX + sprite.cx.x, posY + sprite.cy.y, sprite.w, sprite.h);
+		        }
+		        return sprite;
             }
 		}
 		return null; // If we don't find the sprite, return null.

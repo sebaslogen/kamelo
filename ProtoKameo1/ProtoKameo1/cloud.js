@@ -18,8 +18,10 @@ CloudClass = EntityClass.extend({
         }
         if (this.size.width == 0 && this.size.height == 0) {
             var sprite = getSprite(this.spritename + '.png');
-            this.size.width = sprite.w;
-            this.size.height = sprite.h;
+            if ((typeof sprite !== 'undefined') && (sprite != null) && (sprite.w != null) && (sprite.h != null)) {
+                this.size.width = sprite.w;
+                this.size.height = sprite.h;
+            }
         }
     },
 

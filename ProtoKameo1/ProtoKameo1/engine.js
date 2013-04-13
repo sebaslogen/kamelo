@@ -34,6 +34,9 @@ EngineClass = Class.extend({
         instructions_context.fillText('Mouse click to catch flies', canvas.width / 2, (canvas.height / 2));
         instructions_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
         instructions_context.fillText('Prevent Kame from starving', canvas.width / 2, (canvas.height / 2) + 120);
+        instructions_context.fillStyle = 'rgba(200, 0, 0, 1)'; // dark red
+        instructions_context.font = 'bold 15pt ' + game_font;
+        instructions_context.fillText('Made with Love By Sebastian Lobato Genco & Jose Carlos Tapiador Carretero', canvas.width / 2, (canvas.height / 2) + 420);
         // Create a loading bar
         this.bar_canvas = document.createElement("canvas");
         var ctx = this.bar_canvas.getContext("2d");
@@ -297,7 +300,7 @@ var drawLoadingScreen = function () {
     grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
     player_context.fillStyle = grd;
     player_context.fillRect(0, 0, canvas.width, canvas.height);
-    if (introFrame <= FPS * 3) {// Show gameplay instructions while game background is loading and a few seconds more to allow for reading
+    if (introFrame <= FPS * 4) {// Show gameplay instructions while game background is loading and a few seconds more to allow for reading
         player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
         if (!background_loaded) { // Draw loading bar only while background image has not been loaded
             for (var i = 0; i < loading_bars; i++) { // Draw animated loading bars
