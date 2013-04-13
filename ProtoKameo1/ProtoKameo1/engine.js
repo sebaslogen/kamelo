@@ -299,13 +299,13 @@ var drawLoadingScreen = function () {
     player_context.fillRect(0, 0, canvas.width, canvas.height);
     if (introFrame <= FPS * 3) {// Show gameplay instructions while game background is loading and a few seconds more to allow for reading
         player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-        if (introFrame == 0) { // Draw loading bar only while background image has not been loaded
+        if (!background_loaded) { // Draw loading bar only while background image has not been loaded
             for (var i = 0; i < loading_bars; i++) { // Draw animated loading bars
                 player_context.drawImage(gEngine.bar_canvas, 0, 0, 100, 20, canvas.width / 2 - 300 + (200 * i), (canvas.height / 2) + 300, 100, 20);
             }
         }
     }
-    if (introFrame == 0) {
+    if (!background_loaded) {
         window.setTimeout(function(){
             if (!background_loaded) { // Keep drawing instructions plus loading bars only until background is loaded
                 loading_bars++;
