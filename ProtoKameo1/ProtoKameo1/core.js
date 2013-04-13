@@ -313,7 +313,7 @@ var setup = function () {
         pScript.src = "pyshics.js";
         pHead.appendChild(pScript);
     };
-    boxScript.src = "box2D.js";
+    boxScript.src = "box2D-min.js";
     oHead.appendChild(boxScript);
     // Load firework library
     var fireworksScript = document.createElement("script");

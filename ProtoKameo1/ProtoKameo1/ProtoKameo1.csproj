@@ -85,6 +85,12 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
   <PropertyGroup>
-    <PostBuildEvent>type "$(ProjectDir)*.js" | "$(ProjectDir)..\..\jsmin.exe" &gt; "$(ProjectDir)minimized\code-bundle-min.js"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)..\..\jsmin.exe" &lt; "$(ProjectDir)core.js" &gt; "$(ProjectDir)core-min.js"
+"$(ProjectDir)..\..\jsmin.exe" &lt; "$(ProjectDir)engine.js" &gt; "$(ProjectDir)engine-min.js"
+"$(ProjectDir)..\..\jsmin.exe" &lt; "$(ProjectDir)howler.js" &gt; "$(ProjectDir)howler-min.js"
+"$(ProjectDir)..\..\jsmin.exe" &lt; "$(ProjectDir)player.js" &gt; "$(ProjectDir)player-min.js"
+"$(ProjectDir)..\..\jsmin.exe" &lt; "$(ProjectDir)fly.js" &gt; "$(ProjectDir)fly-min.js"
+"$(ProjectDir)..\..\jsmin.exe" &lt; "$(ProjectDir)input.js" &gt; "$(ProjectDir)input-min.js"
+"$(ProjectDir)..\..\jsmin.exe" &lt; "$(ProjectDir)box2D.js" &gt; "$(ProjectDir)box2D-min.js"</PostBuildEvent>
   </PropertyGroup>
 </Project>
