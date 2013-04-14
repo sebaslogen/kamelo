@@ -112,7 +112,7 @@ FlyClass = EntityClass.extend({
         this.physBody.SetLinearVelocity(move_dir);
         if (this.size.width == 0 && this.size.height == 0) { // Set object width and high based on sprite size after loading image
             var sprite = getSprite(this.spritename + '.png');
-            if ((sprite.w != null) && (sprite.h != null)) {
+            if ((typeof sprite !== 'undefined') && (sprite != null) && (sprite.w != null) && (sprite.h != null)) {
                 this.size.width = sprite.w;
                 this.size.height = sprite.h;
             }
@@ -137,7 +137,7 @@ FlyClass = EntityClass.extend({
 
     //-----------------------------------------
     draw: function () {
-        if (this.spritename) { // Draw cloud
+        if (this.spritename) {
             if (this.evil) { // Evil halo
                 if (evil_fly_halo_canvas == null) { // Create the halo only once and paint it several times
                     evil_fly_halo_canvas = document.createElement("canvas");

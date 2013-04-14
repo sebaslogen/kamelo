@@ -22,6 +22,8 @@ PlayerClass = EntityClass.extend({
     currSpriteName: null,
     health_timer: 0,
     last_fire_timer: 0,
+    local_player_canvas: null,
+    local_player_context: null,
     frame: 1, // Player current frame for walking animation
     total_frames: 3,
     direction: true,
@@ -31,8 +33,9 @@ PlayerClass = EntityClass.extend({
     current_eye: 1,
     last_tail_changed: 0,
     current_tail: 0,
-    color_variation: { red: 0, green: 0, blue: 0, alpha: 0 },
-    special_color: { red: 0, green: 0, blue: 0 },
+    alpha: 0,
+    yellow_filter: { canvas: null, context: null, intensity: 0.0 },
+    red_filter: { canvas: null , context: null, intensity: 0.0 },
     dead_altitud: 0,
     miss_in_da_face: false, // When fire position is incorrect, just slap the tongue in the head
     tongue_frame: 0, // Number of frame drawn for the tongue
@@ -70,6 +73,10 @@ PlayerClass = EntityClass.extend({
         this.physBody = null;/*gPhysicsEngine.addBody(entityDef);
         this.physBody.SetLinearVelocity(new Vec2(0, 0));
         this.physBody.linearDamping = 0;*/
+        this.local_player_canvas = document.createElement("canvas");
+        this.local_player_canvas.width = canvas.width;
+        this.local_player_canvas.height = canvas.height;
+        this.local_player_context = this.local_player_canvas.getContext('2d');
     },
 
     update: function () {
@@ -112,7 +119,7 @@ PlayerClass = EntityClass.extend({
                 this.last_eye_changed = now / 10;
                 this.current_eye = Math.floor(Math.random() * (max_eye_sprites + 1));
             }
-            if (this.color_variation.alpha != 0) { // Only change tails when not dying
+            if (this.alpha != 0) { // Only change tails when not dying
                 this.current_tail = 0;
             } else {
                 if (this.current_tail == 2) { // When showing long tail
@@ -194,9 +201,9 @@ PlayerClass = EntityClass.extend({
                 }
                 if (now - this.volatile_points_timer >= 4000) { // Every few seconds red color from eating decreases
                     if (this.volatile_points > 0) {
-                        if (this.health > 150) {
+                        if ((this.health > 150) || (this.volatile_points == 1)) {
                             this.volatile_points--; //Slower decrease
-                        } else {
+                        } else if (this.volatile_points > 1) {
                             this.volatile_points -= 2; //Fast decrease
                         }
                     }
@@ -205,13 +212,13 @@ PlayerClass = EntityClass.extend({
             } else if (!play_game_intro && !game_instructions) { // Intro finished and user read the game instructions, life starts ticking away
                 this.health_timer = (new Date()).getTime();
             }
-            this.color_variation.red = 8 * this.volatile_points + (255 - this.health) + this.special_color.red; // Change color depending on points and health
-            this.color_variation.green = -2 * this.volatile_points + (255 - this.health) + this.special_color.green;
-            this.color_variation.blue = -2 * this.volatile_points + (255 - this.health) + this.special_color.blue;
+
+            /// Determine color (body pigmentation) ///
+            this.red_filter.intensity = this.volatile_points / 10;
             if (this.health <= 150) { // Activate transparency when player is dying
-                this.color_variation.alpha = (this.health * 255 / 150) - 255;
+                this.alpha = (this.health + 20) / 255;
             } else {
-                this.color_variation.alpha = 0;
+                this.alpha = 1.0;
             }
 
             /// Set image size after being loaded ///
@@ -270,6 +277,8 @@ PlayerClass = EntityClass.extend({
     //-----------------------------------------
     draw: function () {
         if (this.spritename) { // Draw character
+            player_context.globalAlpha = this.alpha; // Set destination canvas transparency when player is alive
+            this.local_player_context.clearRect(0, 0, this.local_player_canvas.width, this.local_player_canvas.height);
             if (!this.dead) {
                 if (this.moving) {
                     if (this.direction) {
@@ -283,27 +292,28 @@ PlayerClass = EntityClass.extend({
                     this.moving = false;
                 }
                 var real_spritename = this.spritename + this.frame + '.png';
-                drawSprite(real_spritename, this.pos.x, this.pos.y, null, player_context);
+                drawSprite(real_spritename, this.pos.x, this.pos.y, null, this.local_player_context);
                 if (this.miss_in_da_face && (this.tongue_frame != 0)) { // Draw slap in da face!
-                    player_context.clearRect(this.pos.x + 123, this.pos.y - 25, 80, 62); // Clean up previous face
-                    player_context.clearRect(this.pos.x + 140, this.pos.y + 24, 80, 20); // Clean up previous face
-                    player_context.clearRect(this.pos.x + 112, this.pos.y - 96, 48, 48); // Clean up previous face
-                    drawSprite('kami-head-slap.png', this.pos.x + 163, this.pos.y - 25, null, player_context);
+                    this.local_player_context.clearRect(this.pos.x + 123, this.pos.y - 25, 80, 62); // Clean up previous face
+                    this.local_player_context.clearRect(this.pos.x + 140, this.pos.y + 24, 80, 20); // Clean up previous face
+                    this.local_player_context.clearRect(this.pos.x + 112, this.pos.y - 96, 48, 48); // Clean up previous face
+                    drawSprite('kami-head-slap.png', this.pos.x + 163, this.pos.y - 25, null, this.local_player_context);
                 } else { // Draw different face animations
                     if (this.current_eye != 0) { // Draw a new eye on top of the default eye
-                        drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37, null, player_context);
+                        drawSprite('kami-eye-00' + this.current_eye + '.png', this.pos.x + 162, this.pos.y - 37, null, this.local_player_context);
                     }
                 }
                 if (this.current_tail != 0) { // Paint alternative tails
-                    player_context.clearRect(this.pos.x - (this.size.width / 2) + 60, this.pos.y + 5, 70, 40); // Delete beginning of tail
-                    player_context.clearRect(this.pos.x - (this.size.width / 2), this.pos.y - 30, 120, 100); // Delete end of tail
-                    drawSprite('kami-tail-00' + this.current_tail + '.png', this.pos.x - 132, this.pos.y + 33, null, player_context);
+                    this.local_player_context.clearRect(this.pos.x - (this.size.width / 2) + 60, this.pos.y + 5, 70, 40); // Delete beginning of tail
+                    this.local_player_context.clearRect(this.pos.x - (this.size.width / 2), this.pos.y - 30, 120, 100); // Delete end of tail
+                    drawSprite('kami-tail-00' + this.current_tail + '.png', this.pos.x - 132, this.pos.y + 33, null, this.local_player_context);
                 }
-                this.change_color(real_spritename, this.pos.x, this.pos.y, this.angle, player_context); // Color player character
+                this.change_color(real_spritename, this.pos.x, this.pos.y, this.angle, this.local_player_context); // Color player character
+
                 /// Tongue drawing ///
                 if (this.tongue_frame != 0) { // Draw tongue
                     if (!this.miss_in_da_face) {
-                        drawSprite(this.t_start, this.tong_pos.x, this.tong_pos.y, this.angle, player_context);
+                        drawSprite(this.t_start, this.tong_pos.x, this.tong_pos.y, this.angle, this.local_player_context);
                         var current_tong_pos_x = this.tong_pos.x;
                         var current_tong_pos_y = this.tong_pos.y;
                         var distance = this.tong_distance / (max_tongue_frames - this.tongue_frame);
@@ -311,7 +321,7 @@ PlayerClass = EntityClass.extend({
                             distance = this.tong_distance
                         }
                         while (distance - start_tongue_med_segment > tong_med_size) { // Continue adding "middle tongue chunks" after tongue start until the tongue-end covers the rest of the distance until the mouse pos.
-                            drawSprite(this.t_med, current_tong_pos_x, current_tong_pos_y, this.angle, player_context);
+                            drawSprite(this.t_med, current_tong_pos_x, current_tong_pos_y, this.angle, this.local_player_context);
                             distance -= tong_med_size;
                             current_tong_pos_x += Math.cos(this.angle) * tong_med_size;
                             current_tong_pos_y += Math.sin(this.angle) * tong_med_size;
@@ -320,75 +330,65 @@ PlayerClass = EntityClass.extend({
                         current_tong_pos_y -= Math.sin(this.angle) * (tong_med_size * 2);
                         current_tong_pos_x += Math.cos(this.angle) * (distance - start_tongue_med_segment);// Extend tip of tongue progressively with mouse movement
                         current_tong_pos_y += Math.sin(this.angle) * (distance - start_tongue_med_segment);
-                        drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle, player_context);
+                        drawSprite(this.t_end, current_tong_pos_x, current_tong_pos_y, this.angle, this.local_player_context);
                         this.tongue_frame = (this.tongue_frame + 1) % (max_tongue_frames); // Less than half second at current FPS (10)
                     } else { // How long to draw slap in da face
                         this.tongue_frame = (this.tongue_frame + 1) % (max_tongue_frames + (max_tongue_frames / 2)); // A little bit longer than a tongue animation
                     }
                 }
             } else { // Dead, show pass to death
+                player_context.globalAlpha = 1.0; // Do not use global transparency on destination canvas for death
+                this.local_player_context.globalAlpha = 0.27;
                 if (this.dead_altitud < this.pos.y - 30) {
                     this.tongue_frame = 2;
                     var real_spritename = this.spritename + this.frame + '.png'; // Draw phantom first
-                    drawSprite(real_spritename, this.pos.x, this.dead_altitud, this.angle, player_context);
-                    this.change_color(real_spritename, this.pos.x, this.dead_altitud, this.angle, player_context); // Color player character
-                }                
-                drawSprite('kami-dead-00' + this.tongue_frame + '.png', this.pos.x, this.pos.y, null, player_context); // Draw dead body
+                    drawSprite(real_spritename, this.pos.x, this.dead_altitud, this.angle, this.local_player_context);
+                    this.change_color(real_spritename, this.pos.x, this.dead_altitud, this.angle, this.local_player_context); // Color player character
+                }
+                this.local_player_context.globalAlpha = 1.0;
+                drawSprite('kami-dead-00' + this.tongue_frame + '.png', this.pos.x, this.pos.y, null, this.local_player_context); // Draw dead body
             }
+
+            /// Draw to final canvas ///
+            if (!game_instructions && !background_loaded) { // When game start speed-up painting by simply copying canvases
+                player_context.globalCompositeOperation = 'copy'; // Copy canvas applying transparency to composed image
+            }
+            player_context.drawImage(this.local_player_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
         }
     },
 
     change_color: function (spritename, posX, posY, angle, draw_context) {
-        var offset_face = 50;
-        var sprite = getSprite(spritename);
-        var pos = { x: posX - (sprite.w / 2), y: posY - (sprite.h / 2) };
-        var drawing_pos = { x: pos.x, y: pos.y };
-        var max_side = 0;
-        var imageData = null;
-        if ((typeof angle !== 'undefined') && (angle != null) && (angle != 0)) { // Rotate
-            draw_context.translate(pos.x, pos.y);
-            draw_context.rotate(angle);
-            max_side = Math.max(sprite.w + offset_face, sprite.h);
-            drawing_pos = { x: posX - (max_side / 2), y: posY - (max_side / 2) };
-            imageData = draw_context.getImageData(drawing_pos.x, drawing_pos.y, max_side, max_side);
-        } else {
-            imageData = draw_context.getImageData(drawing_pos.x, drawing_pos.y, sprite.w + offset_face, sprite.h);
-        }
-        var data = imageData.data;
-        for (var i = 0; i < data.length; i += 4) {
-            if (data[i + 3] == 0) {
-                continue; // Skip repainting transparent pixels!
+        if (this.red_filter.intensity > 0) { // Do not use filter when it's invisible
+            if (this.red_filter.canvas == null) { // Create filter on first use
+                this.red_filter.canvas = document.createElement("canvas");
+                this.red_filter.canvas.width = canvas.width;
+                this.red_filter.canvas.height = canvas.height;
+                this.red_filter.context = this.red_filter.canvas.getContext('2d');
+                this.red_filter.context.fillStyle = 'rgba(255, 0, 0, 0.55)'; // maximal red
+                this.red_filter.context.fillRect(0, 0, canvas.width, canvas.height);
             }
-            data[i] = this.color_variation.red + data[i]; // red
-            data[i + 1] = this.color_variation.green + data[i + 1]; // green
-            data[i + 2] = this.color_variation.blue + data[i + 2]; // blue
-            if (this.color_variation.alpha != 0) {
-                data[i + 3] = this.color_variation.alpha + data[i + 3]; // alpha
-            }
+            var saved_alpha = draw_context.globalAlpha;
+            draw_context.globalAlpha = this.red_filter.intensity; // Set intensity
+            draw_context.globalCompositeOperation = 'source-atop'; // set composite mode
+            draw_context.drawImage(this.red_filter.canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+            draw_context.globalCompositeOperation = 'source-over'; // restore composite mode
+            draw_context.globalAlpha = saved_alpha;
         }
-        // Repaint tail separately
-        var offset_tail = 0;
-        if (this.current_tail != 0) { // Draw offset box for tail
-            offset_tail = { x: 100, y: 5};
-            var tailImageData = draw_context.getImageData(pos.x - offset_tail.x, pos.y - offset_tail.y, sprite.w / 3, sprite.h);
-            data = tailImageData.data;
-            for (var i = 0; i < data.length; i += 4) {
-                if (data[i + 3] == 0) {
-                    continue; // Skip repainting transparent pixels!
-                }
-                data[i] = this.color_variation.red + data[i]; // red
-                data[i + 1] = this.color_variation.green + data[i + 1]; // green
-                data[i + 2] = this.color_variation.blue + data[i + 2]; // blue
-                if (this.color_variation.alpha != 0) {
-                    data[i + 3] = this.color_variation.alpha + data[i + 3]; // alpha
-                }
+        if (this.yellow_filter.intensity > 0) { // Do not use filter when it's invisible
+            if (this.yellow_filter.canvas == null) { // Create filter on first use
+                this.yellow_filter.canvas = document.createElement("canvas");
+                this.yellow_filter.canvas.width = canvas.width;
+                this.yellow_filter.canvas.height = canvas.height;
+                this.yellow_filter.context = this.yellow_filter.canvas.getContext('2d');
+                this.yellow_filter.context.fillStyle = 'rgba(225, 255, 0, 0.55)'; // yellow
+                this.yellow_filter.context.fillRect(0, 0, canvas.width, canvas.height);
             }
-            draw_context.putImageData(tailImageData, pos.x - offset_tail.x, pos.y - offset_tail.y); // re-draw original image modified
-        }
-        draw_context.putImageData(imageData, drawing_pos.x, drawing_pos.y); // re-draw original image modified
-        if ((typeof angle !== 'undefined') && (angle != null) && (angle != 0)) {
-            draw_context.rotate(-angle);
-            draw_context.translate(-pos.x, -pos.y);
+            var saved_alpha = draw_context.globalAlpha;
+            draw_context.globalAlpha = this.yellow_filter.intensity; // Set intensity
+            draw_context.globalCompositeOperation = 'source-atop'; // set composite mode
+            draw_context.drawImage(this.yellow_filter.canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+            draw_context.globalCompositeOperation = 'source-over'; // restore composite mode
+            draw_context.globalAlpha = saved_alpha;
         }
     }
 });

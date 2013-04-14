@@ -100,7 +100,7 @@ EngineClass = Class.extend({
     },
     
     updateBackground: function () {
-        sun_angle += 0.001; // Sun rotation speed
+        sun_angle += 0.002; // Sun rotation speed
     },
 
     drawBackground: function () { // Draw background with moving sun and score
@@ -202,7 +202,9 @@ EngineClass = Class.extend({
                     ent.physBody.SetPosition(new Vec2(ent.pos.x, ent.pos.y));
                 }
             }
+
             /// Fly hunting method when tongue animation reaches target ///
+
             if ((ent.id == "Fly") && (!this.player0.miss_in_da_face) && !victory &&
                 (this.player0.tongue_frame == max_tongue_frames - 1) && !this.player0.dead) {
                 if (ent.updateCatch(this.player0.tong_fire_pos.x, this.player0.tong_fire_pos.y)) { // Points for death
@@ -216,7 +218,7 @@ EngineClass = Class.extend({
                         } else {
                             this.player0.health = 80;
                         }
-                        this.player0.special_color = { red: -15, green: -15, blue: -220 }; // Turn yellow
+                        this.player0.yellow_filter.intensity = 1.0; // Turn yellow
                     } else {
                         launchDrySlapSound(); // Catch sound
                         this.player0.points++;
@@ -226,8 +228,10 @@ EngineClass = Class.extend({
                         this.player0.volatile_points++;
                         if (this.player0.health < 255) {
                             this.player0.health += 30;
-                            if ((this.player0.special_color.red != 0) && (this.player0.health > 160)) {
-                                this.player0.special_color = { red: 0, green: 0, blue: 0 }; // Remove poison
+                            if (this.player0.health < 130) {
+                                this.player0.yellow_filter.intensity = 0.0; // Remove poison
+                            } else {
+                                this.player0.yellow_filter.intensity -= 0.2;
                             }
                         }
                         console.log("Points:" + this.player0.points);
@@ -249,7 +253,9 @@ EngineClass = Class.extend({
     //----- Draw all entities in the game engine
     draw: function () {
         context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
-        player_context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
+        if (!(!game_instructions && !background_loaded)) { // Only while loading then use fast canvas copy operations
+            player_context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
+        }
 
         // Bucket entities by zIndex
         var fudgeVariance = 128;
