@@ -26,14 +26,35 @@ EngineClass = Class.extend({
         this.instructions_canvas.width = canvas.width;
         this.instructions_canvas.height = canvas.height;
         var instructions_context = this.instructions_canvas.getContext('2d');
+        var zoom_inst_offset = 0;
+        instructions_context.textAlign = 'left';
+        if (screen.width < 1920) { // Show zooming instructions when game canvases do not fit in screen
+            var percent_res = screen.width / 1920;
+            zoom_inst_offset = 120;
+            var font_size = 38 * percent_res;
+            instructions_context.font = 'bold '+ font_size +'pt ' + game_font;
+            instructions_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
+            instructions_context.fillText('           Warning! Adjust ZOOM of the game with:', 10, font_size * 4);
+            instructions_context.fillStyle = 'rgba(0, 0, 200, 1)'; // green
+            instructions_context.fillText('"Ctrl" key  &  mouse wheel   OR   "Ctrl" key  &  "-" key', 10, font_size * 7);
+            ////////////////////resolution_size = 0.50;
+            //resolution_size = 0.75;
+            //if (screen.width < 1600) {
+            //    resolution_size = 0.5;
+            //}
+            //if (screen.width < 960) {
+            //    resolution_size = 0.25;
+            //}
+            //document.getElementById('gameDiv').style.zoom = resolution_size;
+        }
+        instructions_context.textAlign = 'center';
         instructions_context.font = 'bold 70pt ' + game_font;
         instructions_context.fillStyle = 'rgba(0, 155, 0, 1)'; // green
-        instructions_context.textAlign = 'center';
-        instructions_context.fillText('Move with ← left and right →', canvas.width / 2, (canvas.height / 2) - 120);
-        instructions_context.fillStyle = 'rgba(255, 155, 0, 1)'; // orange
-        instructions_context.fillText('Mouse click to catch flies', canvas.width / 2, (canvas.height / 2));
-        instructions_context.fillStyle = 'rgba(255, 0, 0, 1)'; // red
-        instructions_context.fillText('Prevent Kame from starving', canvas.width / 2, (canvas.height / 2) + 120);
+        instructions_context.fillText('Move with ← left and right →', canvas.width / 2, (canvas.height / 2) - 140 + zoom_inst_offset);
+        instructions_context.fillStyle = 'rgba(235, 135, 0, 1)'; // orange
+        instructions_context.fillText('Mouse click to catch flies', canvas.width / 2, (canvas.height / 2) + zoom_inst_offset);
+        instructions_context.fillStyle = 'rgba(255, 40, 40, 1)'; // red
+        instructions_context.fillText('Prevent Kame from starving', canvas.width / 2, (canvas.height / 2) + 140 + zoom_inst_offset);
         instructions_context.fillStyle = 'rgba(200, 0, 0, 1)'; // dark red
         instructions_context.font = 'bold 15pt ' + game_font;
         instructions_context.fillText('Made with Love By Sebastian Lobato Genco & Jose Carlos Tapiador Carretero', canvas.width / 2, (canvas.height / 2) + 420);

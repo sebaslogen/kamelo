@@ -34,12 +34,33 @@ InputClass = Class.extend({
     onMouseMove: function (event) { // Get coordinates avoiding webpage scrolling offsets
         gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
         gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-        //////////////////console.log("Event XY:" + event.clientX + "," + event.clientY + "-scroll XY:" + document.body.scrollLeft + "," + document.body.scrollTop);
+        /////////////////console.log("Event XY:" + event.clientX + "," + event.clientY + "-scroll XY:" + document.body.scrollLeft + "," + document.body.scrollTop);
         var pos = findPos(player_canvas); // Get canvas current position
         ////////////////console.log("Pos canvas XY:" + (pos.x * resolution_size) + "," + (pos.y * resolution_size));
         gInput.mouse.x -= pos.x;
         gInput.mouse.y -= pos.y;
-        gEngine.player0.direct_eyes = true;
+        gEngine.player0.direct_eyes = true;/*
+
+        var element = player_canvas,
+        offsetX = 0,
+        offsetY = 0,
+        mx, my;
+        // Compute the total offset
+        if (element.offsetParent !== undefined) {
+            do {
+                offsetX += element.offsetLeft;
+                offsetY += element.offsetTop;
+            } while ((element = element.offsetParent));
+        }
+        // Add padding and border style widths to offset
+        // Also add the <html> offsets in case there's a position:fixed bar
+        offsetX += stylePaddingLeft + styleBorderLeft + htmlLeft;
+        offsetY += stylePaddingTop + styleBorderTop + htmlTop;
+
+        mx = e.pageX - offsetX;
+        my = e.pageY - offsetY;
+
+        console.log("Calculated XY:" + mx + "," + my + "-offset XY:" + offsetX + "," + offsetY);*/
     },
 
     //-----------------------------
