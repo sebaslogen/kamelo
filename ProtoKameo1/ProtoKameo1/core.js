@@ -355,6 +355,7 @@ var victory = false;
 var end = false;
 var end_of_game_points = 50;
 var game_font = 'Verdana';
+var game_instructions = true;
 var loading_bars = 0;
 
 // Debugging options

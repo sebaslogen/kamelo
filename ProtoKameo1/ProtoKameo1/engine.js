@@ -131,6 +131,11 @@ EngineClass = Class.extend({
         if ((introFrame >= introSeconds * FPS) && play_game_intro) {
             play_game_intro = false;
         }
+        if (game_instructions) { // Stop showing initial instructions
+            if (gInput.actions['fire-mouse'] || gInput.actions['move-left'] || gInput.actions['move-right']) {
+                game_instructions = false;
+            }
+        }
         /// This clousure is full of shit to generate flies ///
         if ((this.flyes_alive < this.max_flyes_alive) && // Create flies until the maximum is reached
             !play_game_intro){ // only after game intro finishes
@@ -301,6 +306,9 @@ var animate = function () {
                     introFrame++; // Start fading out loading screen
                     drawLoadingScreen(); // Still draw instructions for a few seconds while gradient is disolving
                 }
+                if (game_instructions) { // Show gameplay instructions until the user presses any of the game keys 
+                    player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+                }
             }
         
         } else {
@@ -321,15 +329,13 @@ var drawLoadingScreen = function () {
     grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
     player_context.fillStyle = grd;
     player_context.fillRect(0, 0, canvas.width, canvas.height);
-    if (introFrame <= FPS * 4) {// Show gameplay instructions while game background is loading and a few seconds more to allow for reading
+    if (game_instructions || !background_loaded) { // Show gameplay instructions until the user presses any of the game keys and the background loads
         player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-        if (!background_loaded) { // Draw loading bar only while background image has not been loaded
-            for (var i = 0; i < loading_bars; i++) { // Draw animated loading bars
-                player_context.drawImage(gEngine.bar_canvas, 0, 0, 100, 20, canvas.width / 2 - 300 + (200 * i), (canvas.height / 2) + 300, 100, 20);
-            }
-        }
     }
     if (!background_loaded) {
+        for (var i = 0; i < loading_bars; i++) { // Draw loading bar only while background image has not been loaded
+            player_context.drawImage(gEngine.bar_canvas, 0, 0, 100, 20, canvas.width / 2 - 300 + (200 * i), (canvas.height / 2) + 300, 100, 20);
+        }
         window.setTimeout(function(){
             if (!background_loaded) { // Keep drawing instructions plus loading bars only until background is loaded
                 loading_bars++;

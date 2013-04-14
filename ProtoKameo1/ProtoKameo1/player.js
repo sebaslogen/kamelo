@@ -202,7 +202,7 @@ PlayerClass = EntityClass.extend({
                     }
                     this.volatile_points_timer = now;
                 }
-            } else if (!play_game_intro) { // Intro finished, life starts ticking away
+            } else if (!play_game_intro && !game_instructions) { // Intro finished and user read the game instructions, life starts ticking away
                 this.health_timer = (new Date()).getTime();
             }
             this.color_variation.red = 8 * this.volatile_points + (255 - this.health) + this.special_color.red; // Change color depending on points and health

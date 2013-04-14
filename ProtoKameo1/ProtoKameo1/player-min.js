@@ -16,7 +16,7 @@ angle_calculated=true;var degrees=-(this.angle*(180/Math.PI))%360;if(degrees>=-1
 if(this.health_timer!=0){if((now-this.health_timer>=200)&&(!this.dead)&&(!victory)){this.health-=1;if(this.points>30){this.health-=Math.floor(this.points/30);}
 this.health_timer=now;}
 if(now-this.volatile_points_timer>=4000){if(this.volatile_points>0){if(this.health>150){this.volatile_points--;}else{this.volatile_points-=2;}}
-this.volatile_points_timer=now;}}else if(!play_game_intro){this.health_timer=(new Date()).getTime();}
+this.volatile_points_timer=now;}}else if(!play_game_intro&&!game_instructions){this.health_timer=(new Date()).getTime();}
 this.color_variation.red=8*this.volatile_points+(255-this.health)+this.special_color.red;this.color_variation.green=-2*this.volatile_points+(255-this.health)+this.special_color.green;this.color_variation.blue=-2*this.volatile_points+(255-this.health)+this.special_color.blue;if(this.health<=150){this.color_variation.alpha=(this.health*255/150)-255;}else{this.color_variation.alpha=0;}
 if(this.size.width==0&&this.size.height==0){var sprite=getSprite(this.spritename+'1.png');if((typeof sprite!=='undefined')&&(sprite!=null)&&(sprite.w!=null)&&(sprite.h!=null)){this.size.width=sprite.w;this.size.height=sprite.h;}}
 if(this.health<=70){this.dead=true;game_music.fadeOut(0.0,3000,null);sound_atmos.fadeOut(0.0,3000,null);kami_death.play("death").fadeIn(0.5,5000);this.tongue_frame=1;this.angle=0.1;}}else{this.dead_altitud-=(1.8+(this.angle*2));if(this.angle<1){this.angle+=0.008;}
