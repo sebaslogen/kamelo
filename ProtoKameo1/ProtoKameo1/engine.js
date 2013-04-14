@@ -21,7 +21,7 @@ EngineClass = Class.extend({
 
     //-----------------------------
     setup: function () {
-        // Prepare on loading screen playing instructions
+        // Prepare game instructions once to render later multiple times
         this.instructions_canvas = document.createElement("canvas");
         this.instructions_canvas.width = canvas.width;
         this.instructions_canvas.height = canvas.height;
@@ -136,16 +136,20 @@ EngineClass = Class.extend({
                 game_instructions = false;
             }
         }
-        /// This clousure is full of shit to generate flies ///
+        /// This clousure is full of SHIT to generate the flies ;-) ///
         if ((this.flyes_alive < this.max_flyes_alive) && // Create flies until the maximum is reached
             !play_game_intro){ // only after game intro finishes
             var flyID = Math.floor(Math.random() * 3);
             var seconds = (new Date()).getTime() / 1000;
-            if ((flyID > 0) && (seconds - this.last_fly_created > 2)) { // Choose randomly to create fly model 1 or 2 or none only after a few seconds
+            // Choose randomly to not create a fly or create fly model 1 or 2 but only after a few seconds (periodically)
+            if ((flyID > 0) && (seconds - this.last_fly_created > 2)) {
                 var new_pos = { x: Math.floor(Math.random() * 1600), y: Math.floor(Math.random() * 700)};
                 var entFly = gEngine.spawnEntity("Fly", new_pos.x, new_pos.y);
                 entFly.spritename = 'fly-00' + flyID;
                 entFly.count_id = ++this.total_fly_counter;
+                if (this.total_fly_counter > 100000) { // Reset ID counter to avoid problems
+                    this.total_fly_counter = 0;
+                }
                 entFly.speed = Math.floor(Math.random() * 500) + 50;
                 entFly.zindex += Math.floor(Math.random() * 20);
                 if (new_pos.x % 11 == 0) { // Turn the fly into an evil monster!
@@ -312,7 +316,7 @@ var animate = function () {
             }
         
         } else {
-            dynamic_background_context.font = 'bold 220pt ' + game_font;
+            dynamic_background_context.font = 'bold 250pt ' + game_font;
             dynamic_background_context.fillStyle = 'rgba(0, 50, 255, 1)';
             dynamic_background_context.textAlign = 'center';
             dynamic_background_context.fillText('The End', canvas.width / 2, canvas.height / 2);
