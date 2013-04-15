@@ -45,11 +45,14 @@
     
     <script type="text/javascript">
         window.onload = setup;
+        window.onclick = stopDefAction;
+        window.mousedown = stopDefAction;
+        window.onkeypress = stopDefAction;
     </script>
 </head>
-<body onkeypress="stopDefAction(event);" onclick="stopDefAction(event);">
+<body>
     <div id="gameDiv" class="canvas_position">
-        <canvas id="MainGameCanvas" width="1600" height="900" style="position: absolute; z-index: 7;" tabindex="1">
+        <canvas id="MainGameCanvas" width="1600" height="900" style="position: absolute; z-index: 6;" tabindex="1">
             Canvas tag to draw the game not supported :( You need a new web browser!
 	    </canvas>
         <canvas id="PlayerCanvas" width="1600" height="900" style="position: absolute; z-index: 5;">

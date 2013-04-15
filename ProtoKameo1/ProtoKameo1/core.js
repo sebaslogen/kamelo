@@ -200,6 +200,7 @@ var findPos = function (obj) {
 var setup = function () {
     // Main game canvas
     game_canvas = document.getElementById('MainGameCanvas');
+    game_canvas.onselectstart = function () { return false; }
     game_context = game_canvas.getContext('2d');
     // Canvas setup
     player_canvas = document.getElementById('PlayerCanvas');

@@ -59,7 +59,7 @@ InputClass = Class.extend({
     //-----------------------------
     onKeyDown: function (event) {
         var action = gInput.bindings[event.keyCode];
-
+        console.log("pressed" + action);
         if (action) {
             gInput.actions[action] = true;
         }
