@@ -198,6 +198,9 @@ var findPos = function (obj) {
 
 
 var setup = function () {
+    // Main game canvas
+    game_canvas = document.getElementById('MainGameCanvas');
+    game_context = game_canvas.getContext('2d');
     // Canvas setup
     player_canvas = document.getElementById('PlayerCanvas');
     player_context = player_canvas.getContext('2d');
@@ -219,7 +222,7 @@ var setup = function () {
         // Paint blue sky
         static_background_context.beginPath();
         static_background_context.rect(0, 0, static_background_canvas.width, static_background_canvas.height);
-        static_background_context.fillStyle = 'LightCyan';
+        static_background_context.fillStyle = 'rgba(210,242,251,1)';
         static_background_context.fill();
         // Paint mountains plus ground
         static_background_context.drawImage(background_image, 0, 0, static_background_canvas.width, static_background_canvas.height); // Draw background (not a sprite)
@@ -267,7 +270,7 @@ var setup = function () {
     entityCloud.pos.y += Math.floor(Math.random() * 100);
 
     if (BrowserDetect.browser != "Chrome") {
-        window.alert("Oops! The game is designed to run in Chrome web browser, playing in this browser may be slow and buggy :(");
+        window.alert("Oops! The game is designed to run in Chrome web browser, playing in this browser may be slow and buggy :/");
     }
     if (BrowserDetect.OS != "Linux") { // Change font in Linux to a supported one
         game_font = 'Helvetica';
@@ -332,6 +335,8 @@ requestAnimationFrame = window.requestAnimationFrame ||
                         window.msRequestAnimationFrame ||
                         setTimeout;
 
+var game_canvas = null;
+var game_context = null;
 var player_canvas = null;
 var player_context = null;
 var canvas = null;

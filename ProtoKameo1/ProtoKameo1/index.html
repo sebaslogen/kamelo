@@ -16,7 +16,7 @@
             evt.preventDefault();
         }
     </script>
-    <!-- Debug version -->
+    <!-- Debug version --
     <script type="text/javascript" src="browserDetector.js"></script>
     <script type="text/javascript" src="core.js"></script>
     <script type="text/javascript" src="input.js"></script>
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="fly.js"></script>
     <script type="text/javascript" src="spriteSheet.js"></script>
     <!-- End Debug version -->
-    <!-- Release version --
+    <!-- Release version -->
     <script type="text/javascript" src="browserDetector.js"></script>
     <script type="text/javascript" src="core-min.js"></script>
     <script type="text/javascript" src="input-min.js"></script>
@@ -49,23 +49,26 @@
 </head>
 <body onkeypress="stopDefAction(event);" onclick="stopDefAction(event);">
     <div id="gameDiv" class="canvas_position">
-        <canvas id="PlayerCanvas" width="1600" height="900" style="position: absolute; z-index: 5;" tabindex="1">
-            Canvas tag not supported
+        <canvas id="MainGameCanvas" width="1600" height="900" style="position: absolute; z-index: 7;" tabindex="1">
+            Canvas tag to draw the game not supported :( You need a new web browser!
+	    </canvas>
+        <canvas id="PlayerCanvas" width="1600" height="900" style="position: absolute; z-index: 5;">
+            Canvas tag to draw the game not supported :( You need a new web browser!
 	    </canvas>
         <canvas id="FireworksCanvas" width="1600" height="900" style="position: absolute; z-index: 4;">
-            Canvas tag not supported
+            Canvas tag to draw the game not supported :( You need a new web browser!
 	    </canvas>
         <canvas id="PlaygroundCanvas" width="1600" height="900" style="position: absolute; z-index: 3;">
-            Canvas tag not supported
+            Canvas tag to draw the game not supported :( You need a new web browser!
 	    </canvas>
         <canvas id="TreeCanvas" width="1600" height="900" style="position: absolute; z-index: 2;">
-            Canvas tag not supported
+            Canvas tag to draw the game not supported :( You need a new web browser!
         </canvas>
         <canvas id="DynamicBackground" width="1600" height="900" style="position: absolute; z-index: 1;">
-            Canvas tag not supported
+            Canvas tag to draw the game not supported :( You need a new web browser!
         </canvas>
         <canvas id="StaticBackground" width="1600" height="900" style="position: absolute; z-index: 0;">
-            Canvas tag not supported
+            Canvas tag to draw the game not supported :( You need a new web browser!
         </canvas>
     </div>
     <div id="license">

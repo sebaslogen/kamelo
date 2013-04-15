@@ -24,17 +24,17 @@ InputClass = Class.extend({
         gInput.bind(gInput.KEY.S, 'stop-background');
 
         // Adding the event listeners for the appropriate DOM events.
-        player_canvas.addEventListener('click', gInput.onClick);
-        player_canvas.addEventListener('mousemove', gInput.onMouseMove);
-        player_canvas.addEventListener('keydown', gInput.onKeyDown);
-        player_canvas.addEventListener('keyup', gInput.onKeyUp);
+        game_canvas.addEventListener('click', gInput.onClick);
+        game_canvas.addEventListener('mousemove', gInput.onMouseMove);
+        game_canvas.addEventListener('keydown', gInput.onKeyDown);
+        game_canvas.addEventListener('keyup', gInput.onKeyUp);
     },
 
     //-----------------------------
     onMouseMove: function (event) { // Get coordinates avoiding webpage scrolling offsets
         gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
         gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-        var pos = findPos(player_canvas); // Get canvas current position
+        var pos = findPos(game_canvas); // Get canvas current position
         gInput.mouse.x -= pos.x;
         gInput.mouse.y -= pos.y;
         gEngine.player0.direct_eyes = true;
@@ -44,7 +44,7 @@ InputClass = Class.extend({
     onClick: function (event) {
         gInput.mouse.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
         gInput.mouse.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-        var pos = findPos(player_canvas); // Get canvas current position
+        var pos = findPos(game_canvas); // Get canvas current position
         gInput.mouse.x -= pos.x;
         gInput.mouse.y -= pos.y; // Update click coordonates in case mouse move event occurs late
         var keyCode = event.keyCode || event.button; // Fix for Firefox support

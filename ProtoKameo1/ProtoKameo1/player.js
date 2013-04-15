@@ -350,9 +350,7 @@ PlayerClass = EntityClass.extend({
             }
 
             /// Draw to final canvas ///
-            if (!game_instructions && !background_loaded) { // When game start speed-up painting by simply copying canvases
-                player_context.globalCompositeOperation = 'copy'; // Copy canvas applying transparency to composed image
-            }
+            player_context.globalCompositeOperation = 'copy'; // Copy canvas applying transparency to composed image
             player_context.drawImage(this.local_player_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
         }
     },

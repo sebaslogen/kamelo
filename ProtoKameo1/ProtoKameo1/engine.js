@@ -37,15 +37,6 @@ EngineClass = Class.extend({
             instructions_context.fillText('           Warning! Adjust ZOOM of the game with:', 10, font_size * 4);
             instructions_context.fillStyle = 'rgba(0, 0, 200, 1)'; // green
             instructions_context.fillText('"Ctrl" key  &  mouse wheel   OR   "Ctrl" key  &  "-" key', 10, font_size * 7);
-            ////////////////////resolution_size = 0.50;
-            //resolution_size = 0.75;
-            //if (screen.width < 1600) {
-            //    resolution_size = 0.5;
-            //}
-            //if (screen.width < 960) {
-            //    resolution_size = 0.25;
-            //}
-            //document.getElementById('gameDiv').style.zoom = resolution_size;
         }
         instructions_context.textAlign = 'center';
         instructions_context.font = 'bold 70pt ' + game_font;
@@ -253,9 +244,6 @@ EngineClass = Class.extend({
     //----- Draw all entities in the game engine
     draw: function () {
         context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
-        if (!(!game_instructions && !background_loaded)) { // Only while loading then use fast canvas copy operations
-            player_context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
-        }
 
         // Bucket entities by zIndex
         var fudgeVariance = 128;
@@ -317,10 +305,12 @@ var animate = function () {
                     drawLoadingScreen(); // Still draw instructions for a few seconds while gradient is disolving
                 }
                 if (game_instructions) { // Show gameplay instructions until the user presses any of the game keys 
-                    player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+                    game_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+                } else if ((!play_game_intro) && (game_context != null)) { // No intro and no game instructions -> Clean and Remove canvas context reference
+                    game_context.clearRect(0, 0, canvas.width, canvas.height); // Clean up screen
+                    game_context = null; // Not drawing anymore, only receiving input
                 }
             }
-        
         } else {
             dynamic_background_context.font = 'bold 250pt ' + game_font;
             dynamic_background_context.fillStyle = 'rgba(0, 50, 255, 1)';
@@ -332,19 +322,20 @@ var animate = function () {
 };
 
 var drawLoadingScreen = function () {
+    game_context.clearRect(0, 0, canvas.width, canvas.height); // First clean up screen
     var external_r = 20000 - (introFrame * introFrame * 2);
-    var grd = player_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
+    var grd = game_context.createRadialGradient(1420, 170, 200 - introFrame, 1420, 170, external_r); // Shrinking radius
     var opacity = 1.05 - (introFrame / (introSeconds * FPS)); // Disolve slowly
     grd.addColorStop(1, 'transparent');
     grd.addColorStop(0, 'rgba(250,250,120,' + opacity + ')');
-    player_context.fillStyle = grd;
-    player_context.fillRect(0, 0, canvas.width, canvas.height);
+    game_context.fillStyle = grd;
+    game_context.fillRect(0, 0, canvas.width, canvas.height);
     if (game_instructions || !background_loaded) { // Show gameplay instructions until the user presses any of the game keys and the background loads
-        player_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+        game_context.drawImage(gEngine.instructions_canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
     }
     if (!background_loaded) {
         for (var i = 0; i < loading_bars; i++) { // Draw loading bar only while background image has not been loaded
-            player_context.drawImage(gEngine.bar_canvas, 0, 0, 100, 20, canvas.width / 2 - 300 + (200 * i), (canvas.height / 2) + 300, 100, 20);
+            game_context.drawImage(gEngine.bar_canvas, 0, 0, 100, 20, canvas.width / 2 - 300 + (200 * i), (canvas.height / 2) + 300, 100, 20);
         }
         window.setTimeout(function(){
             if (!background_loaded) { // Keep drawing instructions plus loading bars only until background is loaded

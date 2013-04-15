@@ -150,7 +150,8 @@ FlyClass = EntityClass.extend({
                     local_context.fillStyle = grd;
                     local_context.fillRect(0, 0, this.size.width * 2, this.size.height * 2);
                 }
-                context.drawImage(evil_fly_halo_canvas, 0, 0, this.size.width * 2, this.size.height * 2, this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
+                if (evil_fly_halo_canvas != null)
+                    context.drawImage(evil_fly_halo_canvas, 0, 0, this.size.width * 2, this.size.height * 2, this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
             }
             if (this.markForDeath) {
                 if (dead_fly_halo_canvas == null) { // Create the halo only once and paint it several times
