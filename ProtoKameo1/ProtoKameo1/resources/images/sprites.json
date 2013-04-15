@@ -10,15 +10,15 @@
 },
 "fly-001.png":
 {
-	"frame": {"x":74,"y":2,"w":63,"h":62},
+	"frame": {"x":74,"y":2,"w":70,"h":62},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":63,"h":62},
-	"sourceSize": {"w":63,"h":62}
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":62},
+	"sourceSize": {"w":70,"h":62}
 },
 "fly-002.png":
 {
-	"frame": {"x":139,"y":2,"w":70,"h":62},
+	"frame": {"x":146,"y":2,"w":70,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":62},
@@ -26,23 +26,23 @@
 },
 "kami-dead-001.png":
 {
-	"frame": {"x":211,"y":2,"w":506,"h":154},
+	"frame": {"x":218,"y":2,"w":550,"h":190},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":36,"w":506,"h":154},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":550,"h":190},
 	"sourceSize": {"w":550,"h":190}
 },
 "kami-dead-002.png":
 {
-	"frame": {"x":2,"y":158,"w":664,"h":151},
+	"frame": {"x":770,"y":2,"w":664,"h":195},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":44,"w":664,"h":151},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":664,"h":195},
 	"sourceSize": {"w":664,"h":195}
 },
 "kami-eye-001.png":
 {
-	"frame": {"x":668,"y":158,"w":36,"h":34},
+	"frame": {"x":1436,"y":2,"w":36,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":34},
@@ -50,7 +50,7 @@
 },
 "kami-eye-002.png":
 {
-	"frame": {"x":706,"y":158,"w":36,"h":33},
+	"frame": {"x":1474,"y":2,"w":36,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":33},
@@ -58,7 +58,7 @@
 },
 "kami-eye-003.png":
 {
-	"frame": {"x":744,"y":158,"w":36,"h":33},
+	"frame": {"x":1512,"y":2,"w":36,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":33},
@@ -66,23 +66,23 @@
 },
 "kami-eye-004.png":
 {
-	"frame": {"x":782,"y":158,"w":35,"h":32},
+	"frame": {"x":1550,"y":2,"w":35,"h":34},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":32},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":34},
 	"sourceSize": {"w":35,"h":34}
 },
 "kami-eye-005.png":
 {
-	"frame": {"x":819,"y":158,"w":40,"h":33},
+	"frame": {"x":1587,"y":2,"w":42,"h":33},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":2,"y":0,"w":40,"h":33},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":42,"h":33},
 	"sourceSize": {"w":42,"h":33}
 },
 "kami-eye-006.png":
 {
-	"frame": {"x":861,"y":158,"w":35,"h":33},
+	"frame": {"x":1631,"y":2,"w":35,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":33},
@@ -90,7 +90,7 @@
 },
 "kami-eye-007.png":
 {
-	"frame": {"x":898,"y":158,"w":35,"h":34},
+	"frame": {"x":1668,"y":2,"w":35,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":34},
@@ -98,15 +98,15 @@
 },
 "kami-eye-008.png":
 {
-	"frame": {"x":935,"y":158,"w":36,"h":36},
+	"frame": {"x":1705,"y":2,"w":38,"h":38},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":2,"y":0,"w":36,"h":36},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":38},
 	"sourceSize": {"w":38,"h":38}
 },
 "kami-head-slap.png":
 {
-	"frame": {"x":2,"y":311,"w":123,"h":137},
+	"frame": {"x":1745,"y":2,"w":123,"h":137},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":123,"h":137},
@@ -114,7 +114,7 @@
 },
 "kami-tail-001.png":
 {
-	"frame": {"x":127,"y":311,"w":140,"h":95},
+	"frame": {"x":1870,"y":2,"w":140,"h":95},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":140,"h":95},
@@ -122,47 +122,47 @@
 },
 "kami-tail-002.png":
 {
-	"frame": {"x":269,"y":311,"w":187,"h":140},
+	"frame": {"x":2,"y":199,"w":235,"h":264},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":1,"w":187,"h":140},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":235,"h":264},
 	"sourceSize": {"w":235,"h":264}
 },
 "kami-tail-003.png":
 {
-	"frame": {"x":458,"y":311,"w":163,"h":92},
+	"frame": {"x":239,"y":199,"w":185,"h":160},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":0,"w":163,"h":92},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":185,"h":160},
 	"sourceSize": {"w":185,"h":160}
 },
 "kami-tongue-001.png":
 {
-	"frame": {"x":623,"y":311,"w":62,"h":42},
+	"frame": {"x":426,"y":199,"w":328,"h":86},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":151,"y":27,"w":62,"h":42},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
 	"sourceSize": {"w":328,"h":86}
 },
 "kami-tongue-002.png":
 {
-	"frame": {"x":687,"y":311,"w":60,"h":16},
+	"frame": {"x":756,"y":199,"w":328,"h":86},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":200,"y":53,"w":60,"h":16},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
 	"sourceSize": {"w":328,"h":86}
 },
 "kami-tongue-003.png":
 {
-	"frame": {"x":749,"y":311,"w":92,"h":36},
+	"frame": {"x":1086,"y":199,"w":328,"h":86},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":236,"y":50,"w":92,"h":36},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":328,"h":86},
 	"sourceSize": {"w":328,"h":86}
 },
 "kami-walk-001.png":
 {
-	"frame": {"x":2,"y":453,"w":400,"h":186},
+	"frame": {"x":1416,"y":199,"w":400,"h":186},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":186},
@@ -170,7 +170,7 @@
 },
 "kami-walk-002.png":
 {
-	"frame": {"x":404,"y":453,"w":400,"h":190},
+	"frame": {"x":2,"y":465,"w":400,"h":190},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":190},
@@ -178,7 +178,7 @@
 },
 "kami-walk-003.png":
 {
-	"frame": {"x":2,"y":645,"w":400,"h":186},
+	"frame": {"x":404,"y":465,"w":400,"h":186},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":186},
@@ -186,7 +186,7 @@
 },
 "nube-001.png":
 {
-	"frame": {"x":404,"y":645,"w":178,"h":123},
+	"frame": {"x":806,"y":465,"w":178,"h":123},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":123},
@@ -194,7 +194,7 @@
 },
 "nube-002.png":
 {
-	"frame": {"x":584,"y":645,"w":213,"h":148},
+	"frame": {"x":986,"y":465,"w":213,"h":148},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":148},
@@ -202,7 +202,7 @@
 },
 "nube-003.png":
 {
-	"frame": {"x":799,"y":645,"w":174,"h":124},
+	"frame": {"x":1201,"y":465,"w":174,"h":124},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":174,"h":124},
@@ -210,7 +210,7 @@
 },
 "nube-004.png":
 {
-	"frame": {"x":2,"y":833,"w":209,"h":148},
+	"frame": {"x":1377,"y":465,"w":209,"h":148},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":209,"h":148},
@@ -218,7 +218,7 @@
 },
 "sol.png":
 {
-	"frame": {"x":213,"y":833,"w":334,"h":316},
+	"frame": {"x":1588,"y":465,"w":334,"h":316},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":334,"h":316},
@@ -226,10 +226,10 @@
 },
 "tree.png":
 {
-	"frame": {"x":2,"y":1151,"w":516,"h":618},
+	"frame": {"x":2,"y":783,"w":776,"h":718},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":176,"y":100,"w":516,"h":618},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":776,"h":718},
 	"sourceSize": {"w":776,"h":718}
 }},
 "meta": {
@@ -237,8 +237,8 @@
 	"version": "1.0",
 	"image": "sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":1024,"h":2048},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5c013e6130b65d7ea3ccca0286501e58$"
+	"smartupdate": "$TexturePacker:SmartUpdate:976610d0f1bf4f179cb5cd552c62b51c$"
 }
 }

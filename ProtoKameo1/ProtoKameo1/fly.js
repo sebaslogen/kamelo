@@ -137,23 +137,20 @@ FlyClass = EntityClass.extend({
 
     //-----------------------------------------
     draw: function () {
-        if (this.spritename) {
+        if (this.spritename && (this.size.width != 0) && (this.size.height != 0)) {
             if (this.evil) { // Evil halo
                 if (evil_fly_halo_canvas == null) { // Create the halo only once and paint it several times
                     evil_fly_halo_canvas = document.createElement("canvas");
                     evil_fly_halo_canvas.width = this.size.width * 2;
                     evil_fly_halo_canvas.height = this.size.height * 2;
                     var local_context = evil_fly_halo_canvas.getContext('2d');
-                    var grd = local_context.createRadialGradient(this.size.width, this.size.height, 1, this.size.width, this.size.height, this.size.width);
+                    var grd = local_context.createRadialGradient(this.size.width, this.size.height, 1, this.size.width, this.size.height, this.size.width/1.2);
                     grd.addColorStop(1, 'rgba(10,200,20,0)');
                     grd.addColorStop(0, 'rgba(0,0,0,1)');
                     local_context.fillStyle = grd;
                     local_context.fillRect(0, 0, this.size.width * 2, this.size.height * 2);
                 }
-                if ((evil_fly_halo_canvas != null) && (this.pos.x - this.size.width >= 0) && (this.pos.y - this.size.height >= 0) &&
-                    (this.pos.x - (2*this.size.width) <= canvas.width) && (this.pos.y - (2*this.size.height) <= canvas.height )) {
-                    context.drawImage(evil_fly_halo_canvas, 0, 0, this.size.width * 2, this.size.height * 2, this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
-                }
+                context.drawImage(evil_fly_halo_canvas, 0, 0, this.size.width * 2, this.size.height * 2, this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
             }
             if (this.markForDeath) {
                 if (dead_fly_halo_canvas == null) { // Create the halo only once and paint it several times
@@ -161,15 +158,13 @@ FlyClass = EntityClass.extend({
                     dead_fly_halo_canvas.width = this.size.width * 2;
                     dead_fly_halo_canvas.height = this.size.height * 2;
                     var local_context = dead_fly_halo_canvas.getContext('2d');
-                    var grd = local_context.createRadialGradient(this.size.width, this.size.height, 1, this.size.width, this.size.height, this.size.width);
+                    var grd = local_context.createRadialGradient(this.size.width, this.size.height, 1, this.size.width, this.size.height, this.size.width/1.2);
                     grd.addColorStop(1, 'rgba(10,10,15,0)');
                     grd.addColorStop(0, 'rgba(0,0,0,1)');
                     local_context.fillStyle = grd;
                     local_context.fillRect(0, 0, this.size.width * 2, this.size.height * 2);
                 }
-                if ((dead_fly_halo_canvas != null) && (this.pos.x - (2 * this.size.width) <= canvas.width) && (this.pos.y - (2 * this.size.height) <= canvas.height)) {
-                    context.drawImage(dead_fly_halo_canvas, 0, 0, this.size.width * 2, this.size.height * 2, this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
-                }
+                context.drawImage(dead_fly_halo_canvas, 0, 0, this.size.width * 2, this.size.height * 2, this.pos.x - this.size.width, this.pos.y - this.size.height, this.size.width * 2, this.size.height * 2);
                 drawSprite('dead-fly.png', this.pos.x, this.pos.y, this.angle, context);
             } else {
                 var real_spritename = this.spritename + '.png';
