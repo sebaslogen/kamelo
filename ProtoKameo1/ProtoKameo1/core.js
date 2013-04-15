@@ -202,10 +202,10 @@ var setup = function () {
     game_canvas = document.getElementById('MainGameCanvas');
     game_canvas.onselectstart = function () { return false; }
     game_context = game_canvas.getContext('2d');
+    game_canvas.focus();
     // Canvas setup
     player_canvas = document.getElementById('PlayerCanvas');
     player_context = player_canvas.getContext('2d');
-    player_canvas.focus();
     // Flies canvas
     canvas = document.getElementById('PlaygroundCanvas');
     context = canvas.getContext('2d');
