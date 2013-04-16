@@ -1,6 +1,6 @@
 //sound_atmos contains the atmosphere sound
 var sound_atmos = new Howl({
-    urls: ['resources/sounds/kame_noise.mp3', //'http://www.igolgol.com/music/kame_noise.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kame_noise.mp3',
+    urls: ['http://www.igolgol.com/music/kame_noise.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kame_noise.mp3',
            'resources/sounds/kame_noise.ogg'],
     sprite: {
             atmos: [0, 24400]
@@ -12,7 +12,7 @@ var sound_atmos = new Howl({
 
 //kami_death contains music when Kami dies
 var kami_death = new Howl({
-    urls: ['resources/sounds/kami_death.mp3', //'http://www.igolgol.com/music/kami_death.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kami_death.mp3',
+    urls: ['http://www.igolgol.com/music/kami_death.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kami_death.mp3',
            'resources/sounds/kami_death.ogg'],
     sprite: {
             death: [40, 7300]
@@ -24,7 +24,7 @@ var kami_death = new Howl({
 
 //game_music contains the music while playing
 var game_music = new Howl({
-    urls: ['resources/sounds/kameongame.mp3', //'http://www.igolgol.com/music/kameongame.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kameongame.mp3',
+    urls: ['http://www.igolgol.com/music/kameongame.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kameongame.mp3',
            'resources/sounds/kameongame.ogg'],
     sprite: {
             music: [23, 59084]
@@ -34,9 +34,11 @@ var game_music = new Howl({
     volume: 0.6,
 });
 
+
+
 //sound_sprites contains all the sounds
 var sound_sprites = new Howl({
-    urls: ['resources/sounds/kame_hi.mp3', //'http://www.igolgol.com/music/kame_hi.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kame_hi.mp3',
+    urls: ['http://www.igolgol.com/music/kame_hi.mp3', // Backup server: 'http://dl.dropbox.com/u/70689459/kame_hi.mp3',
            'resources/sounds/kame_hi.ogg'],
     sprite: {
             tong1: [31, 220],
