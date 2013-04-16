@@ -17,7 +17,7 @@ Play the game online
 --------------------
 Use left and right arrows to move Kami (a.k.a. the beast) and click with the mouse on the fly to catch it!
 Can you catch 50 flies to WIN the game?
-http://kamelo.net23.net/
+http://neoranga55.github.io/kamelo/ProtoKameo1/ProtoKameo1/
 or
 https://googledrive.com/host/0B1WrYF_rngpJN2c4LV8yWUZ4ckk/index.html
 
@@ -64,4 +64,9 @@ Game design in a nutshell
 - Layering on several canvas allows to clear and repaint parts of Kami body without having to use different resources (less bandwidth VS small extra processing).
 - Coloration of Kami's body is done using pixel color modifications on the required area of the canvas (avoiding processing of transparent pixels).
 - Sound and images are processed in atlases to reduce server requests, only big files are keep separately to allow simultaneous downloads and speed up game loading. Sound is processed with howler.js library
-- Assets (sound, images and heavy javascript) are loaded asynchronously to improve initial game load time.
+- Assets (sound, images and heavy javascript) are loaded asynchronously to improve initial game load time. Around 1 second for initial paint on screen!
+- All sprites and fill patterns that have to be computed are cached once in off-screen canvases to reuse without recalculating. Images are cached to off-screen canvases to improve performance on some browsers.
+- Added support to firefox with different mouse events and fps performance improvements (still better in chrome).
+
+Speed and load tests:
+http://tools.pingdom.com/fpt/#!/u7fODP5hJ/https://googledrive.com/host/0B1WrYF_rngpJN2c4LV8yWUZ4ckk/index.html
