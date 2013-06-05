@@ -9,8 +9,8 @@ Note: The game works best on the Chrome web browser (www.google.com/chrome)
 
 Authors
 -------
-- Sound engine and sound FXs: Jose Carlos Tapiador Carretero (tapisky) (jctapiador/_A.T._/g.m.a.i.l/_D.O.T._/com)
-- Game design and implementation: Sebastian Lobato Genco (neoranga55) (neoranga55/_A.T._/g.m.a.i.l/_D.O.T._/com)
+- Sound engine and sound FXs: Jose Carlos T. C. (tapisky)
+- Game design and implementation: Sebastian L. G. (neoranga55)
 - Play-Doh artwork & graphics: Ale & Sebas
 
 Play the game online
