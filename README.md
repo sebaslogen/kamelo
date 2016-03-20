@@ -1,13 +1,13 @@
 Kamelo: The Handcrafted Animal Party
 ====================================
 
+![Capture](https://raw.github.com/neoranga55/kamelo/master/capture.png)
+
 Description
 -----------
 Our first HTML5 game in 2D handcrafted with love and beasts.
 Based on the code and topics of course HTML5 Game Development (https://www.udacity.com/course/cs255)
 Note: The game works best on the Chrome web browser (www.google.com/chrome)
-
-![Capture](https://raw.github.com/neoranga55/kamelo/master/capture.png)
 
 Authors
 -------
