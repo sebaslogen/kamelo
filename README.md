@@ -12,22 +12,22 @@ Note: The game works best on the Chrome web browser (www.google.com/chrome)
 Authors
 -------
 - Sound engine and sound FXs: Jose Carlos T. C. (tapisky)
-- Game design and implementation: Sebastian L. G. (neoranga55)
+- Game design and implementation: Sebastian L. G. (sebaslogen)
 - Play-Doh artwork & graphics: Ale & Sebas
 
 Play the game online
 --------------------
 Use left and right arrows to move Kami (a.k.a. the beast) and click with the mouse on the fly to catch it!
 Can you catch 50 flies to WIN the game?
-http://neoranga55.github.io/kamelo/ProtoKameo1/ProtoKameo1/
+http://sebaslogen.github.io/kamelo/ProtoKameo1/ProtoKameo1/
 or
 https://googledrive.com/host/0B1WrYF_rngpJN2c4LV8yWUZ4ckk/index.html
 
-Screenshot: https://raw.github.com/neoranga55/kamelo/master/capture.png
+Screenshot: https://raw.github.com/sebaslogen/kamelo/master/capture.png
 
 Source code
 -----------
-https://github.com/neoranga55/kamelo
+https://github.com/sebaslogen/kamelo
 
 Tasks and bugs management
 -------------------------
@@ -61,7 +61,7 @@ http://ejohn.org/blog/simple-javascript-inheritance/
 
 Game design in a nutshell
 -------------------------
-- All graphics are handmade, with a combination of Play-Doh handcrafting and digital painting based on the original game concept design https://raw.github.com/neoranga55/kamelo/master/concept_art.jpg
+- All graphics are handmade, with a combination of Play-Doh handcrafting and digital painting based on the original game concept design https://raw.github.com/sebaslogen/kamelo/master/concept_art.jpg
 - Physics library Box2D is used for flies collision but firing detection is done in a much faster and simple way to avoid unnecessary processing.
 - Layering on several canvas allows to clear and repaint parts of Kami body without having to use different resources (less bandwidth VS small extra processing).
 - Coloration of Kami's body is done using pixel color modifications on the required area of the canvas (avoiding processing of transparent pixels).
